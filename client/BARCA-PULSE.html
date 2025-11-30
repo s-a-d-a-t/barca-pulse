@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarçaPulse - Ultimate FC Barcelona Fan Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --barca-blue: #002855;
+            --barca-red: #db0030;
+            --barca-yellow: #fdd516;
+            --barca-dark: #0a1018;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--barca-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .barca-bg {
+            background: linear-gradient(135deg, var(--barca-blue) 0%, #001a3d 100%);
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            background: radial-gradient(circle at center, transparent 0%, #000 100%),
+                url('images/hero.jpg') center/cover fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 40, 85, 0.3), var(--barca-dark));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--barca-red);
+            border-radius: 2px;
+        }
+
+        .barca-stripes {
+            background: repeating-linear-gradient(45deg,
+                    var(--barca-blue),
+                    var(--barca-blue) 20px,
+                    var(--barca-red) 20px,
+                    var(--barca-red) 40px);
+        }
+
+        .player-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .player-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--barca-yellow);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .player-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .player-modal .modal-content {
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 16px;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .player-modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .player-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+
+        .stadium-bg {
+            background: url('https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80') center/cover;
+        }
+
+        .trophy-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .trophy-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* New style for trophy images */
+        .trophy-image-frame {
+            width: 96px;
+            /* w-24 */
+            height: 96px;
+            /* h-24 */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 9999px;
+            /* rounded-full */
+            overflow: hidden;
+            border: 4px solid white;
+            /* border-4 border-white */
+            margin-bottom: 1rem;
+            /* mb-4 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.3);
+            /* A slight background for visibility */
+        }
+
+        .trophy-image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .coaching-staff-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .coaching-staff-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .formation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .formation-table th {
+            background-color: var(--barca-blue);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .formation-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .formation-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .formation-table tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Loading spinner styles */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--barca-blue);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with Barca Logo -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300 glass shadow-lg">
+        <div class="container mx-auto flex items-center justify-between py-4 px-6">
+            <div class="flex items-center space-x-3">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/800px-FC_Barcelona_%28crest%29.svg.png"
+                    alt="FC Barcelona Logo" class="h-12 w-12 logo-pulse drop-shadow-md">
+                <h1 class="text-2xl font-bold tracking-wide">BarçaPulse</h1>
+            </div>
+
+            <nav class="hidden md:block">
+                <ul class="flex space-x-8">
+                    <li><a href="#hero"
+                            class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">Home</a>
+                    </li>
+                    <li><a href="#players"
+                            class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">Players</a>
+                    </li>
+                    <li><a href="#coaching"
+                            class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">Coaching</a>
+                    </li>
+                    <li><a href="#history"
+                            class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">History</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <button id="mobile-menu" class="md:hidden text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-nav"
+            class="md:hidden bg-[#002855] absolute top-full left-0 w-full py-4 px-6 shadow-lg hidden border-t border-white/10">
+            <ul class="space-y-4">
+                <li><a href="#hero" class="block py-2 hover:text-[#fdd516] transition">Home</a></li>
+                <li><a href="#players" class="block py-2 hover:text-[#fdd516] transition">Players</a></li>
+                <li><a href="#coaching" class="block py-2 hover:text-[#fdd516] transition">Coaching</a></li>
+                <li><a href="#history" class="block py-2 hover:text-[#fdd516] transition">History</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section with Camp Nou Background -->
+    <section id="hero" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content px-4 max-w-4xl fade-in text-center">
+            <h1
+                class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                FC BARCELONA
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 leading-relaxed font-light text-gray-200">
+                More than a club. The home of legends, passion, and football excellence since 1899.
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="#players"
+                    class="glass hover:bg-white hover:text-[#002855] text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 border border-white/30 backdrop-blur-md shadow-lg">
+                    Meet the Players
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-20">
+            <a href="#players" class="text-white/80 hover:text-white transition text-3xl">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Trophy Section with Images -->
+    <section class="py-12 barca-stripes text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title">Club Trophies</h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="trophy-card bg-white bg-opacity-20 p-6 rounded-xl backdrop-blur-sm">
+                    <div class="trophy-image-frame">
+                        <img src="images/trophy/laliga.jpg"
+                            onerror="this.onerror=null;this.src='https://placehold.co/100x100/004d98/ffffff?text=LaLiga';"
+                            alt="La Liga Trophy">
+                    </div>
+                    <div class="text-4xl font-bold mb-2">27</div>
+                    <div class="text-lg">La Liga Titles</div>
+                </div>
+
+                <div class="trophy-card bg-white bg-opacity-20 p-6 rounded-xl backdrop-blur-sm">
+                    <div class="trophy-image-frame">
+                        <img src="images/trophy/cl.jpg"
+                            onerror="this.onerror=null;this.src='https://placehold.co/100x100/004d98/ffffff?text=UCL';"
+                            alt="UCL Trophy">
+                    </div>
+                    <div class="text-4xl font-bold mb-2">5</div>
+                    <div class="text-lg">UCL Trophies</div>
+                </div>
+
+                <div class="trophy-card bg-white bg-opacity-20 p-6 rounded-xl backdrop-blur-sm">
+                    <div class="trophy-image-frame">
+                        <img src="images/trophy/copa.jpg"
+                            onerror="this.onerror=null;this.src='https://placehold.co/100x100/004d98/ffffff?text=Copa';"
+                            alt="Copa del Rey Trophy">
+                    </div>
+                    <div class="text-4xl font-bold mb-2">31</div>
+                    <div class="text-lg">Copa del Rey</div>
+                </div>
+
+                <div class="trophy-card bg-white bg-opacity-20 p-6 rounded-xl backdrop-blur-sm">
+                    <div class="trophy-image-frame">
+                        <img src="images/trophy/Club World Cup.jpg"
+                            onerror="this.onerror=null;this.src='https://placehold.co/100x100/004d98/ffffff?text=CWC';"
+                            alt="Club World Cup Trophy">
+                    </div>
+                    <div class="text-4xl font-bold mb-2">3</div>
+                    <div class="text-lg">Club World Cups</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="py-20 bg-[#001a3d]">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 section-title text-white tracking-tight">Latest
+                Barça News</h2>
+
+            <div class="text-center mb-12">
+                <button id="refreshNews"
+                    class="bg-[#db0030] hover:bg-[#b00020] text-white font-bold px-8 py-3 rounded-full transition-all shadow-lg shadow-red-900/20 transform hover:scale-105 flex items-center justify-center mx-auto gap-2">
+                    <i class="fas fa-sync-alt"></i> Refresh News
+                </button>
+            </div>
+
+            <div id="news-container" class="news-grid"></div>
+        </div>
+    </section>
+
+
+
+    <!-- Players Section -->
+    <section id="players" class="py-20 relative overflow-hidden">
+        <div
+            class="absolute top-0 left-0 w-full h-full bg-[url('https://www.fcbarcelona.com/photo-resources/2022/08/02/95526803-3452-4569-9554-284997126804/mini_3200x2000_CampNou_Full.jpg?width=3200&height=2000')] bg-cover bg-fixed opacity-10 pointer-events-none">
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 section-title text-white tracking-tight">Meet
+                The Squad 2025/26</h2>
+
+            <div class="mb-12 flex justify-center">
+                <div class="flex flex-wrap gap-3 justify-center p-2 rounded-full glass inline-flex">
+                    <button
+                        class="player-filter bg-[#db0030] text-white px-6 py-2 rounded-full transition-all shadow-lg shadow-red-900/20"
+                        data-position="all">All</button>
+                    <button
+                        class="player-filter hover:bg-white/10 text-gray-300 hover:text-white px-6 py-2 rounded-full transition-all"
+                        data-position="Goalkeeper">GK</button>
+                    <button
+                        class="player-filter hover:bg-white/10 text-gray-300 hover:text-white px-6 py-2 rounded-full transition-all"
+                        data-position="Defender">DEF</button>
+                    <button
+                        class="player-filter hover:bg-white/10 text-gray-300 hover:text-white px-6 py-2 rounded-full transition-all"
+                        data-position="Midfielder">MID</button>
+                    <button
+                        class="player-filter hover:bg-white/10 text-gray-300 hover:text-white px-6 py-2 rounded-full transition-all"
+                        data-position="Attacker">ATT</button>
+                </div>
+            </div>
+
+            <div class="player-grid">
+                <!-- Player cards will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Coaching Staff Section -->
+    <section id="coaching" class="py-20 bg-[#0a1018]">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 section-title text-white tracking-tight">
+                Coaching Staff</h2>
+
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div
+                        class="coaching-staff-card glass p-8 text-center group hover:bg-white/5 transition-all duration-500">
+                        <div
+                            class="w-32 h-32 mx-auto rounded-full border-4 border-[#db0030] overflow-hidden mb-6 shadow-xl shadow-red-900/20 group-hover:scale-110 transition-transform duration-500">
+                            <img src="https://placehold.co/250x250/002855/ffffff?text=H.Flick" alt="Hansi Flick"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Hansi Flick</h3>
+                        <p class="text-[#fdd516] font-semibold uppercase tracking-wider text-sm mb-4">Head Coach</p>
+                        <p class="text-gray-400 leading-relaxed text-sm">
+                            Bringing high-intensity football and tactical discipline to restore Barcelona's European
+                            glory.
+                        </p>
+                    </div>
+
+                    <div
+                        class="coaching-staff-card glass p-8 text-center group hover:bg-white/5 transition-all duration-500">
+                        <div
+                            class="w-32 h-32 mx-auto rounded-full border-4 border-white/20 overflow-hidden mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <img src="https://placehold.co/250x250/002855/ffffff?text=H.Westermann"
+                                alt="Heiko Westermann" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Heiko Westermann</h3>
+                        <p class="text-[#fdd516] font-semibold uppercase tracking-wider text-sm mb-4">Assistant Coach
+                        </p>
+                        <p class="text-gray-400 leading-relaxed text-sm">
+                            Defensive specialist focusing on structure and set-piece organization.
+                        </p>
+                    </div>
+
+                    <div
+                        class="coaching-staff-card glass p-8 text-center group hover:bg-white/5 transition-all duration-500">
+                        <div
+                            class="w-32 h-32 mx-auto rounded-full border-4 border-white/20 overflow-hidden mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <img src="https://placehold.co/250x250/002855/ffffff?text=M.Sorg" alt="Marcus Sorg"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Marcus Sorg</h3>
+                        <p class="text-[#fdd516] font-semibold uppercase tracking-wider text-sm mb-4">Assistant Coach
+                        </p>
+                        <p class="text-gray-400 leading-relaxed text-sm">
+                            Tactical analyst and player development expert ensuring squad depth quality.
+                        </p>
+                    </div>
+                </div>
+
+                <h3 class="text-3xl font-bold mb-8 text-center text-white">Preferred Formation: <span
+                        class="text-[#fdd516]">4-3-3</span></h3>
+
+                <div class="glass rounded-2xl p-1 overflow-hidden">
+                    <table class="formation-table text-left w-full">
+                        <thead>
+                            <tr class="bg-white/5 text-white">
+                                <th class="p-4 font-bold uppercase text-sm tracking-wider text-[#fdd516]">Position</th>
+                                <th class="p-4 font-bold uppercase text-sm tracking-wider">Player</th>
+                                <th class="p-4 font-bold uppercase text-sm tracking-wider">Nationality</th>
+                                <th class="p-4 font-bold uppercase text-sm tracking-wider">Age</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300 divide-y divide-white/5">
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Goalkeeper</td>
+                                <td class="p-4 font-semibold text-white">Marc-André ter Stegen</td>
+                                <td class="p-4">Germany</td>
+                                <td class="p-4">33</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Right Back</td>
+                                <td class="p-4 font-semibold text-white">Jules Koundé</td>
+                                <td class="p-4">France</td>
+                                <td class="p-4">26</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Center Back</td>
+                                <td class="p-4 font-semibold text-white">Ronald Araujo</td>
+                                <td class="p-4">Uruguay</td>
+                                <td class="p-4">26</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Center Back</td>
+                                <td class="p-4 font-semibold text-white">Pau Cubarsí</td>
+                                <td class="p-4">Spain</td>
+                                <td class="p-4">18</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Left Back</td>
+                                <td class="p-4 font-semibold text-white">Alejandro Balde</td>
+                                <td class="p-4">Spain</td>
+                                <td class="p-4">21</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Defensive Mid</td>
+                                <td class="p-4 font-semibold text-white">Frenkie de Jong</td>
+                                <td class="p-4">Netherlands</td>
+                                <td class="p-4">28</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Central Mid</td>
+                                <td class="p-4 font-semibold text-white">Pedri</td>
+                                <td class="p-4">Spain</td>
+                                <td class="p-4">22</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Attacking Mid</td>
+                                <td class="p-4 font-semibold text-white">Gavi</td>
+                                <td class="p-4">Spain</td>
+                                <td class="p-4">21</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Right Wing</td>
+                                <td class="p-4 font-semibold text-white">Lamine Yamal</td>
+                                <td class="p-4">Spain</td>
+                                <td class="p-4">18</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Striker</td>
+                                <td class="p-4 font-semibold text-white">Robert Lewandowski</td>
+                                <td class="p-4">Poland</td>
+                                <td class="p-4">36</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4">Left Wing</td>
+                                <td class="p-4 font-semibold text-white">Ansu Fati</td>
+                                <td class="p-4">Spain</td>
+                                <td class="p-4">22</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="py-20 bg-gradient-to-b from-[#0a1018] to-[#001a3d]">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 section-title text-white tracking-tight">Barça
+                Legacy</h2>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center mb-20 fade-in group">
+                    <div class="md:w-1/2 mb-8 md:mb-0 transform transition duration-500 group-hover:scale-105">
+                        <div
+                            class="bg-gray-800 rounded-2xl w-full h-80 shadow-2xl overflow-hidden relative border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="History"
+                                class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition duration-500">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                                <span class="text-6xl font-bold text-white/10">1899</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12">
+                        <h3 class="text-3xl font-bold mb-6 text-white">Founded in 1899</h3>
+                        <p class="text-gray-300 leading-relaxed text-lg">
+                            FC Barcelona was founded on November 29, 1899, by a group of Swiss, Catalan, German, and
+                            English footballers led by Joan Gamper. The club has become a symbol of Catalan culture and
+                            identity, with the motto <span class="text-[#fdd516] font-bold">"Més que un club"</span>
+                            (More than a club).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center mb-20 fade-in group">
+                    <div class="md:w-1/2 md:pr-12 order-2 md:order-1">
+                        <h3 class="text-3xl font-bold mb-6 text-white">Camp Nou</h3>
+                        <p class="text-gray-300 leading-relaxed text-lg">
+                            The Cathedral of Football. Opened in 1957, it is the largest stadium in Europe with a
+                            seating capacity of 99,354. A coliseum where dreams are made and legends are born.
+                        </p>
+                    </div>
+                    <div
+                        class="md:w-1/2 mb-8 md:mb-0 order-1 md:order-2 transform transition duration-500 group-hover:scale-105">
+                        <div
+                            class="bg-gray-800 rounded-2xl w-full h-80 shadow-2xl overflow-hidden relative border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1577223625816-7546f13df25d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="Camp Nou"
+                                class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition duration-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center fade-in group">
+                    <div class="md:w-1/2 mb-8 md:mb-0 transform transition duration-500 group-hover:scale-105">
+                        <div
+                            class="bg-gray-800 rounded-2xl w-full h-80 shadow-2xl overflow-hidden relative border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1522778119026-d647f0565c6a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="La Masia"
+                                class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition duration-500">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12">
+                        <h3 class="text-3xl font-bold mb-6 text-white">La Masia</h3>
+                        <p class="text-gray-300 leading-relaxed text-lg">
+                            The Talent Factory. Renowned for developing world-class talents like Lionel Messi, Xavi,
+                            Andrés Iniesta, and Lamine Yamal. The academy focuses not only on football skills but also
+                            on personal development and education.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Player Modal -->
+    <div class="player-modal backdrop-blur-md bg-black/60">
+        <div
+            class="modal-content glass-card text-white border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300">
+            <div class="p-8 relative">
+                <button
+                    class="close-modal absolute top-4 right-4 text-2xl text-gray-400 hover:text-white transition-colors z-50">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="flex flex-col md:flex-row gap-10">
+                    <div class="md:w-1/3 flex flex-col items-center">
+                        <div
+                            class="w-56 h-56 rounded-full border-4 border-[#db0030] mb-6 overflow-hidden shadow-2xl shadow-red-900/20 relative group">
+                            <img id="modal-player-img" src="" alt="Player"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <h2 id="modal-player-name" class="text-3xl font-bold text-center mb-1 tracking-tight"></h2>
+                        <div id="modal-player-position"
+                            class="text-xl text-[#fdd516] font-bold mb-4 uppercase tracking-wider"></div>
+                        <div class="flex items-center space-x-4 mt-2">
+                            <div
+                                class="bg-[#db0030] text-white px-6 py-2 rounded-full text-lg font-bold shadow-lg shadow-red-900/20">
+                                #<span id="modal-player-number"></span>
+                            </div>
+                            <div id="modal-player-nationality"
+                                class="text-gray-300 font-medium flex items-center gap-2"></div>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <h3 class="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[#fdd516]">Player Profile
+                        </h3>
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div
+                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
+                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Age</div>
+                                <div id="modal-player-age" class="text-xl font-bold"></div>
+                            </div>
+                            <div
+                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
+                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Height</div>
+                                <div id="modal-player-height" class="text-xl font-bold"></div>
+                            </div>
+                            <div
+                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
+                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Weight</div>
+                                <div id="modal-player-weight" class="text-xl font-bold"></div>
+                            </div>
+                            <div
+                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
+                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Preferred Foot</div>
+                                <div id="modal-player-foot" class="text-xl font-bold"></div>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[#fdd516]">Season Stats
+                        </h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2 text-sm font-medium">
+                                    <span class="text-gray-300">Appearances</span>
+                                    <span id="modal-player-apps" class="font-bold text-white"></span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                                    <div id="modal-player-apps-bar"
+                                        class="bg-[#002855] h-full rounded-full shadow-[0_0_10px_rgba(0,40,85,0.5)] transition-all duration-1000 ease-out"
+                                        style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2 text-sm font-medium">
+                                    <span class="text-gray-300">Goals</span>
+                                    <span id="modal-player-goals" class="font-bold text-white"></span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                                    <div id="modal-player-goals-bar"
+                                        class="bg-[#db0030] h-full rounded-full shadow-[0_0_10px_rgba(219,0,48,0.5)] transition-all duration-1000 ease-out"
+                                        style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2 text-sm font-medium">
+                                    <span class="text-gray-300">Assists</span>
+                                    <span id="modal-player-assists" class="font-bold text-white"></span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                                    <div id="modal-player-assists-bar"
+                                        class="bg-[#fdd516] h-full rounded-full shadow-[0_0_10px_rgba(253,213,22,0.5)] transition-all duration-1000 ease-out"
+                                        style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Creator Info -->
+    <footer class="bg-[#001a3d] text-white py-16 border-t border-white/10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-8 md:mb-0 text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start space-x-3 mb-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/800px-FC_Barcelona_%28crest%29.svg.png"
+                            alt="FC Barcelona Logo"
+                            class="h-12 w-12 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition duration-500">
+                        <h2 class="text-2xl font-bold tracking-wider text-gray-300">BarçaPulse</h2>
+                    </div>
+                    <p class="text-gray-400 max-w-md text-sm leading-relaxed">
+                        The ultimate digital destination for FC Barcelona fans worldwide. Get the latest news, match
+                        updates, player profiles, and exclusive content.
+                    </p>
+                </div>
+
+                <div class="text-center md:text-right">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-1 text-gray-200">Created By</h3>
+                        <p class="text-xl font-bold text-[#fdd516]">Sadat Amir</p>
+                        <p class="text-gray-400 text-sm">sdrkk66@gmail.com</p>
+                    </div>
+                    <div class="flex justify-center md:justify-end space-x-6">
+                        <a href="#"
+                            class="text-gray-400 hover:text-[#fdd516] transition transform hover:scale-110 text-2xl">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#"
+                            class="text-gray-400 hover:text-[#fdd516] transition transform hover:scale-110 text-2xl">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#"
+                            class="text-gray-400 hover:text-[#fdd516] transition transform hover:scale-110 text-2xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#"
+                            class="text-gray-400 hover:text-[#fdd516] transition transform hover:scale-110 text-2xl">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 mt-12 pt-8 text-center text-gray-500 text-xs uppercase tracking-widest">
+                <p>&copy; 2025 BarçaPulse. This is a fan-made project and is not officially affiliated with FC
+                    Barcelona.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Ball Animation -->
+    <div class="fixed bottom-6 right-6 floating">
+        <div class="w-16 h-16 rounded-full bg-[#a50044] flex items-center justify-center shadow-lg cursor-pointer">
+            <i class="fas fa-futbol text-white text-2xl"></i>
+        </div>
+    </div>
+
+    <script>
+        // Player data for 25/26 season (remains static as it's not fetched from backend in this update)
+        const players = [
+            {
+                id: 1,
+                name: "Joan García",
+                position: "Goalkeeper",
+                number: 13,
+                nationality: "Spain",
+                age: 24,
+                height: "182 cm",
+                weight: "78 kg",
+                foot: "Right",
+                apps: 0,
+                goals: 0,
+                assists: 0,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Joan+Garcia"
+            },
+            {
+                id: 2,
+                name: "Wojciech Szczęsny",
+                position: "Goalkeeper",
+                number: 23,
+                nationality: "Poland",
+                age: 34,
+                height: "195 cm",
+                weight: "90 kg",
+                foot: "Right",
+                apps: 15,
+                goals: 0,
+                assists: 0,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Szczesny"
+            },
+            {
+                id: 3,
+                name: "Ronald Araujo",
+                position: "Defender",
+                number: 4,
+                nationality: "Uruguay",
+                age: 26,
+                height: "188 cm",
+                weight: "79 kg",
+                foot: "Right",
+                apps: 196,
+                goals: 12,
+                assists: 7,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Araujo"
+            },
+            {
+                id: 4,
+                name: "Pau Cubarsí",
+                position: "Defender",
+                number: 33,
+                nationality: "Spain",
+                age: 18,
+                height: "184 cm",
+                weight: "76 kg",
+                foot: "Right",
+                apps: 32,
+                goals: 1,
+                assists: 2,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Cubarsi"
+            },
+            {
+                id: 5,
+                name: "Andreas Christensen",
+                position: "Defender",
+                number: 15,
+                nationality: "Denmark",
+                age: 29,
+                height: "187 cm",
+                weight: "81 kg",
+                foot: "Right",
+                apps: 113,
+                goals: 3,
+                assists: 2,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Christensen"
+            },
+            {
+                id: 6,
+                name: "Alejandro Balde",
+                position: "Defender",
+                number: 3,
+                nationality: "Spain",
+                age: 21,
+                height: "175 cm",
+                weight: "67 kg",
+                foot: "Left",
+                apps: 114,
+                goals: 3,
+                assists: 18,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Balde"
+            },
+            {
+                id: 7,
+                name: "Dani Olmo",
+                position: "Midfielder",
+                number: 20,
+                nationality: "Spain",
+                age: 26,
+                height: "179 cm",
+                weight: "73 kg",
+                foot: "Right",
+                apps: 0,
+                goals: 0,
+                assists: 0,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Olmo"
+            },
+            {
+                id: 8,
+                name: "Fermín López",
+                position: "Midfielder",
+                number: 16,
+                nationality: "Spain",
+                age: 21,
+                height: "176 cm",
+                weight: "72 kg",
+                foot: "Right",
+                apps: 42,
+                goals: 4,
+                assists: 3,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Fermin"
+            },
+            {
+                id: 9,
+                name: "Roony Bardghji",
+                position: "Attacker",
+                number: 17,
+                nationality: "Sweden",
+                age: 19,
+                height: "175 cm",
+                weight: "70 kg",
+                foot: "Left",
+                apps: 1,
+                goals: 1,
+                assists: 0,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Roony"
+            },
+            {
+                id: 10,
+                name: "Marcus Rashford",
+                position: "Attacker",
+                number: 14,
+                nationality: "England",
+                age: 27,
+                height: "180 cm",
+                weight: "75 kg",
+                foot: "Right",
+                apps: 0,
+                goals: 0,
+                assists: 0,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Rashford"
+            },
+            {
+                id: 11,
+                name: "Robert Lewandowski",
+                position: "Attacker",
+                number: 9,
+                nationality: "Poland",
+                age: 36,
+                height: "185 cm",
+                weight: "81 kg",
+                foot: "Right",
+                apps: 145,
+                goals: 123,
+                assists: 35,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Lewandowski"
+            },
+            {
+                id: 12,
+                name: "Lamine Yamal",
+                position: "Attacker",
+                number: 27,
+                nationality: "Spain",
+                age: 18,
+                height: "178 cm",
+                weight: "65 kg",
+                foot: "Left",
+                apps: 75,
+                goals: 15,
+                assists: 22,
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Yamal"
+            }
+        ];
+
+        // Backend API base URL (still present but not used for news/matches)
+        const BACKEND_URL = 'http://127.0.0.1:5000';
+
+        // DOM elements
+        const playersContainer = document.querySelector('.player-grid');
+        const playerModal = document.querySelector('.player-modal');
+        const mobileMenuBtn = document.getElementById('mobile-menu');
+        const mobileNav = document.getElementById('mobile-nav');
+        const playerFilters = document.querySelectorAll('.player-filter');
+
+        // Initialize the app
+        function initApp() {
+            renderPlayers(players);
+            fetchNews(); // ✅ Load Barça news on page load
+            setupEventListeners();
+            setupIntersectionObserver();
+
+            // ✅ Bind the refresh button
+            const refreshBtn = document.getElementById('refreshNews');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', fetchNews);
+            }
+        }
+
+        // Render players
+        function renderPlayers(playersList) {
+            playersContainer.innerHTML = '';
+
+            playersList.forEach(player => {
+                const playerCard = document.createElement('div');
+                playerCard.className = 'player-card text-center fade-in cursor-pointer group relative';
+                playerCard.dataset.id = player.id;
+                playerCard.innerHTML = `
+                    <div class="p-6 relative z-10">
+                        <div class="relative mx-auto w-32 h-32 rounded-full overflow-hidden border-4 border-white/20 mb-4 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                            <img src="${player.photo}"
+                                 alt="${player.name}"
+                                 class="w-full h-full object-cover"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/250x250/002855/ffffff?text=Player';">
+                            <div class="absolute bottom-0 left-0 right-0 bg-[#db0030] text-white text-xs py-1 font-bold">${player.number}</div>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-1">${player.name.split(' ')[0]}</h3>
+                        <p class="text-gray-400 text-sm uppercase tracking-wider">${player.position}</p>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#002855] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                `;
+                playersContainer.appendChild(playerCard);
+            });
+        }
+
+        // Open player modal
+        function openPlayerModal(playerId) {
+            const player = players.find(p => p.id == playerId);
+            if (!player) return;
+
+            // Populate modal
+            document.getElementById('modal-player-img').src = player.photo;
+            document.getElementById('modal-player-name').textContent = player.name;
+            document.getElementById('modal-player-position').textContent = player.position;
+            document.getElementById('modal-player-number').textContent = player.number;
+            document.getElementById('modal-player-nationality').textContent = player.nationality;
+            document.getElementById('modal-player-age').textContent = player.age;
+            document.getElementById('modal-player-height').textContent = player.height;
+            document.getElementById('modal-player-weight').textContent = player.weight;
+            document.getElementById('modal-player-foot').textContent = player.foot;
+            document.getElementById('modal-player-apps').textContent = player.apps;
+            document.getElementById('modal-player-goals').textContent = player.goals;
+            document.getElementById('modal-player-assists').textContent = player.assists;
+
+            // Set bar widths (adjust max values as needed for realistic progress bars)
+            document.getElementById('modal-player-apps-bar').style.width = `${Math.min(100, (player.apps / 500) * 100)}%`; // Max 500 apps for 100%
+            document.getElementById('modal-player-goals-bar').style.width = `${Math.min(100, (player.goals / 150) * 100)}%`; // Max 150 goals for 100%
+            document.getElementById('modal-player-assists-bar').style.width = `${Math.min(100, (player.assists / 50) * 100)}%`; // Max 50 assists for 100%
+
+            // Show modal
+            playerModal.classList.add('active');
+        }
+
+        // Filter players by position
+        function filterPlayers(position) {
+            if (position === 'all') {
+                renderPlayers(players);
+            } else {
+                const filteredPlayers = players.filter(player => player.position === position);
+                renderPlayers(filteredPlayers);
+            }
+
+            // Update active filter button
+            // Update active filter button
+            playerFilters.forEach(btn => {
+                if (btn.dataset.position === position) {
+                    btn.classList.remove('hover:bg-white/10', 'text-gray-300', 'hover:text-white');
+                    btn.classList.add('bg-[#db0030]', 'text-white', 'shadow-lg', 'shadow-red-900/20');
+                } else {
+                    btn.classList.add('hover:bg-white/10', 'text-gray-300', 'hover:text-white');
+                    btn.classList.remove('bg-[#db0030]', 'text-white', 'shadow-lg', 'shadow-red-900/20');
+                }
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Player card click
+            playersContainer.addEventListener('click', (e) => {
+                const playerCard = e.target.closest('.player-card');
+                if (playerCard) {
+                    openPlayerModal(playerCard.dataset.id);
+                }
+            });
+
+            // Close modal
+            document.querySelector('.close-modal').addEventListener('click', () => {
+                playerModal.classList.remove('active');
+            });
+
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileNav.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when clicking a link
+            document.querySelectorAll('#mobile-nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.add('hidden');
+                });
+            });
+
+            // Player filters
+            playerFilters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    filterPlayers(filter.dataset.position);
+                });
+            });
+        }
+
+        // Setup intersection observer for animations
+        function setupIntersectionObserver() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        }
+        async function fetchNews() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = `<div class="spinner mx-auto my-4"></div>`;
+
+            try {
+                const response = await fetch('http://localhost:3000/news');
+                const newsData = await response.json();
+
+                container.innerHTML = '';
+
+                // Improved filtering logic
+                const barcaNews = newsData.articles.filter(article => {
+                    const title = article.title ? article.title.toLowerCase() : '';
+                    const description = article.description ? article.description.toLowerCase() : '';
+
+                    // Keywords to look for
+                    const keywords = [
+                        'barcelona', 'barca', 'barça',
+                        'fc barcelona', 'fcb', 'blaugrana',
+                        'camp nou'
+                    ];
+
+                    // Check if any keyword exists in title or description
+                    return keywords.some(keyword =>
+                        title.includes(keyword) ||
+                        description.includes(keyword)
+                    );
+                }).slice(0, 5); // Only show first 5 matches
+
+                if (barcaNews.length === 0) {
+                    container.innerHTML = '<p class="text-center text-gray-500">No relevant news found.</p>';
+                    return;
+                }
+
+                barcaNews.forEach(article => {
+                    const card = document.createElement('div');
+                    card.className = 'news-card glass p-4 rounded-xl shadow-md fade-in hover:bg-white/5 transition-all';
+                    card.innerHTML = `
+                        <div class="relative overflow-hidden rounded-lg mb-4 h-48">
+                            <img src="${article.urlToImage || 'https://placehold.co/600x400?text=No+Image'}"
+                                 class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500" />
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-white leading-tight">${article.title}</h3>
+                        <p class="text-gray-400 mb-4 text-sm line-clamp-3">${article.description || ''}</p>
+                        <a href="${article.url}" target="_blank" class="text-[#fdd516] font-semibold hover:underline flex items-center gap-2">
+                            Read More <i class="fas fa-external-link-alt text-xs"></i>
+                        </a>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                container.innerHTML = '<p class="text-center text-red-500">Failed to load news.</p>';
+                console.error('Error loading news:', err);
+            }
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+
+</html>
