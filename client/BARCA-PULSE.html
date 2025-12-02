@@ -143,18 +143,123 @@
         }
 
         .player-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: linear-gradient(135deg, rgba(0, 40, 85, 0.4) 0%, rgba(10, 16, 24, 0.6) 100%);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            border: 2px solid rgba(253, 213, 22, 0.3);
+            border-radius: 20px;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .player-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(45deg,
+                    #002855,
+                    #db0030,
+                    #fdd516,
+                    #002855,
+                    #db0030);
+            background-size: 400% 400%;
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            animation: borderGradient 3s linear infinite;
+            transition: opacity 0.4s ease;
+        }
+
+        .player-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes borderGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .player-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(253, 213, 22, 0.1) 50%,
+                    transparent 70%);
+            transform: rotate(0deg);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .player-card:hover::after {
+            opacity: 1;
+            transform: rotate(180deg);
         }
 
         .player-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            border-color: var(--barca-yellow);
+            box-shadow: 0 20px 40px rgba(253, 213, 22, 0.3),
+                0 0 60px rgba(253, 213, 22, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: rgba(253, 213, 22, 0.6);
+        }
+
+        /* Status badges */
+        .status-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-injured {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+        }
+
+        .status-new {
+            background: linear-gradient(135deg, #fdd516 0%, #f59e0b 100%);
+            color: #0a1018;
+        }
+
+        .status-captain {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            color: #0a1018;
+        }
+
+        .status-on-loan {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+        }
+
+        .player-number-badge {
+            background: linear-gradient(135deg, #db0030 0%, #991b1b 100%);
+            box-shadow: 0 2px 8px rgba(219, 0, 48, 0.4);
         }
 
         .floating {
@@ -419,16 +524,66 @@
         }
 
         .coaching-staff-card {
-            background: white;
-            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(0, 40, 85, 0.4) 0%, rgba(10, 16, 24, 0.6) 100%);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(253, 213, 22, 0.3);
+            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .coaching-staff-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(45deg,
+                    #002855,
+                    #db0030,
+                    #fdd516,
+                    #002855,
+                    #db0030);
+            background-size: 400% 400%;
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            animation: borderGradient 3s linear infinite;
+            transition: opacity 0.4s ease;
+        }
+
+        .coaching-staff-card:hover::before {
+            opacity: 1;
+        }
+
+        .coaching-staff-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(253, 213, 22, 0.1) 50%,
+                    transparent 70%);
+            transform: rotate(0deg);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .coaching-staff-card:hover::after {
+            opacity: 1;
+            transform: rotate(180deg);
         }
 
         .coaching-staff-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(253, 213, 22, 0.3),
+                0 0 60px rgba(253, 213, 22, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: rgba(253, 213, 22, 0.6);
         }
 
         .formation-table {
@@ -882,92 +1037,147 @@
     </section>
 
     <!-- Player Modal -->
-    <div class="player-modal backdrop-blur-md bg-black/60">
+    <div class="player-modal backdrop-blur-md bg-black/70">
         <div
-            class="modal-content glass-card text-white border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300">
-            <div class="p-8 relative">
+            class="modal-content glass-card text-white border-2 border-[#fdd516]/30 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 relative overflow-hidden">
+            <!-- Gradient border animation -->
+            <div class="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
+                id="modal-border-glow"></div>
+
+            <div class="p-8 relative z-10">
                 <button
-                    class="close-modal absolute top-4 right-4 text-2xl text-gray-400 hover:text-white transition-colors z-50">
+                    class="close-modal absolute top-4 right-4 text-2xl text-gray-400 hover:text-white transition-colors z-50 w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
+
+                <!-- Status Badge Container -->
+                <div id="modal-status-badge" class="absolute top-4 left-4 z-50"></div>
+
                 <div class="flex flex-col md:flex-row gap-10">
+                    <!-- Left Column - Player Image & Basic Info -->
                     <div class="md:w-1/3 flex flex-col items-center">
-                        <div
-                            class="w-56 h-56 rounded-full border-4 border-[#db0030] mb-6 overflow-hidden shadow-2xl shadow-red-900/20 relative group">
-                            <img id="modal-player-img" src="" alt="Player"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="relative mb-6">
+                            <!-- Rotating gradient border -->
+                            <div class="absolute inset-0 rounded-full"
+                                style="background: linear-gradient(45deg, #002855, #db0030, #fdd516, #002855); background-size: 400% 400%; animation: borderGradient 3s linear infinite; padding: 4px;">
+                                <div
+                                    class="w-56 h-56 rounded-full bg-[#0a1018] overflow-hidden shadow-2xl shadow-red-900/20 relative group">
+                                    <img id="modal-player-img" src="" alt="Player"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                            </div>
                         </div>
-                        <h2 id="modal-player-name" class="text-3xl font-bold text-center mb-1 tracking-tight"></h2>
+
+                        <h2 id="modal-player-name" class="text-3xl font-bold text-center mb-2 tracking-tight"></h2>
                         <div id="modal-player-position"
-                            class="text-xl text-[#fdd516] font-bold mb-4 uppercase tracking-wider"></div>
-                        <div class="flex items-center space-x-4 mt-2">
+                            class="text-xl text-[#fdd516] font-bold mb-4 uppercase tracking-wider text-center"></div>
+
+                        <div class="flex items-center justify-center gap-4 mt-2">
                             <div
-                                class="bg-[#db0030] text-white px-6 py-2 rounded-full text-lg font-bold shadow-lg shadow-red-900/20">
+                                class="bg-gradient-to-r from-[#db0030] to-[#991b1b] text-white px-6 py-2 rounded-full text-lg font-bold shadow-lg shadow-red-900/40">
                                 #<span id="modal-player-number"></span>
                             </div>
                             <div id="modal-player-nationality"
-                                class="text-gray-300 font-medium flex items-center gap-2"></div>
+                                class="text-gray-300 font-medium flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full">
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Right Column - Player Details & Stats -->
                     <div class="md:w-2/3">
-                        <h3 class="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[#fdd516]">Player Profile
-                        </h3>
-                        <div class="grid grid-cols-2 gap-6 mb-8">
-                            <div
-                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
-                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Age</div>
-                                <div id="modal-player-age" class="text-xl font-bold"></div>
-                            </div>
-                            <div
-                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
-                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Height</div>
-                                <div id="modal-player-height" class="text-xl font-bold"></div>
-                            </div>
-                            <div
-                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
-                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Weight</div>
-                                <div id="modal-player-weight" class="text-xl font-bold"></div>
-                            </div>
-                            <div
-                                class="bg-white/5 p-5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
-                                <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Preferred Foot</div>
-                                <div id="modal-player-foot" class="text-xl font-bold"></div>
+                        <!-- Player Profile Section -->
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold mb-6 pb-2 text-[#fdd516] flex items-center gap-2">
+                                <i class="fas fa-user-circle"></i> Player Profile
+                            </h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div
+                                    class="bg-gradient-to-br from-white/10 to-white/5 p-5 rounded-xl border border-white/10 hover:border-[#fdd516]/30 transition-all hover:scale-105">
+                                    <div
+                                        class="text-xs text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                        <i class="fas fa-birthday-cake text-[#fdd516]"></i> Age
+                                    </div>
+                                    <div id="modal-player-age" class="text-2xl font-bold text-white"></div>
+                                </div>
+                                <div
+                                    class="bg-gradient-to-br from-white/10 to-white/5 p-5 rounded-xl border border-white/10 hover:border-[#fdd516]/30 transition-all hover:scale-105">
+                                    <div
+                                        class="text-xs text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                        <i class="fas fa-arrows-alt-v text-[#fdd516]"></i> Height
+                                    </div>
+                                    <div id="modal-player-height" class="text-2xl font-bold text-white"></div>
+                                </div>
+                                <div
+                                    class="bg-gradient-to-br from-white/10 to-white/5 p-5 rounded-xl border border-white/10 hover:border-[#fdd516]/30 transition-all hover:scale-105">
+                                    <div
+                                        class="text-xs text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                        <i class="fas fa-weight text-[#fdd516]"></i> Weight
+                                    </div>
+                                    <div id="modal-player-weight" class="text-2xl font-bold text-white"></div>
+                                </div>
+                                <div
+                                    class="bg-gradient-to-br from-white/10 to-white/5 p-5 rounded-xl border border-white/10 hover:border-[#fdd516]/30 transition-all hover:scale-105">
+                                    <div
+                                        class="text-xs text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                        <i class="fas fa-shoe-prints text-[#fdd516]"></i> Foot
+                                    </div>
+                                    <div id="modal-player-foot" class="text-2xl font-bold text-white"></div>
+                                </div>
                             </div>
                         </div>
-                        <h3 class="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[#fdd516]">Season Stats
-                        </h3>
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex justify-between mb-2 text-sm font-medium">
-                                    <span class="text-gray-300">Appearances</span>
-                                    <span id="modal-player-apps" class="font-bold text-white"></span>
+
+                        <!-- Season Stats Section -->
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6 pb-2 text-[#fdd516] flex items-center gap-2">
+                                <i class="fas fa-chart-bar"></i> Season Stats 2024/25
+                            </h3>
+                            <div class="space-y-5">
+                                <!-- Appearances -->
+                                <div
+                                    class="bg-gradient-to-r from-white/5 to-transparent p-4 rounded-xl border border-white/10">
+                                    <div class="flex justify-between mb-3 text-sm font-medium">
+                                        <span class="text-gray-300 flex items-center gap-2">
+                                            <i class="fas fa-calendar-check text-[#002855]"></i> Appearances
+                                        </span>
+                                        <span id="modal-player-apps" class="font-bold text-white text-lg"></span>
+                                    </div>
+                                    <div class="w-full bg-white/10 rounded-full h-4 overflow-hidden relative">
+                                        <div id="modal-player-apps-bar"
+                                            class="bg-gradient-to-r from-[#002855] to-[#004d98] h-full rounded-full shadow-[0_0_15px_rgba(0,40,85,0.7)] transition-all duration-1000 ease-out"
+                                            style="width: 0%"></div>
+                                    </div>
                                 </div>
-                                <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-                                    <div id="modal-player-apps-bar"
-                                        class="bg-[#002855] h-full rounded-full shadow-[0_0_10px_rgba(0,40,85,0.5)] transition-all duration-1000 ease-out"
-                                        style="width: 0%"></div>
+
+                                <!-- Goals -->
+                                <div
+                                    class="bg-gradient-to-r from-white/5 to-transparent p-4 rounded-xl border border-white/10">
+                                    <div class="flex justify-between mb-3 text-sm font-medium">
+                                        <span class="text-gray-300 flex items-center gap-2">
+                                            <i class="fas fa-futbol text-[#db0030]"></i> Goals
+                                        </span>
+                                        <span id="modal-player-goals" class="font-bold text-white text-lg"></span>
+                                    </div>
+                                    <div class="w-full bg-white/10 rounded-full h-4 overflow-hidden relative">
+                                        <div id="modal-player-goals-bar"
+                                            class="bg-gradient-to-r from-[#db0030] to-[#991b1b] h-full rounded-full shadow-[0_0_15px_rgba(219,0,48,0.7)] transition-all duration-1000 ease-out"
+                                            style="width: 0%"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-2 text-sm font-medium">
-                                    <span class="text-gray-300">Goals</span>
-                                    <span id="modal-player-goals" class="font-bold text-white"></span>
-                                </div>
-                                <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-                                    <div id="modal-player-goals-bar"
-                                        class="bg-[#db0030] h-full rounded-full shadow-[0_0_10px_rgba(219,0,48,0.5)] transition-all duration-1000 ease-out"
-                                        style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-2 text-sm font-medium">
-                                    <span class="text-gray-300">Assists</span>
-                                    <span id="modal-player-assists" class="font-bold text-white"></span>
-                                </div>
-                                <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-                                    <div id="modal-player-assists-bar"
-                                        class="bg-[#fdd516] h-full rounded-full shadow-[0_0_10px_rgba(253,213,22,0.5)] transition-all duration-1000 ease-out"
-                                        style="width: 0%"></div>
+
+                                <!-- Assists -->
+                                <div
+                                    class="bg-gradient-to-r from-white/5 to-transparent p-4 rounded-xl border border-white/10">
+                                    <div class="flex justify-between mb-3 text-sm font-medium">
+                                        <span class="text-gray-300 flex items-center gap-2">
+                                            <i class="fas fa-hands-helping text-[#fdd516]"></i> Assists
+                                        </span>
+                                        <span id="modal-player-assists" class="font-bold text-white text-lg"></span>
+                                    </div>
+                                    <div class="w-full bg-white/10 rounded-full h-4 overflow-hidden relative">
+                                        <div id="modal-player-assists-bar"
+                                            class="bg-gradient-to-r from-[#fdd516] to-[#f59e0b] h-full rounded-full shadow-[0_0_15px_rgba(253,213,22,0.7)] transition-all duration-1000 ease-out"
+                                            style="width: 0%"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1036,85 +1246,122 @@
     </div>
 
     <script>
-        // Player data for 25/26 season (remains static as it's not fetched from backend in this update)
+        // Player data for 24/25 season with status indicators
         const players = [
             {
                 id: 1,
-                name: "Joan García",
+                name: "Marc-André ter Stegen",
                 position: "Goalkeeper",
-                number: 13,
-                nationality: "Spain",
-                age: 24,
-                height: "182 cm",
-                weight: "78 kg",
+                number: 1,
+                nationality: "Germany",
+                age: 32,
+                height: "187 cm",
+                weight: "85 kg",
                 foot: "Right",
-                apps: 0,
+                apps: 285,
                 goals: 0,
-                assists: 0,
-                photo: "https://placehold.co/250x250/004d98/ffffff?text=Joan+Garcia"
+                assists: 1,
+                status: "injured",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=ter+Stegen"
             },
             {
                 id: 2,
+                name: "Iñaki Peña",
+                position: "Goalkeeper",
+                number: 13,
+                nationality: "Spain",
+                age: 25,
+                height: "184 cm",
+                weight: "78 kg",
+                foot: "Right",
+                apps: 18,
+                goals: 0,
+                assists: 0,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Pena"
+            },
+            {
+                id: 3,
                 name: "Wojciech Szczęsny",
                 position: "Goalkeeper",
-                number: 23,
+                number: 25,
                 nationality: "Poland",
                 age: 34,
                 height: "195 cm",
                 weight: "90 kg",
                 foot: "Right",
-                apps: 15,
+                apps: 8,
                 goals: 0,
                 assists: 0,
+                status: "new",
                 photo: "https://placehold.co/250x250/004d98/ffffff?text=Szczesny"
             },
             {
-                id: 3,
+                id: 4,
                 name: "Ronald Araujo",
                 position: "Defender",
                 number: 4,
                 nationality: "Uruguay",
-                age: 26,
+                age: 25,
                 height: "188 cm",
                 weight: "79 kg",
                 foot: "Right",
-                apps: 196,
-                goals: 12,
-                assists: 7,
+                apps: 150,
+                goals: 10,
+                assists: 5,
+                status: "active",
                 photo: "https://placehold.co/250x250/004d98/ffffff?text=Araujo"
             },
             {
-                id: 4,
-                name: "Pau Cubarsí",
-                position: "Defender",
-                number: 33,
-                nationality: "Spain",
-                age: 18,
-                height: "184 cm",
-                weight: "76 kg",
-                foot: "Right",
-                apps: 32,
-                goals: 1,
-                assists: 2,
-                photo: "https://placehold.co/250x250/004d98/ffffff?text=Cubarsi"
-            },
-            {
                 id: 5,
-                name: "Andreas Christensen",
+                name: "Jules Koundé",
                 position: "Defender",
-                number: 15,
-                nationality: "Denmark",
-                age: 29,
-                height: "187 cm",
-                weight: "81 kg",
+                number: 23,
+                nationality: "France",
+                age: 26,
+                height: "178 cm",
+                weight: "70 kg",
                 foot: "Right",
-                apps: 113,
-                goals: 3,
-                assists: 2,
-                photo: "https://placehold.co/250x250/004d98/ffffff?text=Christensen"
+                apps: 95,
+                goals: 4,
+                assists: 6,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Kounde"
             },
             {
                 id: 6,
+                name: "Pau Cubarsí",
+                position: "Defender",
+                number: 2,
+                nationality: "Spain",
+                age: 17,
+                height: "184 cm",
+                weight: "76 kg",
+                foot: "Right",
+                apps: 35,
+                goals: 1,
+                assists: 2,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Cubarsi"
+            },
+            {
+                id: 7,
+                name: "Iñigo Martínez",
+                position: "Defender",
+                number: 5,
+                nationality: "Spain",
+                age: 33,
+                height: "182 cm",
+                weight: "78 kg",
+                foot: "Left",
+                apps: 42,
+                goals: 3,
+                assists: 1,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Inigo"
+            },
+            {
+                id: 8,
                 name: "Alejandro Balde",
                 position: "Defender",
                 number: 3,
@@ -1123,13 +1370,62 @@
                 height: "175 cm",
                 weight: "67 kg",
                 foot: "Left",
-                apps: 114,
-                goals: 3,
-                assists: 18,
+                apps: 85,
+                goals: 2,
+                assists: 12,
+                status: "active",
                 photo: "https://placehold.co/250x250/004d98/ffffff?text=Balde"
             },
             {
-                id: 7,
+                id: 9,
+                name: "Pedri",
+                position: "Midfielder",
+                number: 8,
+                nationality: "Spain",
+                age: 22,
+                height: "174 cm",
+                weight: "60 kg",
+                foot: "Right",
+                apps: 19,
+                goals: 3,
+                assists: 5,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Pedri"
+            },
+            {
+                id: 10,
+                name: "Gavi",
+                position: "Midfielder",
+                number: 6,
+                nationality: "Spain",
+                age: 20,
+                height: "173 cm",
+                weight: "68 kg",
+                foot: "Right",
+                apps: 110,
+                goals: 8,
+                assists: 14,
+                status: "injured",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Gavi"
+            },
+            {
+                id: 11,
+                name: "Frenkie de Jong",
+                position: "Midfielder",
+                number: 21,
+                nationality: "Netherlands",
+                age: 27,
+                height: "180 cm",
+                weight: "74 kg",
+                foot: "Right",
+                apps: 8,
+                goals: 0,
+                assists: 1,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=De+Jong"
+            },
+            {
+                id: 12,
                 name: "Dani Olmo",
                 position: "Midfielder",
                 number: 20,
@@ -1138,13 +1434,14 @@
                 height: "179 cm",
                 weight: "73 kg",
                 foot: "Right",
-                apps: 0,
-                goals: 0,
-                assists: 0,
+                apps: 15,
+                goals: 6,
+                assists: 3,
+                status: "new",
                 photo: "https://placehold.co/250x250/004d98/ffffff?text=Olmo"
             },
             {
-                id: 8,
+                id: 13,
                 name: "Fermín López",
                 position: "Midfielder",
                 number: 16,
@@ -1154,42 +1451,29 @@
                 weight: "72 kg",
                 foot: "Right",
                 apps: 42,
-                goals: 4,
-                assists: 3,
+                goals: 11,
+                assists: 5,
+                status: "active",
                 photo: "https://placehold.co/250x250/004d98/ffffff?text=Fermin"
             },
             {
-                id: 9,
-                name: "Roony Bardghji",
-                position: "Attacker",
+                id: 14,
+                name: "Marc Casadó",
+                position: "Midfielder",
                 number: 17,
-                nationality: "Sweden",
-                age: 19,
-                height: "175 cm",
-                weight: "70 kg",
-                foot: "Left",
-                apps: 1,
-                goals: 1,
-                assists: 0,
-                photo: "https://placehold.co/250x250/004d98/ffffff?text=Roony"
-            },
-            {
-                id: 10,
-                name: "Marcus Rashford",
-                position: "Attacker",
-                number: 14,
-                nationality: "England",
-                age: 27,
-                height: "180 cm",
+                nationality: "Spain",
+                age: 21,
+                height: "182 cm",
                 weight: "75 kg",
                 foot: "Right",
-                apps: 0,
-                goals: 0,
-                assists: 0,
-                photo: "https://placehold.co/250x250/004d98/ffffff?text=Rashford"
+                apps: 18,
+                goals: 1,
+                assists: 2,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Casado"
             },
             {
-                id: 11,
+                id: 15,
                 name: "Robert Lewandowski",
                 position: "Attacker",
                 number: 9,
@@ -1198,25 +1482,187 @@
                 height: "185 cm",
                 weight: "81 kg",
                 foot: "Right",
-                apps: 145,
-                goals: 123,
-                assists: 35,
+                apps: 22,
+                goals: 19,
+                assists: 7,
+                status: "captain",
                 photo: "https://placehold.co/250x250/004d98/ffffff?text=Lewandowski"
             },
             {
-                id: 12,
+                id: 16,
                 name: "Lamine Yamal",
                 position: "Attacker",
-                number: 27,
+                number: 19,
                 nationality: "Spain",
-                age: 18,
+                age: 17,
                 height: "178 cm",
                 weight: "65 kg",
                 foot: "Left",
-                apps: 75,
-                goals: 15,
-                assists: 22,
+                apps: 21,
+                goals: 7,
+                assists: 11,
+                status: "active",
                 photo: "https://placehold.co/250x250/004d98/ffffff?text=Yamal"
+            },
+            {
+                id: 17,
+                name: "Raphinha",
+                position: "Attacker",
+                number: 11,
+                nationality: "Brazil",
+                age: 28,
+                height: "176 cm",
+                weight: "68 kg",
+                foot: "Left",
+                apps: 23,
+                goals: 14,
+                assists: 10,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Raphinha"
+            },
+            {
+                id: 18,
+                name: "Ferran Torres",
+                position: "Attacker",
+                number: 7,
+                nationality: "Spain",
+                age: 24,
+                height: "184 cm",
+                weight: "77 kg",
+                foot: "Right",
+                apps: 115,
+                goals: 25,
+                assists: 15,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Ferran"
+            },
+            {
+                id: 19,
+                name: "Ansu Fati",
+                position: "Attacker",
+                number: 10,
+                nationality: "Spain",
+                age: 22,
+                height: "178 cm",
+                weight: "66 kg",
+                foot: "Right",
+                apps: 112,
+                goals: 29,
+                assists: 11,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Ansu"
+            },
+            {
+                id: 20,
+                name: "Pau Víctor",
+                position: "Attacker",
+                number: 18,
+                nationality: "Spain",
+                age: 23,
+                height: "180 cm",
+                weight: "74 kg",
+                foot: "Right",
+                apps: 8,
+                goals: 3,
+                assists: 1,
+                status: "new",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Pau+Victor"
+            },
+            {
+                id: 21,
+                name: "Eric García",
+                position: "Defender",
+                number: 24,
+                nationality: "Spain",
+                age: 24,
+                height: "182 cm",
+                weight: "73 kg",
+                foot: "Right",
+                apps: 88,
+                goals: 2,
+                assists: 3,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Eric"
+            },
+            {
+                id: 22,
+                name: "Héctor Fort",
+                position: "Defender",
+                number: 32,
+                nationality: "Spain",
+                age: 18,
+                height: "178 cm",
+                weight: "70 kg",
+                foot: "Right",
+                apps: 12,
+                goals: 0,
+                assists: 1,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Fort"
+            },
+            {
+                id: 23,
+                name: "Pablo Torre",
+                position: "Midfielder",
+                number: 14,
+                nationality: "Spain",
+                age: 21,
+                height: "172 cm",
+                weight: "65 kg",
+                foot: "Right",
+                apps: 15,
+                goals: 2,
+                assists: 3,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Torre"
+            },
+            {
+                id: 24,
+                name: "Andreas Christensen",
+                position: "Defender",
+                number: 15,
+                nationality: "Denmark",
+                age: 28,
+                height: "187 cm",
+                weight: "81 kg",
+                foot: "Right",
+                apps: 78,
+                goals: 3,
+                assists: 2,
+                status: "injured",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Christensen"
+            },
+            {
+                id: 25,
+                name: "Gerard Martín",
+                position: "Defender",
+                number: 35,
+                nationality: "Spain",
+                age: 22,
+                height: "177 cm",
+                weight: "72 kg",
+                foot: "Left",
+                apps: 6,
+                goals: 0,
+                assists: 0,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Gerard"
+            },
+            {
+                id: 26,
+                name: "Sergi Domínguez",
+                position: "Defender",
+                number: 36,
+                nationality: "Spain",
+                age: 20,
+                height: "185 cm",
+                weight: "78 kg",
+                foot: "Right",
+                apps: 2,
+                goals: 0,
+                assists: 0,
+                status: "active",
+                photo: "https://placehold.co/250x250/004d98/ffffff?text=Sergi"
             }
         ];
 
@@ -1252,19 +1698,40 @@
                 const playerCard = document.createElement('div');
                 playerCard.className = 'player-card text-center fade-in cursor-pointer group relative';
                 playerCard.dataset.id = player.id;
+
+                // Status badge HTML
+                let statusBadgeHTML = '';
+                if (player.status && player.status !== 'active') {
+                    const statusConfig = {
+                        'injured': { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
+                        'new': { class: 'status-new', icon: 'fa-star', text: 'New' },
+                        'captain': { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
+                        'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'Loan' }
+                    };
+                    const config = statusConfig[player.status];
+                    if (config) {
+                        statusBadgeHTML = `
+                            <div class="status-badge ${config.class}">
+                                <i class="fas ${config.icon}"></i>
+                                <span>${config.text}</span>
+                            </div>
+                        `;
+                    }
+                }
+
                 playerCard.innerHTML = `
+                    ${statusBadgeHTML}
                     <div class="p-6 relative z-10">
                         <div class="relative mx-auto w-32 h-32 rounded-full overflow-hidden border-4 border-white/20 mb-4 shadow-lg group-hover:scale-110 transition-transform duration-500">
                             <img src="${player.photo}"
                                  alt="${player.name}"
                                  class="w-full h-full object-cover"
                                  onerror="this.onerror=null;this.src='https://placehold.co/250x250/002855/ffffff?text=Player';">
-                            <div class="absolute bottom-0 left-0 right-0 bg-[#db0030] text-white text-xs py-1 font-bold">${player.number}</div>
+                            <div class="absolute bottom-0 left-0 right-0 player-number-badge text-white text-sm py-1.5 font-bold">#${player.number}</div>
                         </div>
-                        <h3 class="font-bold text-lg text-white mb-1">${player.name.split(' ')[0]}</h3>
+                        <h3 class="font-bold text-lg text-white mb-1">${player.name.split(' ').slice(-1)[0]}</h3>
                         <p class="text-gray-400 text-sm uppercase tracking-wider">${player.position}</p>
                     </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#002855] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 `;
                 playersContainer.appendChild(playerCard);
             });
@@ -1289,10 +1756,32 @@
             document.getElementById('modal-player-goals').textContent = player.goals;
             document.getElementById('modal-player-assists').textContent = player.assists;
 
+            // Display status badge in modal
+            const statusBadgeContainer = document.getElementById('modal-status-badge');
+            if (player.status && player.status !== 'active') {
+                const statusConfig = {
+                    'injured': { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
+                    'new': { class: 'status-new', icon: 'fa-star', text: 'New Signing' },
+                    'captain': { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
+                    'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'On Loan' }
+                };
+                const config = statusConfig[player.status];
+                if (config) {
+                    statusBadgeContainer.innerHTML = `
+                        <div class="status-badge ${config.class}">
+                            <i class="fas ${config.icon}"></i>
+                            <span>${config.text}</span>
+                        </div>
+                    `;
+                }
+            } else {
+                statusBadgeContainer.innerHTML = '';
+            }
+
             // Set bar widths (adjust max values as needed for realistic progress bars)
-            document.getElementById('modal-player-apps-bar').style.width = `${Math.min(100, (player.apps / 500) * 100)}%`; // Max 500 apps for 100%
-            document.getElementById('modal-player-goals-bar').style.width = `${Math.min(100, (player.goals / 150) * 100)}%`; // Max 150 goals for 100%
-            document.getElementById('modal-player-assists-bar').style.width = `${Math.min(100, (player.assists / 50) * 100)}%`; // Max 50 assists for 100%
+            document.getElementById('modal-player-apps-bar').style.width = `${Math.min(100, (player.apps / 50) * 100)}%`; // Max 50 apps for 100%
+            document.getElementById('modal-player-goals-bar').style.width = `${Math.min(100, (player.goals / 30) * 100)}%`; // Max 30 goals for 100%
+            document.getElementById('modal-player-assists-bar').style.width = `${Math.min(100, (player.assists / 20) * 100)}%`; // Max 20 assists for 100%
 
             // Show modal
             playerModal.classList.add('active');
