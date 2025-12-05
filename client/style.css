@@ -913,6 +913,7 @@ h6 {
         transform: rotate(360deg);
     }
 }
+
 /* Add these styles to style.css */
 
 /* Gradient rotation animation */
@@ -920,9 +921,11 @@ h6 {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
@@ -984,31 +987,31 @@ h6 {
         width: 95%;
         max-height: 90vh;
     }
-    
+
     .player-modal .player-number-badge {
         padding: 0.4rem 1.2rem;
         font-size: 0.9rem;
     }
-    
+
     .player-modal .glass {
         padding: 1rem;
     }
 }
 
 /* Smooth fade in for modal content */
-.player-modal.active .modal-content > div {
+.player-modal.active .modal-content>div {
     animation: fadeInUp 0.5s ease forwards;
 }
 
-.player-modal.active .modal-content > div:nth-child(1) {
+.player-modal.active .modal-content>div:nth-child(1) {
     animation-delay: 0.1s;
 }
 
-.player-modal.active .modal-content > div:nth-child(2) {
+.player-modal.active .modal-content>div:nth-child(2) {
     animation-delay: 0.2s;
 }
 
-.player-modal.active .modal-content > div:nth-child(3) {
+.player-modal.active .modal-content>div:nth-child(3) {
     animation-delay: 0.3s;
 }
 
@@ -1017,8 +1020,195 @@ h6 {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Enhanced Button Styles */
+button,
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button::before,
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before,
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Pulsing Glow Animation */
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(253, 213, 22, 0.3),
+            0 0 40px rgba(253, 213, 22, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(253, 213, 22, 0.5),
+            0 0 60px rgba(253, 213, 22, 0.2),
+            0 0 80px rgba(219, 0, 48, 0.1);
+    }
+}
+
+.pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer {
+    background: linear-gradient(90deg, transparent, rgba(253, 213, 22, 0.3), transparent);
+    background-size: 1000px 100%;
+    animation: shimmer 3s infinite;
+}
+
+/* Smooth Reveal Animation */
+@keyframes smoothReveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        filter: blur(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+.smooth-reveal {
+    animation: smoothReveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Floating Animation Enhanced */
+@keyframes floatingEnhanced {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-8px) rotate(1deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(0deg);
+    }
+
+    75% {
+        transform: translateY(-8px) rotate(-1deg);
+    }
+}
+
+.floating-enhanced {
+    animation: floatingEnhanced 4s ease-in-out infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, #fdd516 0%, #ffed4e 25%, #db0030 50%, #004d98 75%, #fdd516 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientFlow 3s linear infinite;
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Neon Glow Effect */
+.neon-glow {
+    text-shadow: 0 0 10px rgba(253, 213, 22, 0.8),
+        0 0 20px rgba(253, 213, 22, 0.6),
+        0 0 30px rgba(253, 213, 22, 0.4),
+        0 0 40px rgba(219, 0, 48, 0.3);
+    animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+    from {
+        text-shadow: 0 0 10px rgba(253, 213, 22, 0.8),
+            0 0 20px rgba(253, 213, 22, 0.6),
+            0 0 30px rgba(253, 213, 22, 0.4);
+    }
+
+    to {
+        text-shadow: 0 0 20px rgba(253, 213, 22, 1),
+            0 0 30px rgba(253, 213, 22, 0.8),
+            0 0 40px rgba(253, 213, 22, 0.6),
+            0 0 50px rgba(219, 0, 48, 0.4),
+            0 0 60px rgba(219, 0, 48, 0.2);
+    }
+}
+
+/* Scroll Progress Indicator */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #db0030 0%, #fdd516 50%, #004d98 100%);
+    z-index: 9999;
+    transition: width 0.2s ease;
+}
+
+/* Enhanced Section Divider */
+.section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #fdd516 50%, transparent 100%);
+    margin: 4rem 0;
+    position: relative;
+}
+
+.section-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: #fdd516;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(253, 213, 22, 0.6);
 }
