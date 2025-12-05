@@ -612,6 +612,301 @@
             background-color: #f1f5f9;
         }
 
+        /* Football Field Styles */
+        .football-field {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 600px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, #1a5f2a 0%, #0d3d1a 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .football-field::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 45px, rgba(255, 255, 255, 0.03) 45px, rgba(255, 255, 255, 0.03) 50px);
+            pointer-events: none;
+        }
+
+        .field-lines {
+            position: absolute;
+            inset: 0;
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .center-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .penalty-box-top {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 80px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: none;
+        }
+
+        .penalty-box-bottom {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 80px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-bottom: none;
+        }
+
+        /* Player Shirt Styles */
+        .player-shirt {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .player-shirt:hover {
+            transform: translateY(-8px) scale(1.1);
+            z-index: 20;
+        }
+
+        .shirt-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #004d98 0%, #002855 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            border: 2px solid #fdd516;
+            overflow: hidden;
+        }
+
+        .player-shirt:hover .shirt-icon {
+            box-shadow: 0 10px 30px rgba(253, 213, 22, 0.6);
+            border-color: #db0030;
+        }
+
+        .shirt-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 20px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .shirt-stripes {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(90deg,
+                    transparent 0px,
+                    transparent 12px,
+                    rgba(219, 0, 48, 0.3) 12px,
+                    rgba(219, 0, 48, 0.3) 24px);
+        }
+
+        .shirt-number {
+            position: relative;
+            z-index: 2;
+            font-size: 28px;
+            font-weight: 900;
+            color: #fdd516;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 10px rgba(253, 213, 22, 0.5);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .player-name-label {
+            margin-top: 8px;
+            background: linear-gradient(135deg, rgba(0, 40, 85, 0.95) 0%, rgba(10, 16, 24, 0.95) 100%);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+            text-align: center;
+            white-space: nowrap;
+            border: 1px solid rgba(253, 213, 22, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        /* Formation Positions */
+        .formation-433 {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 40px 30px;
+        }
+
+        /* Goalkeeper */
+        .pos-gk {
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Defenders */
+        .pos-rb {
+            bottom: 130px;
+            right: 60px;
+        }
+
+        .pos-rcb {
+            bottom: 130px;
+            right: 45%;
+            transform: translateX(50%);
+        }
+
+        .pos-lcb {
+            bottom: 130px;
+            left: 45%;
+            transform: translateX(-50%);
+        }
+
+        .pos-lb {
+            bottom: 130px;
+            left: 60px;
+        }
+
+        /* Midfielders */
+        .pos-dm {
+            bottom: 260px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .pos-rcm {
+            bottom: 260px;
+            right: 35%;
+            transform: translateX(50%);
+        }
+
+        .pos-lcm {
+            bottom: 260px;
+            left: 35%;
+            transform: translateX(-50%);
+        }
+
+        /* Forwards */
+        .pos-rw {
+            top: 80px;
+            right: 80px;
+        }
+
+        .pos-st {
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .pos-lw {
+            top: 80px;
+            left: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .football-field {
+                height: 500px;
+            }
+
+            .shirt-icon {
+                width: 55px;
+                height: 55px;
+            }
+
+            .shirt-number {
+                font-size: 22px;
+            }
+
+            .player-name-label {
+                font-size: 9px;
+                padding: 4px 8px;
+            }
+
+            .pos-rb {
+                bottom: 110px;
+                right: 40px;
+            }
+
+            .pos-rcb {
+                bottom: 110px;
+                right: 47%;
+            }
+
+            .pos-lcb {
+                bottom: 110px;
+                left: 47%;
+            }
+
+            .pos-lb {
+                bottom: 110px;
+                left: 40px;
+            }
+
+            .pos-dm {
+                bottom: 220px;
+            }
+
+            .pos-rcm {
+                bottom: 220px;
+                right: 38%;
+            }
+
+            .pos-lcm {
+                bottom: 220px;
+                left: 38%;
+            }
+
+            .pos-rw {
+                top: 70px;
+                right: 50px;
+            }
+
+            .pos-st {
+                top: 50px;
+            }
+
+            .pos-lw {
+                top: 70px;
+                left: 50px;
+            }
+        }
+
         /* Loading spinner styles */
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
@@ -880,85 +1175,20 @@
                 <h3 class="text-3xl font-bold mb-8 text-center text-white">Preferred Formation: <span
                         class="text-[#fdd516]">4-3-3</span></h3>
 
-                <div class="glass rounded-2xl p-1 overflow-hidden">
-                    <table class="formation-table text-left w-full">
-                        <thead>
-                            <tr class="bg-white/5 text-white">
-                                <th class="p-4 font-bold uppercase text-sm tracking-wider text-[#fdd516]">Position</th>
-                                <th class="p-4 font-bold uppercase text-sm tracking-wider">Player</th>
-                                <th class="p-4 font-bold uppercase text-sm tracking-wider">Nationality</th>
-                                <th class="p-4 font-bold uppercase text-sm tracking-wider">Age</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-300 divide-y divide-white/5">
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Goalkeeper</td>
-                                <td class="p-4 font-semibold text-white">Marc-André ter Stegen</td>
-                                <td class="p-4">Germany</td>
-                                <td class="p-4">33</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Right Back</td>
-                                <td class="p-4 font-semibold text-white">Jules Koundé</td>
-                                <td class="p-4">France</td>
-                                <td class="p-4">26</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Center Back</td>
-                                <td class="p-4 font-semibold text-white">Ronald Araujo</td>
-                                <td class="p-4">Uruguay</td>
-                                <td class="p-4">26</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Center Back</td>
-                                <td class="p-4 font-semibold text-white">Pau Cubarsí</td>
-                                <td class="p-4">Spain</td>
-                                <td class="p-4">18</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Left Back</td>
-                                <td class="p-4 font-semibold text-white">Alejandro Balde</td>
-                                <td class="p-4">Spain</td>
-                                <td class="p-4">21</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Defensive Mid</td>
-                                <td class="p-4 font-semibold text-white">Frenkie de Jong</td>
-                                <td class="p-4">Netherlands</td>
-                                <td class="p-4">28</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Central Mid</td>
-                                <td class="p-4 font-semibold text-white">Pedri</td>
-                                <td class="p-4">Spain</td>
-                                <td class="p-4">22</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Attacking Mid</td>
-                                <td class="p-4 font-semibold text-white">Gavi</td>
-                                <td class="p-4">Spain</td>
-                                <td class="p-4">21</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Right Wing</td>
-                                <td class="p-4 font-semibold text-white">Lamine Yamal</td>
-                                <td class="p-4">Spain</td>
-                                <td class="p-4">18</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Striker</td>
-                                <td class="p-4 font-semibold text-white">Robert Lewandowski</td>
-                                <td class="p-4">Poland</td>
-                                <td class="p-4">36</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4">Left Wing</td>
-                                <td class="p-4 font-semibold text-white">Ansu Fati</td>
-                                <td class="p-4">Spain</td>
-                                <td class="p-4">22</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Football Field with Formation -->
+                <div class="football-field">
+                    <!-- Field Lines and Markings -->
+                    <div class="field-lines">
+                        <div class="center-circle"></div>
+                        <div class="center-line"></div>
+                        <div class="penalty-box-top"></div>
+                        <div class="penalty-box-bottom"></div>
+                    </div>
+
+                    <!-- Formation Container -->
+                    <div class="formation-433" id="formation-container">
+                        <!-- Players will be dynamically inserted here on page load -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1679,6 +1909,7 @@
         // Initialize the app
         function initApp() {
             renderPlayers(players);
+            loadFormation(); // Load formation on page load
             fetchNews(); // ✅ Load Barça news on page load
             setupEventListeners();
             setupIntersectionObserver();
@@ -1737,7 +1968,52 @@
             });
         }
 
-        // Open player modal
+        // Define the starting XI for the 4-3-3 formation
+        const startingXI = {
+            gk: { id: 2, pos: 'pos-gk' },      // Iñaki Peña
+            rb: { id: 5, pos: 'pos-rb' },      // Jules Koundé
+            rcb: { id: 4, pos: 'pos-rcb' },    // Ronald Araujo
+            lcb: { id: 6, pos: 'pos-lcb' },    // Pau Cubarsí
+            lb: { id: 8, pos: 'pos-lb' },      // Alejandro Balde
+            dm: { id: 11, pos: 'pos-dm' },     // Frenkie de Jong
+            rcm: { id: 9, pos: 'pos-rcm' },    // Pedri
+            lcm: { id: 10, pos: 'pos-lcm' },   // Gavi
+            rw: { id: 17, pos: 'pos-rw' },     // Lamine Yamal
+            st: { id: 13, pos: 'pos-st' },     // Robert Lewandowski
+            lw: { id: 16, pos: 'pos-lw' }      // Ansu Fati
+        };
+
+        // Load formation on coaching section
+        function loadFormation() {
+            const formationContainer = document.getElementById('formation-container');
+            if (!formationContainer) return;
+
+            formationContainer.innerHTML = '';
+
+            // Populate the formation with starting XI
+            Object.values(startingXI).forEach(playerData => {
+                const player = players.find(p => p.id === playerData.id);
+                if (!player) return;
+
+                const playerShirt = document.createElement('div');
+                playerShirt.className = `player-shirt ${playerData.pos}`;
+
+                // Get last name
+                const lastName = player.name.split(' ').slice(-1)[0];
+
+                playerShirt.innerHTML = `
+                    <div class="shirt-icon">
+                        <div class="shirt-stripes"></div>
+                        <div class="shirt-number">${player.number}</div>
+                    </div>
+                    <div class="player-name-label">${lastName}</div>
+                `;
+
+                formationContainer.appendChild(playerShirt);
+            });
+        }
+
+        // Open player modal with individual player stats
         function openPlayerModal(playerId) {
             const player = players.find(p => p.id == playerId);
             if (!player) return;

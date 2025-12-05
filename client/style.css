@@ -1,0 +1,1024 @@
+:root {
+    --barca-blue: #002855;
+    --barca-red: #db0030;
+    --barca-yellow: #fdd516;
+    --barca-dark: #0a1018;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-light: #f8f9fa;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--barca-dark);
+    color: var(--text-light);
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+.barca-bg {
+    background: linear-gradient(135deg, var(--barca-blue) 0%, #001a3d 100%);
+}
+
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    background: radial-gradient(circle at center, transparent 0%, #000 100%),
+        url('images/hero.jpg') center/cover fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 40, 85, 0.3), var(--barca-dark));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+}
+
+.logo-pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--barca-red);
+    border-radius: 2px;
+}
+
+.barca-stripes {
+    background: repeating-linear-gradient(45deg,
+            var(--barca-blue),
+            var(--barca-blue) 20px,
+            var(--barca-red) 20px,
+            var(--barca-red) 40px);
+}
+
+.player-card {
+    background: linear-gradient(135deg, rgba(0, 40, 85, 0.4) 0%, rgba(10, 16, 24, 0.6) 100%);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(253, 213, 22, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.player-card::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(45deg,
+            #002855,
+            #db0030,
+            #fdd516,
+            #002855,
+            #db0030);
+    background-size: 400% 400%;
+    border-radius: 20px;
+    z-index: -1;
+    opacity: 0;
+    animation: borderGradient 3s linear infinite;
+    transition: opacity 0.4s ease;
+}
+
+.player-card:hover::before {
+    opacity: 1;
+}
+
+@keyframes borderGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.player-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            transparent 30%,
+            rgba(253, 213, 22, 0.1) 50%,
+            transparent 70%);
+    transform: rotate(0deg);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+.player-card:hover::after {
+    opacity: 1;
+    transform: rotate(180deg);
+}
+
+.player-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(253, 213, 22, 0.3),
+        0 0 60px rgba(253, 213, 22, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(253, 213, 22, 0.6);
+}
+
+/* Status badges */
+.status-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.status-injured {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: white;
+}
+
+.status-new {
+    background: linear-gradient(135deg, #fdd516 0%, #f59e0b 100%);
+    color: #0a1018;
+}
+
+.status-captain {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+    color: #0a1018;
+}
+
+.status-on-loan {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    color: white;
+}
+
+.player-number-badge {
+    background: linear-gradient(135deg, #db0030 0%, #991b1b 100%);
+    box-shadow: 0 2px 8px rgba(219, 0, 48, 0.4);
+}
+
+.floating {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.news-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.player-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.player-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.player-modal .modal-content {
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 16px;
+    transform: scale(0.95);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.player-modal.active .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .player-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
+
+.stadium-bg {
+    background: url('https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80') center/cover;
+}
+
+.trophy-card {
+    background: linear-gradient(135deg, rgba(253, 213, 22, 0.08) 0%, rgba(219, 0, 48, 0.08) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid rgba(253, 213, 22, 0.2);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.trophy-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            transparent 30%,
+            rgba(253, 213, 22, 0.1) 50%,
+            transparent 70%);
+    transform: rotate(0deg);
+    transition: transform 0.6s ease;
+}
+
+.trophy-card:hover::before {
+    transform: rotate(180deg);
+}
+
+.trophy-card:hover {
+    transform: translateY(-12px) scale(1.03);
+    background: linear-gradient(135deg, rgba(253, 213, 22, 0.15) 0%, rgba(219, 0, 48, 0.15) 100%);
+    border-color: rgba(253, 213, 22, 0.5);
+    box-shadow: 0 20px 60px rgba(253, 213, 22, 0.3),
+        0 0 80px rgba(253, 213, 22, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Trophy image frame with rotating gradient border */
+.trophy-image-frame {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trophy-image-frame::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(45deg,
+            #fdd516,
+            #db0030,
+            #fdd516,
+            #002855,
+            #fdd516);
+    background-size: 300% 300%;
+    border-radius: 50%;
+    animation: gradientRotate 4s linear infinite;
+    z-index: -1;
+}
+
+.trophy-image-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(253, 213, 22, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.6;
+}
+
+.trophy-image-frame .trophy-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(0, 40, 85, 0.8) 0%, rgba(10, 16, 24, 0.9) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    border: 3px solid rgba(253, 213, 22, 0.3);
+}
+
+.trophy-image-frame img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    transition: transform 0.4s ease;
+}
+
+.trophy-card:hover .trophy-image-frame img {
+    transform: scale(1.1) rotate(5deg);
+}
+
+@keyframes gradientRotate {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Trophy number with glow effect */
+.trophy-number {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fdd516 0%, #ffed4e 50%, #fdd516 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(253, 213, 22, 0.5);
+    filter: drop-shadow(0 0 20px rgba(253, 213, 22, 0.6));
+    margin-bottom: 0.5rem;
+    animation: numberGlow 2s ease-in-out infinite;
+    position: relative;
+    display: inline-block;
+}
+
+@keyframes numberGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 20px rgba(253, 213, 22, 0.6));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 40px rgba(253, 213, 22, 0.9)) drop-shadow(0 0 60px rgba(253, 213, 22, 0.5));
+    }
+}
+
+.trophy-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.coaching-staff-card {
+    background: linear-gradient(135deg, rgba(0, 40, 85, 0.4) 0%, rgba(10, 16, 24, 0.6) 100%);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(253, 213, 22, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.coaching-staff-card::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(45deg,
+            #002855,
+            #db0030,
+            #fdd516,
+            #002855,
+            #db0030);
+    background-size: 400% 400%;
+    border-radius: 20px;
+    z-index: -1;
+    opacity: 0;
+    animation: borderGradient 3s linear infinite;
+    transition: opacity 0.4s ease;
+}
+
+.coaching-staff-card:hover::before {
+    opacity: 1;
+}
+
+.coaching-staff-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            transparent 30%,
+            rgba(253, 213, 22, 0.1) 50%,
+            transparent 70%);
+    transform: rotate(0deg);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+.coaching-staff-card:hover::after {
+    opacity: 1;
+    transform: rotate(180deg);
+}
+
+.coaching-staff-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(253, 213, 22, 0.3),
+        0 0 60px rgba(253, 213, 22, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(253, 213, 22, 0.6);
+}
+
+.formation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.formation-table th {
+    background-color: var(--barca-blue);
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.formation-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.formation-table tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.formation-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Football Field Styles */
+.football-field {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    height: 600px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #1a5f2a 0%, #0d3d1a 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.football-field::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 45px, rgba(255, 255, 255, 0.03) 45px, rgba(255, 255, 255, 0.03) 50px);
+    pointer-events: none;
+}
+
+.field-lines {
+    position: absolute;
+    inset: 0;
+}
+
+.center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+.center-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.penalty-box-top {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 80px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: none;
+}
+
+.penalty-box-bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 80px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-bottom: none;
+}
+
+/* Player Shirt Styles */
+.player-shirt {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.player-shirt:hover {
+    transform: translateY(-8px) scale(1.1);
+    z-index: 20;
+}
+
+.shirt-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #004d98 0%, #002855 100%);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid #fdd516;
+    overflow: hidden;
+}
+
+.player-shirt:hover .shirt-icon {
+    box-shadow: 0 10px 30px rgba(253, 213, 22, 0.6);
+    border-color: #db0030;
+}
+
+.shirt-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+    border-radius: 0 0 4px 4px;
+}
+
+.shirt-stripes {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg,
+            transparent 0px,
+            transparent 12px,
+            rgba(219, 0, 48, 0.3) 12px,
+            rgba(219, 0, 48, 0.3) 24px);
+}
+
+.shirt-number {
+    position: relative;
+    z-index: 2;
+    font-size: 28px;
+    font-weight: 900;
+    color: #fdd516;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 10px rgba(253, 213, 22, 0.5);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.player-name-label {
+    margin-top: 8px;
+    background: linear-gradient(135deg, rgba(0, 40, 85, 0.95) 0%, rgba(10, 16, 24, 0.95) 100%);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+    border: 1px solid rgba(253, 213, 22, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+}
+
+/* Formation Positions */
+.formation-433 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 40px 30px;
+}
+
+/* Goalkeeper */
+.pos-gk {
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Defenders */
+.pos-rb {
+    bottom: 130px;
+    right: 60px;
+}
+
+.pos-rcb {
+    bottom: 130px;
+    right: 45%;
+    transform: translateX(50%);
+}
+
+.pos-lcb {
+    bottom: 130px;
+    left: 45%;
+    transform: translateX(-50%);
+}
+
+.pos-lb {
+    bottom: 130px;
+    left: 60px;
+}
+
+/* Midfielders */
+.pos-dm {
+    bottom: 260px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pos-rcm {
+    bottom: 260px;
+    right: 35%;
+    transform: translateX(50%);
+}
+
+.pos-lcm {
+    bottom: 260px;
+    left: 35%;
+    transform: translateX(-50%);
+}
+
+/* Forwards */
+.pos-rw {
+    top: 80px;
+    right: 80px;
+}
+
+.pos-st {
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pos-lw {
+    top: 80px;
+    left: 80px;
+}
+
+@media (max-width: 768px) {
+    .football-field {
+        height: 500px;
+    }
+
+    .shirt-icon {
+        width: 55px;
+        height: 55px;
+    }
+
+    .shirt-number {
+        font-size: 22px;
+    }
+
+    .player-name-label {
+        font-size: 9px;
+        padding: 4px 8px;
+    }
+
+    .pos-rb {
+        bottom: 110px;
+        right: 40px;
+    }
+
+    .pos-rcb {
+        bottom: 110px;
+        right: 47%;
+    }
+
+    .pos-lcb {
+        bottom: 110px;
+        left: 47%;
+    }
+
+    .pos-lb {
+        bottom: 110px;
+        left: 40px;
+    }
+
+    .pos-dm {
+        bottom: 220px;
+    }
+
+    .pos-rcm {
+        bottom: 220px;
+        right: 38%;
+    }
+
+    .pos-lcm {
+        bottom: 220px;
+        left: 38%;
+    }
+
+    .pos-rw {
+        top: 70px;
+        right: 50px;
+    }
+
+    .pos-st {
+        top: 50px;
+    }
+
+    .pos-lw {
+        top: 70px;
+        left: 50px;
+    }
+}
+
+/* Loading spinner styles */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--barca-blue);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/* Add these styles to style.css */
+
+/* Gradient rotation animation */
+@keyframes gradient-rotate {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animate-gradient-rotate {
+    animation: gradient-rotate 3s linear infinite;
+    border-radius: 50%;
+}
+
+/* Player Modal Specific Styles */
+.player-modal .modal-content {
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar for modal */
+.player-modal .modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.player-modal .modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.player-modal .modal-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #002855, #db0030);
+    border-radius: 10px;
+}
+
+.player-modal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #004d98, #ff0030);
+}
+
+/* Player stats cards hover effects */
+.player-modal .glass {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-modal .glass:hover {
+    border-color: rgba(253, 213, 22, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Player number badge in modal */
+.player-modal .player-number-badge {
+    background: linear-gradient(135deg, #db0030 0%, #991b1b 100%);
+    box-shadow: 0 4px 15px rgba(219, 0, 48, 0.3);
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+    .player-modal .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .player-modal .player-number-badge {
+        padding: 0.4rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .player-modal .glass {
+        padding: 1rem;
+    }
+}
+
+/* Smooth fade in for modal content */
+.player-modal.active .modal-content > div {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.player-modal.active .modal-content > div:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.player-modal.active .modal-content > div:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.player-modal.active .modal-content > div:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
