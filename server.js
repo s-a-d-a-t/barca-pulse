@@ -14,7 +14,7 @@ const NEWS_API_KEY = process.env.NEWS_API_KEY;
 app.get('/news', async (req, res) => {
   try {
     const response = await axios.get(
-      `https://newsapi.org/v2/everything?q=Barcelona+FC&sortBy=publishedAt&language=en&apiKey=${NEWS_API_KEY}`
+      `https://newsapi.org/v2/everything?q="FC Barcelona" OR "Barça"&sortBy=publishedAt&language=en&apiKey=${NEWS_API_KEY}`
     );
     res.json(response.data);
   } catch (err) {

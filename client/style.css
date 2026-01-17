@@ -448,10 +448,11 @@ h6 {
 }
 
 .trophy-image-frame img {
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(1.1) contrast(1.1) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
     transition: transform 0.4s ease;
 }
 
@@ -896,12 +897,15 @@ h6 {
 
 /* Loading spinner styles */
 .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-left-color: var(--barca-blue);
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--barca-red);
+    border-right-color: var(--barca-yellow);
+    border-bottom-color: var(--barca-red);
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 48px;
+    height: 48px;
     animation: spin 1s linear infinite;
+    display: inline-block;
 }
 
 @keyframes spin {

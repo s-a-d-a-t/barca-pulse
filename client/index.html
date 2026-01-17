@@ -106,7 +106,7 @@
                                 alt="La Liga Trophy">
                         </div>
                     </div>
-                    <div class="trophy-number">27</div>
+                    <div class="trophy-number">28</div>
                     <div class="trophy-label">La Liga Titles</div>
                 </div>
 
@@ -130,7 +130,7 @@
                                 alt="Copa del Rey Trophy">
                         </div>
                     </div>
-                    <div class="trophy-number">31</div>
+                    <div class="trophy-number">32</div>
                     <div class="trophy-label">Copa del Rey</div>
                 </div>
 
@@ -138,12 +138,12 @@
                     <div class="trophy-image-frame">
                         <div class="trophy-inner">
                             <img src="images/trophy/Club World Cup.jpg"
-                                onerror="this.onerror=null;this.src='https://placehold.co/100x100/004d98/ffffff?text=CWC';"
-                                alt="Club World Cup Trophy">
+                                onerror="this.onerror=null;this.src='https://placehold.co/100x100/004d98/ffffff?text=SCC';"
+                                alt="Spanish Super Cup">
                         </div>
                     </div>
-                    <div class="trophy-number">3</div>
-                    <div class="trophy-label">Club World Cups</div>
+                    <div class="trophy-number">16</div>
+                    <div class="trophy-label">Spanish Super Cups</div>
                 </div>
             </div>
         </div>
@@ -245,14 +245,14 @@
                         class="coaching-staff-card glass p-8 text-center group hover:bg-white/5 transition-all duration-500">
                         <div
                             class="w-32 h-32 mx-auto rounded-full border-4 border-white/20 overflow-hidden mb-6 group-hover:scale-110 transition-transform duration-500">
-                            <img src="https://placehold.co/250x250/002855/ffffff?text=M.Sorg" alt="Marcus Sorg"
+                            <img src="https://placehold.co/250x250/002855/ffffff?text=T.Tapalovic" alt="Toni Tapalovic"
                                 class="w-full h-full object-cover">
                         </div>
-                        <h3 class="text-2xl font-bold text-white mb-2">Marcus Sorg</h3>
-                        <p class="text-[#fdd516] font-semibold uppercase tracking-wider text-sm mb-4">Assistant Coach
-                        </p>
+                        <h3 class="text-2xl font-bold text-white mb-2">Toni Tapalovic</h3>
+                        <p class="text-[#fdd516] font-semibold uppercase tracking-wider text-sm mb-4">Goalkeeping Coach
+                            / Asst</p>
                         <p class="text-gray-400 leading-relaxed text-sm">
-                            Tactical analyst and player development expert ensuring squad depth quality.
+                            Legendary coach bringing elite shot-stopping techniques and tactical positioning.
                         </p>
                     </div>
                 </div>
@@ -353,189 +353,197 @@
 
     <!-- Player Modal -->
     <!-- Player Modal -->
-<div class="player-modal backdrop-blur-md bg-black/70">
-    <div class="modal-content glass-card text-white border-2 border-[#fdd516]/30 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 relative overflow-hidden max-w-4xl">
-        <button class="close-modal absolute top-4 right-4 text-2xl text-gray-400 hover:text-white transition-colors z-50 w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center bg-[#0a1018]">
-            <i class="fas fa-times"></i>
-        </button>
+    <div class="player-modal backdrop-blur-md bg-black/70">
+        <div
+            class="modal-content glass-card text-white border-2 border-[#fdd516]/30 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 relative overflow-hidden max-w-4xl">
+            <button
+                class="close-modal absolute top-4 right-4 text-2xl text-gray-400 hover:text-white transition-colors z-50 w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center bg-[#0a1018]">
+                <i class="fas fa-times"></i>
+            </button>
 
-        <!-- Status Badge Container -->
-        <div id="modal-status-badge" class="absolute top-4 left-4 z-50"></div>
+            <!-- Status Badge Container -->
+            <div id="modal-status-badge" class="absolute top-4 left-4 z-50"></div>
 
-        <div class="p-6 md:p-8 relative z-10">
-            <!-- Player Header with Image and Basic Info -->
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
-                <!-- Player Image with Gradient Border -->
-                <div class="relative shrink-0">
-                    <div class="absolute inset-0 rounded-full animate-gradient-rotate" 
-                         style="background: linear-gradient(45deg, #002855, #db0030, #fdd516, #002855); background-size: 400% 400%; padding: 4px;">
-                    </div>
-                    <div class="w-48 h-48 rounded-full bg-[#0a1018] overflow-hidden shadow-2xl relative z-10">
-                        <img id="modal-player-img" src="" alt="Player" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                </div>
-
-                <!-- Player Basic Info -->
-                <div class="text-center md:text-left flex-1">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
-                        <div>
-                            <h2 id="modal-player-name" class="text-3xl font-bold text-white mb-2"></h2>
-                            <div class="flex items-center justify-center md:justify-start gap-4 mb-4">
-                                <span id="modal-player-position" class="text-xl text-[#fdd516] font-bold uppercase tracking-wider"></span>
-                                <span class="player-number-badge text-white px-4 py-1.5 rounded-full text-lg font-bold">
-                                    #<span id="modal-player-number"></span>
-                                </span>
-                            </div>
+            <div class="p-6 md:p-8 relative z-10">
+                <!-- Player Header with Image and Basic Info -->
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
+                    <!-- Player Image with Gradient Border -->
+                    <div class="relative shrink-0">
+                        <div class="absolute inset-0 rounded-full animate-gradient-rotate"
+                            style="background: linear-gradient(45deg, #002855, #db0030, #fdd516, #002855); background-size: 400% 400%; padding: 4px;">
+                        </div>
+                        <div class="w-48 h-48 rounded-full bg-[#0a1018] overflow-hidden shadow-2xl relative z-10">
+                            <img id="modal-player-img" src="" alt="Player"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         </div>
                     </div>
-                    
-                    <!-- Player Details Grid -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                        <div class="glass p-3 rounded-xl text-center">
-                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                                <i class="fas fa-flag text-[#fdd516] mr-1"></i> Nationality
-                            </div>
-                            <div id="modal-player-nationality" class="text-lg font-bold text-white"></div>
-                        </div>
-                        <div class="glass p-3 rounded-xl text-center">
-                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                                <i class="fas fa-birthday-cake text-[#fdd516] mr-1"></i> Age
-                            </div>
-                            <div id="modal-player-age" class="text-lg font-bold text-white"></div>
-                        </div>
-                        <div class="glass p-3 rounded-xl text-center">
-                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                                <i class="fas fa-arrows-alt-v text-[#fdd516] mr-1"></i> Height
-                            </div>
-                            <div id="modal-player-height" class="text-lg font-bold text-white"></div>
-                        </div>
-                        <div class="glass p-3 rounded-xl text-center">
-                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                                <i class="fas fa-weight text-[#fdd516] mr-1"></i> Weight
-                            </div>
-                            <div id="modal-player-weight" class="text-lg font-bold text-white"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Stats Section -->
-            <div class="mb-8">
-                <h3 class="text-2xl font-bold mb-6 text-[#fdd516] flex items-center gap-2">
-                    <i class="fas fa-chart-line"></i> Season Statistics 2024/25
-                </h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Appearances -->
-                    <div class="glass p-5 rounded-xl hover:border-[#002855]/50 transition-all">
-                        <div class="flex items-center justify-between mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#002855] to-[#004d98] flex items-center justify-center">
-                                    <i class="fas fa-calendar-check text-white"></i>
-                                </div>
-                                <div>
-                                    <div class="text-sm text-gray-400 uppercase tracking-wider">Appearances</div>
-                                    <div id="modal-player-apps" class="text-2xl font-bold text-white"></div>
+                    <!-- Player Basic Info -->
+                    <div class="text-center md:text-left flex-1">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                            <div>
+                                <h2 id="modal-player-name" class="text-3xl font-bold text-white mb-2"></h2>
+                                <div class="flex items-center justify-center md:justify-start gap-4 mb-4">
+                                    <span id="modal-player-position"
+                                        class="text-xl text-[#fdd516] font-bold uppercase tracking-wider"></span>
+                                    <span
+                                        class="player-number-badge text-white px-4 py-1.5 rounded-full text-lg font-bold">
+                                        #<span id="modal-player-number"></span>
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
-                            <div id="modal-player-apps-bar" 
-                                 class="bg-gradient-to-r from-[#002855] to-[#004d98] h-full rounded-full transition-all duration-1000"
-                                 style="width: 0%"></div>
-                        </div>
-                    </div>
 
-                    <!-- Goals -->
-                    <div class="glass p-5 rounded-xl hover:border-[#db0030]/50 transition-all">
-                        <div class="flex items-center justify-between mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#db0030] to-[#991b1b] flex items-center justify-center">
-                                    <i class="fas fa-futbol text-white"></i>
+                        <!-- Player Details Grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="glass p-3 rounded-xl text-center">
+                                <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                                    <i class="fas fa-flag text-[#fdd516] mr-1"></i> Nationality
                                 </div>
-                                <div>
-                                    <div class="text-sm text-gray-400 uppercase tracking-wider">Goals</div>
-                                    <div id="modal-player-goals" class="text-2xl font-bold text-white"></div>
-                                </div>
+                                <div id="modal-player-nationality" class="text-lg font-bold text-white"></div>
                             </div>
-                        </div>
-                        <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
-                            <div id="modal-player-goals-bar" 
-                                 class="bg-gradient-to-r from-[#db0030] to-[#991b1b] h-full rounded-full transition-all duration-1000"
-                                 style="width: 0%"></div>
-                        </div>
-                    </div>
-
-                    <!-- Assists -->
-                    <div class="glass p-5 rounded-xl hover:border-[#fdd516]/50 transition-all">
-                        <div class="flex items-center justify-between mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#fdd516] to-[#f59e0b] flex items-center justify-center">
-                                    <i class="fas fa-hands-helping text-gray-900"></i>
+                            <div class="glass p-3 rounded-xl text-center">
+                                <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                                    <i class="fas fa-birthday-cake text-[#fdd516] mr-1"></i> Age
                                 </div>
-                                <div>
-                                    <div class="text-sm text-gray-400 uppercase tracking-wider">Assists</div>
-                                    <div id="modal-player-assists" class="text-2xl font-bold text-white"></div>
-                                </div>
+                                <div id="modal-player-age" class="text-lg font-bold text-white"></div>
                             </div>
-                        </div>
-                        <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
-                            <div id="modal-player-assists-bar" 
-                                 class="bg-gradient-to-r from-[#fdd516] to-[#f59e0b] h-full rounded-full transition-all duration-1000"
-                                 style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional Info -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass p-5 rounded-xl">
-                    <h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="fas fa-info-circle text-[#002855]"></i> Player Information
-                    </h4>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center py-2 border-b border-white/10">
-                            <span class="text-gray-400">Preferred Foot</span>
-                            <span id="modal-player-foot" class="font-bold text-white"></span>
-                        </div>
-                        <div class="flex justify-between items-center py-2 border-b border-white/10">
-                            <span class="text-gray-400">Matches Played</span>
-                            <span id="modal-player-apps-display" class="font-bold text-white"></span>
-                        </div>
-                        <div class="flex justify-between items-center py-2">
-                            <span class="text-gray-400">Goal Contribution</span>
-                            <span id="modal-player-contribution" class="font-bold text-[#fdd516]"></span>
+                            <div class="glass p-3 rounded-xl text-center">
+                                <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                                    <i class="fas fa-arrows-alt-v text-[#fdd516] mr-1"></i> Height
+                                </div>
+                                <div id="modal-player-height" class="text-lg font-bold text-white"></div>
+                            </div>
+                            <div class="glass p-3 rounded-xl text-center">
+                                <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                                    <i class="fas fa-weight text-[#fdd516] mr-1"></i> Weight
+                                </div>
+                                <div id="modal-player-weight" class="text-lg font-bold text-white"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass p-5 rounded-xl">
-                    <h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="fas fa-chart-pie text-[#db0030]"></i> Performance Ratio
-                    </h4>
-                    <div class="space-y-3">
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-400">Goals per Match</span>
-                                <span id="modal-player-gpm" class="font-bold text-white"></span>
+                <!-- Stats Section -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-[#fdd516] flex items-center gap-2">
+                        <i class="fas fa-chart-line"></i> Season Statistics 2024/25
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Appearances -->
+                        <div class="glass p-5 rounded-xl hover:border-[#002855]/50 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-gradient-to-br from-[#002855] to-[#004d98] flex items-center justify-center">
+                                        <i class="fas fa-calendar-check text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-gray-400 uppercase tracking-wider">Appearances</div>
+                                        <div id="modal-player-apps" class="text-2xl font-bold text-white"></div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
-                                <div id="modal-player-gpm-bar" 
-                                     class="bg-gradient-to-r from-[#db0030] to-[#991b1b] h-full rounded-full transition-all duration-1000"
-                                     style="width: 0%"></div>
+                                <div id="modal-player-apps-bar"
+                                    class="bg-gradient-to-r from-[#002855] to-[#004d98] h-full rounded-full transition-all duration-1000"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-400">Assists per Match</span>
-                                <span id="modal-player-apm" class="font-bold text-white"></span>
+
+                        <!-- Goals -->
+                        <div class="glass p-5 rounded-xl hover:border-[#db0030]/50 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-gradient-to-br from-[#db0030] to-[#991b1b] flex items-center justify-center">
+                                        <i class="fas fa-futbol text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-gray-400 uppercase tracking-wider">Goals</div>
+                                        <div id="modal-player-goals" class="text-2xl font-bold text-white"></div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
-                                <div id="modal-player-apm-bar" 
-                                     class="bg-gradient-to-r from-[#fdd516] to-[#f59e0b] h-full rounded-full transition-all duration-1000"
-                                     style="width: 0%"></div>
+                                <div id="modal-player-goals-bar"
+                                    class="bg-gradient-to-r from-[#db0030] to-[#991b1b] h-full rounded-full transition-all duration-1000"
+                                    style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Assists -->
+                        <div class="glass p-5 rounded-xl hover:border-[#fdd516]/50 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-gradient-to-br from-[#fdd516] to-[#f59e0b] flex items-center justify-center">
+                                        <i class="fas fa-hands-helping text-gray-900"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-gray-400 uppercase tracking-wider">Assists</div>
+                                        <div id="modal-player-assists" class="text-2xl font-bold text-white"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                                <div id="modal-player-assists-bar"
+                                    class="bg-gradient-to-r from-[#fdd516] to-[#f59e0b] h-full rounded-full transition-all duration-1000"
+                                    style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass p-5 rounded-xl">
+                        <h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-info-circle text-[#002855]"></i> Player Information
+                        </h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-white/10">
+                                <span class="text-gray-400">Preferred Foot</span>
+                                <span id="modal-player-foot" class="font-bold text-white"></span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-white/10">
+                                <span class="text-gray-400">Matches Played</span>
+                                <span id="modal-player-apps-display" class="font-bold text-white"></span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-gray-400">Goal Contribution</span>
+                                <span id="modal-player-contribution" class="font-bold text-[#fdd516]"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass p-5 rounded-xl">
+                        <h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-chart-pie text-[#db0030]"></i> Performance Ratio
+                        </h4>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-gray-400">Goals per Match</span>
+                                    <span id="modal-player-gpm" class="font-bold text-white"></span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                                    <div id="modal-player-gpm-bar"
+                                        class="bg-gradient-to-r from-[#db0030] to-[#991b1b] h-full rounded-full transition-all duration-1000"
+                                        style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-gray-400">Assists per Match</span>
+                                    <span id="modal-player-apm" class="font-bold text-white"></span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                                    <div id="modal-player-apm-bar"
+                                        class="bg-gradient-to-r from-[#fdd516] to-[#f59e0b] h-full rounded-full transition-all duration-1000"
+                                        style="width: 0%"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -543,7 +551,6 @@
             </div>
         </div>
     </div>
-</div>
 
     <!-- Footer with Creator Info -->
     <footer class="bg-[#001a3d] text-white py-16 border-t border-white/10">
@@ -590,7 +597,7 @@
             </div>
 
             <div class="border-t border-white/5 mt-12 pt-8 text-center text-gray-500 text-xs uppercase tracking-widest">
-                <p>&copy; 2025 BarçaPulse. This is a fan-made project and is not officially affiliated with FC
+                <p>&copy; 2026 BarçaPulse. This is a fan-made project and is not officially affiliated with FC
                     Barcelona.</p>
             </div>
         </div>

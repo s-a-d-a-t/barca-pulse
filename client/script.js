@@ -7,15 +7,15 @@ const players = [
         position: "Goalkeeper",
         number: 1,
         nationality: "Germany",
-        age: 32,
+        age: 33,
         height: "187 cm",
         weight: "85 kg",
         foot: "Right",
-        apps: 285,
+        apps: 12,
         goals: 0,
-        assists: 1,
+        assists: 0,
         status: "injured",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 2,
@@ -23,15 +23,15 @@ const players = [
         position: "Goalkeeper",
         number: 13,
         nationality: "Spain",
-        age: 25,
+        age: 26,
         height: "184 cm",
         weight: "78 kg",
         foot: "Right",
-        apps: 18,
+        apps: 22,
         goals: 0,
         assists: 0,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 3,
@@ -39,15 +39,15 @@ const players = [
         position: "Goalkeeper",
         number: 25,
         nationality: "Poland",
-        age: 34,
+        age: 35,
         height: "195 cm",
         weight: "90 kg",
         foot: "Right",
-        apps: 8,
+        apps: 2,
         goals: 0,
         assists: 0,
-        status: "new",
-        photo: "" // INSERT IMAGE URL HERE
+        status: "active",
+        photo: ""
     },
     {
         id: 4,
@@ -55,15 +55,15 @@ const players = [
         position: "Defender",
         number: 4,
         nationality: "Uruguay",
-        age: 25,
+        age: 26,
         height: "188 cm",
         weight: "79 kg",
         foot: "Right",
-        apps: 150,
-        goals: 10,
-        assists: 5,
+        apps: 15,
+        goals: 1,
+        assists: 0,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 5,
@@ -71,15 +71,15 @@ const players = [
         position: "Defender",
         number: 23,
         nationality: "France",
-        age: 26,
+        age: 27,
         height: "178 cm",
         weight: "70 kg",
         foot: "Right",
-        apps: 95,
-        goals: 4,
-        assists: 6,
+        apps: 25,
+        goals: 1,
+        assists: 4,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 6,
@@ -87,15 +87,15 @@ const players = [
         position: "Defender",
         number: 2,
         nationality: "Spain",
-        age: 17,
+        age: 18,
         height: "184 cm",
         weight: "76 kg",
         foot: "Right",
-        apps: 35,
-        goals: 1,
-        assists: 2,
+        apps: 24,
+        goals: 0,
+        assists: 1,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 7,
@@ -103,15 +103,15 @@ const players = [
         position: "Defender",
         number: 5,
         nationality: "Spain",
-        age: 33,
+        age: 34,
         height: "182 cm",
         weight: "78 kg",
         foot: "Left",
-        apps: 42,
-        goals: 3,
+        apps: 23,
+        goals: 2,
         assists: 1,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 8,
@@ -119,47 +119,15 @@ const players = [
         position: "Defender",
         number: 3,
         nationality: "Spain",
-        age: 21,
+        age: 22,
         height: "175 cm",
         weight: "67 kg",
         foot: "Left",
-        apps: 85,
-        goals: 2,
-        assists: 12,
+        apps: 21,
+        goals: 0,
+        assists: 3,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 9,
-        name: "Pedri",
-        position: "Midfielder",
-        number: 8,
-        nationality: "Spain",
-        age: 22,
-        height: "174 cm",
-        weight: "60 kg",
-        foot: "Right",
-        apps: 19,
-        goals: 3,
-        assists: 5,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 10,
-        name: "Gavi",
-        position: "Midfielder",
-        number: 6,
-        nationality: "Spain",
-        age: 20,
-        height: "173 cm",
-        weight: "68 kg",
-        foot: "Right",
-        apps: 110,
-        goals: 8,
-        assists: 14,
-        status: "injured",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 11,
@@ -167,15 +135,47 @@ const players = [
         position: "Midfielder",
         number: 21,
         nationality: "Netherlands",
-        age: 27,
+        age: 28,
         height: "180 cm",
         weight: "74 kg",
         foot: "Right",
-        apps: 8,
+        apps: 18,
+        goals: 1,
+        assists: 2,
+        status: "active",
+        photo: ""
+    },
+    {
+        id: 9,
+        name: "Pedri",
+        position: "Midfielder",
+        number: 8,
+        nationality: "Spain",
+        age: 23,
+        height: "174 cm",
+        weight: "60 kg",
+        foot: "Right",
+        apps: 24,
+        goals: 4,
+        assists: 6,
+        status: "active",
+        photo: ""
+    },
+    {
+        id: 10,
+        name: "Gavi",
+        position: "Midfielder",
+        number: 6,
+        nationality: "Spain",
+        age: 21,
+        height: "173 cm",
+        weight: "68 kg",
+        foot: "Right",
+        apps: 10,
         goals: 0,
         assists: 1,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 12,
@@ -183,31 +183,15 @@ const players = [
         position: "Midfielder",
         number: 20,
         nationality: "Spain",
-        age: 26,
+        age: 27,
         height: "179 cm",
         weight: "73 kg",
         foot: "Right",
-        apps: 15,
-        goals: 6,
-        assists: 3,
-        status: "new",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 13,
-        name: "Fermín López",
-        position: "Midfielder",
-        number: 16,
-        nationality: "Spain",
-        age: 21,
-        height: "176 cm",
-        weight: "72 kg",
-        foot: "Right",
-        apps: 42,
-        goals: 11,
-        assists: 5,
+        apps: 19,
+        goals: 8,
+        assists: 4,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 14,
@@ -215,15 +199,31 @@ const players = [
         position: "Midfielder",
         number: 17,
         nationality: "Spain",
-        age: 21,
+        age: 22,
         height: "182 cm",
         weight: "75 kg",
         foot: "Right",
-        apps: 18,
-        goals: 1,
-        assists: 2,
+        apps: 25,
+        goals: 0,
+        assists: 5,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
+    },
+    {
+        id: 26,
+        name: "Raphinha",
+        position: "Attacker",
+        number: 11,
+        nationality: "Brazil",
+        age: 29,
+        height: "176 cm",
+        weight: "68 kg",
+        foot: "Left",
+        apps: 24,
+        goals: 14,
+        assists: 12,
+        status: "captain",
+        photo: ""
     },
     {
         id: 15,
@@ -231,15 +231,15 @@ const players = [
         position: "Attacker",
         number: 9,
         nationality: "Poland",
-        age: 36,
+        age: 37,
         height: "185 cm",
         weight: "81 kg",
         foot: "Right",
-        apps: 22,
-        goals: 19,
-        assists: 7,
-        status: "captain",
-        photo: "" // INSERT IMAGE URL HERE
+        apps: 25,
+        goals: 20,
+        assists: 3,
+        status: "active",
+        photo: ""
     },
     {
         id: 16,
@@ -247,31 +247,15 @@ const players = [
         position: "Attacker",
         number: 19,
         nationality: "Spain",
-        age: 17,
+        age: 18,
         height: "178 cm",
         weight: "65 kg",
         foot: "Left",
-        apps: 21,
-        goals: 7,
-        assists: 11,
+        apps: 24,
+        goals: 8,
+        assists: 14,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 17,
-        name: "Raphinha",
-        position: "Attacker",
-        number: 11,
-        nationality: "Brazil",
-        age: 28,
-        height: "176 cm",
-        weight: "68 kg",
-        foot: "Left",
-        apps: 23,
-        goals: 14,
-        assists: 10,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     },
     {
         id: 18,
@@ -279,143 +263,15 @@ const players = [
         position: "Attacker",
         number: 7,
         nationality: "Spain",
-        age: 24,
+        age: 25,
         height: "184 cm",
         weight: "77 kg",
         foot: "Right",
-        apps: 115,
-        goals: 25,
-        assists: 15,
+        apps: 22,
+        goals: 11,
+        assists: 4,
         status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 19,
-        name: "Ansu Fati",
-        position: "Attacker",
-        number: 10,
-        nationality: "Spain",
-        age: 22,
-        height: "178 cm",
-        weight: "66 kg",
-        foot: "Right",
-        apps: 112,
-        goals: 29,
-        assists: 11,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 20,
-        name: "Pau Víctor",
-        position: "Attacker",
-        number: 18,
-        nationality: "Spain",
-        age: 23,
-        height: "180 cm",
-        weight: "74 kg",
-        foot: "Right",
-        apps: 8,
-        goals: 3,
-        assists: 1,
-        status: "new",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 21,
-        name: "Eric García",
-        position: "Defender",
-        number: 24,
-        nationality: "Spain",
-        age: 24,
-        height: "182 cm",
-        weight: "73 kg",
-        foot: "Right",
-        apps: 88,
-        goals: 2,
-        assists: 3,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 22,
-        name: "Héctor Fort",
-        position: "Defender",
-        number: 32,
-        nationality: "Spain",
-        age: 18,
-        height: "178 cm",
-        weight: "70 kg",
-        foot: "Right",
-        apps: 12,
-        goals: 0,
-        assists: 1,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 23,
-        name: "Pablo Torre",
-        position: "Midfielder",
-        number: 14,
-        nationality: "Spain",
-        age: 21,
-        height: "172 cm",
-        weight: "65 kg",
-        foot: "Right",
-        apps: 15,
-        goals: 2,
-        assists: 3,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 24,
-        name: "Andreas Christensen",
-        position: "Defender",
-        number: 15,
-        nationality: "Denmark",
-        age: 28,
-        height: "187 cm",
-        weight: "81 kg",
-        foot: "Right",
-        apps: 78,
-        goals: 3,
-        assists: 2,
-        status: "injured",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 25,
-        name: "Gerard Martín",
-        position: "Defender",
-        number: 35,
-        nationality: "Spain",
-        age: 22,
-        height: "177 cm",
-        weight: "72 kg",
-        foot: "Left",
-        apps: 6,
-        goals: 0,
-        assists: 0,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
-    },
-    {
-        id: 26,
-        name: "Sergi Domínguez",
-        position: "Defender",
-        number: 36,
-        nationality: "Spain",
-        age: 20,
-        height: "185 cm",
-        weight: "78 kg",
-        foot: "Right",
-        apps: 2,
-        goals: 0,
-        assists: 0,
-        status: "active",
-        photo: "" // INSERT IMAGE URL HERE
+        photo: ""
     }
 ];
 
@@ -499,12 +355,12 @@ const startingXI = {
     rcb: { id: 4, pos: 'pos-rcb' },    // Ronald Araujo
     lcb: { id: 6, pos: 'pos-lcb' },    // Pau Cubarsí
     lb: { id: 8, pos: 'pos-lb' },      // Alejandro Balde
-    dm: { id: 11, pos: 'pos-dm' },     // Frenkie de Jong
+    dm: { id: 14, pos: 'pos-dm' },     // Marc Casadó
     rcm: { id: 9, pos: 'pos-rcm' },    // Pedri
-    lcm: { id: 10, pos: 'pos-lcm' },   // Gavi
-    rw: { id: 17, pos: 'pos-rw' },     // Lamine Yamal
-    st: { id: 13, pos: 'pos-st' },     // Robert Lewandowski
-    lw: { id: 16, pos: 'pos-lw' }      // Ansu Fati
+    lcm: { id: 11, pos: 'pos-lcm' },   // Frenkie de Jong
+    rw: { id: 16, pos: 'pos-rw' },     // Lamine Yamal
+    st: { id: 15, pos: 'pos-st' },     // Robert Lewandowski
+    lw: { id: 26, pos: 'pos-lw' }      // Raphinha
 };
 
 // Load formation on coaching section
@@ -664,56 +520,62 @@ function setupIntersectionObserver() {
 }
 async function fetchNews() {
     const container = document.getElementById('news-container');
-    container.innerHTML = `<div class="spinner mx-auto my-4"></div>`;
+    container.innerHTML = `
+        <div class="col-span-full flex items-center justify-center py-12">
+            <div class="spinner"></div>
+        </div>
+    `;
 
     try {
         const response = await fetch('http://localhost:3000/news');
+        if (!response.ok) throw new Error('Network response was not ok');
         const newsData = await response.json();
 
         container.innerHTML = '';
 
-        // Improved filtering logic
+        if (!newsData.articles || newsData.articles.length === 0) {
+            container.innerHTML = '<p class="text-center text-gray-500">No recent news found at the moment.</p>';
+            return;
+        }
+
+        // Improved filtering logic to ensure relevance
         const barcaNews = newsData.articles.filter(article => {
-            const title = article.title ? article.title.toLowerCase() : '';
-            const description = article.description ? article.description.toLowerCase() : '';
+            const title = (article.title || '').toLowerCase();
+            const description = (article.description || '').toLowerCase();
+            const content = (article.content || '').toLowerCase();
 
-            // Keywords to look for
-            const keywords = [
-                'barcelona', 'barca', 'barça',
-                'fc barcelona', 'fcb', 'blaugrana',
-                'camp nou'
-            ];
-
-            // Check if any keyword exists in title or description
-            return keywords.some(keyword =>
-                title.includes(keyword) ||
-                description.includes(keyword)
-            );
-        }).slice(0, 5); // Only show first 5 matches
+            const keywords = ['barcelona', 'barca', 'barça', 'fcb', 'blaugrana', 'camp nou', 'hansi flick', 'lamine yamal'];
+            return keywords.some(kw => title.includes(kw) || description.includes(kw) || content.includes(kw));
+        }).slice(0, 6);
 
         if (barcaNews.length === 0) {
-            container.innerHTML = '<p class="text-center text-gray-500">No relevant news found.</p>';
+            container.innerHTML = '<p class="text-center text-gray-500">No relevant Barça news found. Check back later!</p>';
             return;
         }
 
         barcaNews.forEach(article => {
             const card = document.createElement('div');
-            card.className = 'news-card glass p-4 rounded-xl shadow-md fade-in hover:bg-white/5 transition-all';
+            card.className = 'news-card glass p-4 rounded-xl shadow-md fade-in hover:bg-white/5 transition-all flex flex-col h-full';
             card.innerHTML = `
-                <div class="relative overflow-hidden rounded-lg mb-4 h-48">
-                    <img src="${article.urlToImage || 'https://placehold.co/600x400?text=No+Image'}"
-                         class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500" />
+                <div class="relative overflow-hidden rounded-lg mb-4 h-48 shrink-0">
+                    <img src="${article.urlToImage || 'https://placehold.co/600x400/002855/ffffff?text=Barça+News'}"
+                         class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/002855/ffffff?text=Barça+News';">
                 </div>
-                <h3 class="text-xl font-bold mb-2 text-white leading-tight">${article.title}</h3>
-                <p class="text-gray-400 mb-4 text-sm line-clamp-3">${article.description || ''}</p>
-                <a href="${article.url}" target="_blank" class="text-[#fdd516] font-semibold hover:underline flex items-center gap-2">
-                    Read More <i class="fas fa-external-link-alt text-xs"></i>
-                </a>
+                <div class="flex-1 flex flex-col">
+                    <h3 class="text-lg font-bold mb-2 text-white leading-tight line-clamp-2">${article.title}</h3>
+                    <p class="text-gray-400 mb-4 text-xs line-clamp-3">${article.description || 'Click read more for details.'}</p>
+                    <div class="mt-auto pt-2">
+                        <a href="${article.url}" target="_blank" class="text-[#fdd516] text-sm font-semibold hover:underline inline-flex items-center gap-2">
+                            Read Full Story <i class="fas fa-external-link-alt text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
             `;
             container.appendChild(card);
         });
     } catch (err) {
-        container.innerHTML = '<p class="text-center text-red-500">Failed to load news.</p>';
+        container.innerHTML = `<p class="text-center text-red-500">Failed to pulse news: ${err.message}</p>`;
         console.error('Error loading news:', err);
     }
 }
