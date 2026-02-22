@@ -277,7 +277,7 @@ const players = [
 
 
 // Backend API base URL (still present but not used for news/matches)
-const BACKEND_URL = 'http://127.0.0.1:5000';
+const BACKEND_URL = 'http://127.0.0.1:3000';
 
 // DOM elements
 const playersContainer = document.querySelector('.player-grid');
@@ -527,7 +527,7 @@ async function fetchNews() {
     `;
 
     try {
-        const response = await fetch('http://localhost:3000/news');
+        const response = await fetch(`${BACKEND_URL}/news?t=${Date.now()}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const newsData = await response.json();
 
@@ -538,22 +538,25 @@ async function fetchNews() {
             return;
         }
 
-        // Improved filtering logic to ensure relevance
+        // Improved filtering and randomization logic
         const barcaNews = newsData.articles.filter(article => {
             const title = (article.title || '').toLowerCase();
             const description = (article.description || '').toLowerCase();
             const content = (article.content || '').toLowerCase();
 
-            const keywords = ['barcelona', 'barca', 'barça', 'fcb', 'blaugrana', 'camp nou', 'hansi flick', 'lamine yamal'];
+            const keywords = ['barcelona', 'barca', 'barça', 'fcb', 'blaugrana', 'camp nou', 'hansi flick', 'lamine yamal', 'lewandowski', 'pedri', 'gavi'];
             return keywords.some(kw => title.includes(kw) || description.includes(kw) || content.includes(kw));
-        }).slice(0, 6);
+        });
 
-        if (barcaNews.length === 0) {
+        // Shuffle and pick 6 to ensure variety on refresh
+        const shuffledNews = barcaNews.sort(() => 0.5 - Math.random()).slice(0, 6);
+
+        if (shuffledNews.length === 0) {
             container.innerHTML = '<p class="text-center text-gray-500">No relevant Barça news found. Check back later!</p>';
             return;
         }
 
-        barcaNews.forEach(article => {
+        shuffledNews.forEach(article => {
             const card = document.createElement('div');
             card.className = 'news-card glass p-4 rounded-xl shadow-md fade-in hover:bg-white/5 transition-all flex flex-col h-full';
             card.innerHTML = `
