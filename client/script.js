@@ -557,20 +557,27 @@ async function fetchNews() {
         }
 
         shuffledNews.forEach(article => {
+            // Format date
+            const date = new Date(article.publishedAt);
+            const formattedDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+
             const card = document.createElement('div');
-            card.className = 'news-card glass p-4 rounded-xl shadow-md fade-in hover:bg-white/5 transition-all flex flex-col h-full';
+            card.className = 'news-card fade-in';
             card.innerHTML = `
-                <div class="relative overflow-hidden rounded-lg mb-4 h-48 shrink-0">
+                <div class="news-image-container">
+                    <div class="news-date-badge">${formattedDate}</div>
+                    <div class="news-source-tag">${article.source.name}</div>
                     <img src="${article.urlToImage || 'https://placehold.co/600x400/002855/ffffff?text=Barça+News'}"
-                         class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                         alt="${article.title}"
                          onerror="this.onerror=null;this.src='https://placehold.co/600x400/002855/ffffff?text=Barça+News';">
+                    <div class="news-image-overlay"></div>
                 </div>
-                <div class="flex-1 flex flex-col">
-                    <h3 class="text-lg font-bold mb-2 text-white leading-tight line-clamp-2">${article.title}</h3>
-                    <p class="text-gray-400 mb-4 text-xs line-clamp-3">${article.description || 'Click read more for details.'}</p>
-                    <div class="mt-auto pt-2">
-                        <a href="${article.url}" target="_blank" class="text-[#fdd516] text-sm font-semibold hover:underline inline-flex items-center gap-2">
-                            Read Full Story <i class="fas fa-external-link-alt text-[10px]"></i>
+                <div class="news-content">
+                    <h3 class="news-title line-clamp-2">${article.title}</h3>
+                    <p class="news-description line-clamp-3">${article.description || 'Visit our website for the full story on this latest Barça development.'}</p>
+                    <div class="news-footer">
+                        <a href="${article.url}" target="_blank" class="read-more-btn">
+                            Explore Story <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
