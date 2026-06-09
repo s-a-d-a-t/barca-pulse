@@ -1,283 +1,23 @@
+function getBackendUrl() {
+    if (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin.startsWith('http')) {
+        const { port, hostname } = window.location;
 
-// Player data for 24/25 season with status indicators
-const players = [
-    {
-        id: 1,
-        name: "Marc-André ter Stegen",
-        position: "Goalkeeper",
-        number: 1,
-        nationality: "Germany",
-        age: 33,
-        height: "187 cm",
-        weight: "85 kg",
-        foot: "Right",
-        apps: 12,
-        goals: 0,
-        assists: 0,
-        status: "injured",
-        photo: ""
-    },
-    {
-        id: 2,
-        name: "Iñaki Peña",
-        position: "Goalkeeper",
-        number: 13,
-        nationality: "Spain",
-        age: 26,
-        height: "184 cm",
-        weight: "78 kg",
-        foot: "Right",
-        apps: 22,
-        goals: 0,
-        assists: 0,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 3,
-        name: "Wojciech Szczęsny",
-        position: "Goalkeeper",
-        number: 25,
-        nationality: "Poland",
-        age: 35,
-        height: "195 cm",
-        weight: "90 kg",
-        foot: "Right",
-        apps: 2,
-        goals: 0,
-        assists: 0,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 4,
-        name: "Ronald Araujo",
-        position: "Defender",
-        number: 4,
-        nationality: "Uruguay",
-        age: 26,
-        height: "188 cm",
-        weight: "79 kg",
-        foot: "Right",
-        apps: 15,
-        goals: 1,
-        assists: 0,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 5,
-        name: "Jules Koundé",
-        position: "Defender",
-        number: 23,
-        nationality: "France",
-        age: 27,
-        height: "178 cm",
-        weight: "70 kg",
-        foot: "Right",
-        apps: 25,
-        goals: 1,
-        assists: 4,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 6,
-        name: "Pau Cubarsí",
-        position: "Defender",
-        number: 2,
-        nationality: "Spain",
-        age: 18,
-        height: "184 cm",
-        weight: "76 kg",
-        foot: "Right",
-        apps: 24,
-        goals: 0,
-        assists: 1,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 7,
-        name: "Iñigo Martínez",
-        position: "Defender",
-        number: 5,
-        nationality: "Spain",
-        age: 34,
-        height: "182 cm",
-        weight: "78 kg",
-        foot: "Left",
-        apps: 23,
-        goals: 2,
-        assists: 1,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 8,
-        name: "Alejandro Balde",
-        position: "Defender",
-        number: 3,
-        nationality: "Spain",
-        age: 22,
-        height: "175 cm",
-        weight: "67 kg",
-        foot: "Left",
-        apps: 21,
-        goals: 0,
-        assists: 3,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 11,
-        name: "Frenkie de Jong",
-        position: "Midfielder",
-        number: 21,
-        nationality: "Netherlands",
-        age: 28,
-        height: "180 cm",
-        weight: "74 kg",
-        foot: "Right",
-        apps: 18,
-        goals: 1,
-        assists: 2,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 9,
-        name: "Pedri",
-        position: "Midfielder",
-        number: 8,
-        nationality: "Spain",
-        age: 23,
-        height: "174 cm",
-        weight: "60 kg",
-        foot: "Right",
-        apps: 24,
-        goals: 4,
-        assists: 6,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 10,
-        name: "Gavi",
-        position: "Midfielder",
-        number: 6,
-        nationality: "Spain",
-        age: 21,
-        height: "173 cm",
-        weight: "68 kg",
-        foot: "Right",
-        apps: 10,
-        goals: 0,
-        assists: 1,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 12,
-        name: "Dani Olmo",
-        position: "Midfielder",
-        number: 20,
-        nationality: "Spain",
-        age: 27,
-        height: "179 cm",
-        weight: "73 kg",
-        foot: "Right",
-        apps: 19,
-        goals: 8,
-        assists: 4,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 14,
-        name: "Marc Casadó",
-        position: "Midfielder",
-        number: 17,
-        nationality: "Spain",
-        age: 22,
-        height: "182 cm",
-        weight: "75 kg",
-        foot: "Right",
-        apps: 25,
-        goals: 0,
-        assists: 5,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 26,
-        name: "Raphinha",
-        position: "Attacker",
-        number: 11,
-        nationality: "Brazil",
-        age: 29,
-        height: "176 cm",
-        weight: "68 kg",
-        foot: "Left",
-        apps: 24,
-        goals: 14,
-        assists: 12,
-        status: "captain",
-        photo: ""
-    },
-    {
-        id: 15,
-        name: "Robert Lewandowski",
-        position: "Attacker",
-        number: 9,
-        nationality: "Poland",
-        age: 37,
-        height: "185 cm",
-        weight: "81 kg",
-        foot: "Right",
-        apps: 25,
-        goals: 20,
-        assists: 3,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 16,
-        name: "Lamine Yamal",
-        position: "Attacker",
-        number: 19,
-        nationality: "Spain",
-        age: 18,
-        height: "178 cm",
-        weight: "65 kg",
-        foot: "Left",
-        apps: 24,
-        goals: 8,
-        assists: 14,
-        status: "active",
-        photo: ""
-    },
-    {
-        id: 18,
-        name: "Ferran Torres",
-        position: "Attacker",
-        number: 7,
-        nationality: "Spain",
-        age: 25,
-        height: "184 cm",
-        weight: "77 kg",
-        foot: "Right",
-        apps: 22,
-        goals: 11,
-        assists: 4,
-        status: "active",
-        photo: ""
+        if (port === '3000' || hostname === '127.0.0.1' && port === '3000' || hostname === 'localhost' && port === '3000') {
+            return window.location.origin;
+        }
     }
-];
 
+    return 'http://127.0.0.1:3000';
+}
 
-// Backend API base URL (still present but not used for news/matches)
-const BACKEND_URL = 'http://127.0.0.1:3000';
+const BACKEND_URL = getBackendUrl();
+
+const state = {
+    players: [],
+    lineup: null,
+    fixtures: [],
+    activeFilter: 'all',
+};
 
 // DOM elements
 const playersContainer = document.querySelector('.player-grid');
@@ -285,40 +25,125 @@ const playerModal = document.querySelector('.player-modal');
 const mobileMenuBtn = document.getElementById('mobile-menu');
 const mobileNav = document.getElementById('mobile-nav');
 const playerFilters = document.querySelectorAll('.player-filter');
+const formationContainer = document.getElementById('formation-container');
+const benchContainer = document.getElementById('bench-container');
+const fixturesContainer = document.getElementById('fixtures-container');
+const lineupFormationLabel = document.getElementById('lineup-formation');
+const lineupCoachLabel = document.getElementById('lineup-coach');
+const lineupOpponentLabel = document.getElementById('lineup-opponent');
+const headCoachPhoto = document.getElementById('head-coach-photo');
+const headCoachName = document.getElementById('head-coach-name');
+const headCoachRole = document.getElementById('head-coach-role');
+const headCoachDescription = document.getElementById('head-coach-description');
 
-// Initialize the app
-function initApp() {
-    renderPlayers(players);
-    loadFormation(); // Load formation on page load
-    fetchNews(); // ✅ Load Barça news on page load
-    setupEventListeners();
-    setupIntersectionObserver();
+function showLoadingState(container, message) {
+    if (!container) return;
 
-    // ✅ Bind the refresh button
-    const refreshBtn = document.getElementById('refreshNews');
-    if (refreshBtn) {
-        refreshBtn.addEventListener('click', fetchNews);
-    }
+    container.innerHTML = `
+        <div class="col-span-full flex items-center justify-center py-12">
+            <div class="spinner"></div>
+        </div>
+        <p class="col-span-full text-center text-gray-400 -mt-4">${message}</p>
+    `;
 }
 
-// Render players
+function parseGrid(grid) {
+    if (!grid || typeof grid !== 'string' || !grid.includes(':')) {
+        return null;
+    }
+
+    const [row, column] = grid.split(':').map((part) => Number.parseInt(part, 10));
+    if (Number.isNaN(row) || Number.isNaN(column)) {
+        return null;
+    }
+
+    return { row, column };
+}
+
+function parseFormation(formation) {
+    const parts = String(formation || '4-3-3')
+        .split('-')
+        .map((part) => Number.parseInt(part, 10))
+        .filter((part) => Number.isFinite(part) && part > 0);
+
+    return parts.length ? parts : [4, 3, 3];
+}
+
+function formatNumber(value, fallback = 'N/A') {
+    return value === null || value === undefined || value === '' ? fallback : value;
+}
+
+function formatRating(value) {
+    if (value === null || value === undefined || value === '') {
+        return 'N/A';
+    }
+
+    const numeric = Number.parseFloat(value);
+    return Number.isFinite(numeric) ? numeric.toFixed(2) : 'N/A';
+}
+
+function getShirtDisplay(player) {
+    const number = formatNumber(player.shirtNumber, 'N/A');
+    return number;
+}
+
+function getLastName(name) {
+    const parts = String(name || '').trim().split(/\s+/);
+    return parts.length ? parts[parts.length - 1] : 'Player';
+}
+
+function getCoachPlaceholder(name) {
+    const coachName = String(name || 'Coach').trim();
+    const initials = coachName
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0])
+        .join('.');
+
+    return `https://placehold.co/250x250/002855/ffffff?text=${encodeURIComponent(initials || 'Coach')}`;
+}
+
+function updateFilterButtons(position) {
+    playerFilters.forEach((btn) => {
+        if (btn.dataset.position === position) {
+            btn.classList.remove('hover:bg-white/10', 'text-gray-300', 'hover:text-white');
+            btn.classList.add('bg-[#db0030]', 'text-white', 'shadow-lg', 'shadow-red-900/20');
+        } else {
+            btn.classList.add('hover:bg-white/10', 'text-gray-300', 'hover:text-white');
+            btn.classList.remove('bg-[#db0030]', 'text-white', 'shadow-lg', 'shadow-red-900/20');
+        }
+    });
+}
+
 function renderPlayers(playersList) {
+    if (!playersContainer) return;
+
     playersContainer.innerHTML = '';
 
-    playersList.forEach(player => {
+    if (!playersList.length) {
+        playersContainer.innerHTML = `
+            <div class="col-span-full text-center text-gray-400 py-12">
+                Player data is temporarily unavailable.
+            </div>
+        `;
+        return;
+    }
+
+    playersList.forEach((player) => {
         const playerCard = document.createElement('div');
         playerCard.className = 'player-card text-center fade-in cursor-pointer group relative';
         playerCard.dataset.id = player.id;
 
-        // Status badge HTML
         let statusBadgeHTML = '';
         if (player.status && player.status !== 'active') {
             const statusConfig = {
-                'injured': { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
-                'new': { class: 'status-new', icon: 'fa-star', text: 'New' },
-                'captain': { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
-                'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'Loan' }
+                injured: { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
+                new: { class: 'status-new', icon: 'fa-star', text: 'New' },
+                captain: { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
+                'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'Loan' },
             };
+
             const config = statusConfig[player.status];
             if (config) {
                 statusBadgeHTML = `
@@ -338,89 +163,288 @@ function renderPlayers(playersList) {
                          alt="${player.name}"
                          class="w-full h-full object-cover"
                          onerror="this.onerror=null;this.src='https://placehold.co/250x250/002855/ffffff?text=Player';">
-                    <div class="absolute bottom-0 left-0 right-0 player-number-badge text-white text-sm py-1.5 font-bold">#${player.number}</div>
+                    <div class="absolute bottom-0 left-0 right-0 player-number-badge text-white text-sm py-1.5 font-bold">#${getShirtDisplay(player)}</div>
                 </div>
-                <h3 class="font-bold text-lg text-white mb-1">${player.name.split(' ').slice(-1)[0]}</h3>
+                <h3 class="font-bold text-lg text-white mb-1">${getLastName(player.name)}</h3>
                 <p class="text-gray-400 text-sm uppercase tracking-wider">${player.position}</p>
+                <p class="text-[#fdd516] text-xs uppercase tracking-[0.2em] mt-2">Rating ${formatRating(player.rating)}</p>
             </div>
         `;
+
         playersContainer.appendChild(playerCard);
     });
 }
 
-// Define the starting XI for the 4-3-3 formation
-const startingXI = {
-    gk: { id: 2, pos: 'pos-gk' },      // Iñaki Peña
-    rb: { id: 5, pos: 'pos-rb' },      // Jules Koundé
-    rcb: { id: 4, pos: 'pos-rcb' },    // Ronald Araujo
-    lcb: { id: 6, pos: 'pos-lcb' },    // Pau Cubarsí
-    lb: { id: 8, pos: 'pos-lb' },      // Alejandro Balde
-    dm: { id: 14, pos: 'pos-dm' },     // Marc Casadó
-    rcm: { id: 9, pos: 'pos-rcm' },    // Pedri
-    lcm: { id: 11, pos: 'pos-lcm' },   // Frenkie de Jong
-    rw: { id: 16, pos: 'pos-rw' },     // Lamine Yamal
-    st: { id: 15, pos: 'pos-st' },     // Robert Lewandowski
-    lw: { id: 26, pos: 'pos-lw' }      // Raphinha
-};
+function applyPlayerFilter() {
+    const filteredPlayers = state.activeFilter === 'all'
+        ? state.players
+        : state.players.filter((player) => player.position === state.activeFilter);
 
-// Load formation on coaching section
-function loadFormation() {
-    const formationContainer = document.getElementById('formation-container');
+    renderPlayers(filteredPlayers);
+    updateFilterButtons(state.activeFilter);
+}
+
+function renderCoachCard(coachName) {
+    if (!headCoachName || !headCoachRole || !headCoachDescription || !headCoachPhoto) {
+        return;
+    }
+
+    if (!coachName || coachName === 'Unknown Coach' || coachName === 'Unavailable') {
+        return;
+    }
+
+    headCoachName.textContent = coachName;
+    headCoachRole.textContent = 'Head Coach';
+    headCoachDescription.textContent = `Latest lineup coach fetched from API-Football for BarçaPulse.`;
+    headCoachPhoto.src = getCoachPlaceholder(coachName);
+    headCoachPhoto.alt = coachName;
+}
+
+function renderLineup(lineup) {
     if (!formationContainer) return;
 
     formationContainer.innerHTML = '';
+    if (benchContainer) benchContainer.innerHTML = '';
 
-    // Populate the formation with starting XI
-    Object.values(startingXI).forEach(playerData => {
-        const player = players.find(p => p.id === playerData.id);
-        if (!player) return;
+    if (!lineup || !Array.isArray(lineup.startXI) || lineup.startXI.length === 0) {
+        formationContainer.innerHTML = `
+            <div class="absolute inset-0 flex items-center justify-center text-center px-6">
+                <div>
+                    <p class="text-white font-semibold text-lg mb-2">Lineup data is unavailable right now.</p>
+                    <p class="text-gray-300 text-sm">We’ll show the latest API-Football lineup as soon as it becomes available.</p>
+                </div>
+            </div>
+        `;
+        if (benchContainer) {
+            benchContainer.innerHTML = `
+                <div class="col-span-full text-center text-gray-400 py-6">
+                    Bench data is unavailable.
+                </div>
+            `;
+        }
+        return;
+    }
 
-        const playerShirt = document.createElement('div');
-        playerShirt.className = `player-shirt ${playerData.pos}`;
+    const formationParts = parseFormation(lineup.formation);
+    const starters = lineup.startXI
+        .map((entry) => ({
+            ...entry,
+            grid: entry.grid || parseGrid(entry.gridString || null),
+        }))
+        .sort((a, b) => {
+            const aGrid = a.grid || parseGrid(a.grid);
+            const bGrid = b.grid || parseGrid(b.grid);
 
-        // Get last name
-        const lastName = player.name.split(' ').slice(-1)[0];
+            if (aGrid && bGrid) {
+                if (aGrid.row !== bGrid.row) return aGrid.row - bGrid.row;
+                return aGrid.column - bGrid.column;
+            }
 
-        playerShirt.innerHTML = `
+            if (aGrid) return -1;
+            if (bGrid) return 1;
+            return 0;
+        });
+
+    const goalkeeper = starters.find((player) => /goalkeeper/i.test(player.position)) || starters[0];
+    const outfieldPlayers = starters.filter((player) => player.id !== goalkeeper?.id);
+
+    const rowTops = formationParts.length === 4
+        ? [73, 57, 40, 18]
+        : formationParts.length === 3
+            ? [68, 45, 22]
+            : formationParts.length === 2
+                ? [58, 30]
+                : Array.from({ length: formationParts.length }, (_, index) => 78 - (index * 14));
+
+    let cursor = 0;
+    formationParts.forEach((count, rowIndex) => {
+        const rowPlayers = outfieldPlayers.slice(cursor, cursor + count);
+        cursor += count;
+
+        const leftPositions = rowPlayers.length === 1
+            ? [50]
+            : Array.from({ length: rowPlayers.length }, (_, index) => 18 + ((64 / (rowPlayers.length - 1)) * index));
+
+        rowPlayers.forEach((player, index) => {
+            const shirt = document.createElement('div');
+            shirt.className = 'player-shirt';
+            shirt.style.top = `${rowTops[rowIndex] ?? 50}%`;
+            shirt.style.left = `${leftPositions[index]}%`;
+            shirt.style.transform = 'translate(-50%, -50%)';
+
+            shirt.innerHTML = `
+                <div class="shirt-icon">
+                    <div class="shirt-stripes"></div>
+                    <div class="shirt-number">${formatNumber(player.number ?? player.shirtNumber, '')}</div>
+                </div>
+                <div class="player-name-label">${getLastName(player.name)}</div>
+            `;
+
+            formationContainer.appendChild(shirt);
+        });
+    });
+
+    if (goalkeeper) {
+        const gk = document.createElement('div');
+        gk.className = 'player-shirt';
+        gk.style.bottom = '30px';
+        gk.style.left = '50%';
+        gk.style.transform = 'translateX(-50%)';
+
+        gk.innerHTML = `
             <div class="shirt-icon">
                 <div class="shirt-stripes"></div>
-                <div class="shirt-number">${player.number}</div>
+                <div class="shirt-number">${formatNumber(goalkeeper.number ?? goalkeeper.shirtNumber, '')}</div>
             </div>
-            <div class="player-name-label">${lastName}</div>
+            <div class="player-name-label">${getLastName(goalkeeper.name)}</div>
         `;
 
-        formationContainer.appendChild(playerShirt);
+        formationContainer.appendChild(gk);
+    }
+
+    if (lineupFormationLabel) {
+        lineupFormationLabel.textContent = lineup.formation || '4-3-3';
+    }
+    if (lineupCoachLabel) {
+        lineupCoachLabel.textContent = `Coach: ${lineup.coach || 'Unavailable'}`;
+    }
+    if (lineupOpponentLabel) {
+        lineupOpponentLabel.textContent = lineup.opponent
+            ? `Latest lineup vs ${lineup.opponent}`
+            : 'Latest lineup';
+    }
+
+    renderCoachCard(lineup.coach);
+
+    if (benchContainer) {
+        if (!Array.isArray(lineup.bench) || lineup.bench.length === 0) {
+            benchContainer.innerHTML = `
+                <div class="col-span-full text-center text-gray-400 py-6">
+                    Bench data is unavailable.
+                </div>
+            `;
+        } else {
+            benchContainer.innerHTML = '';
+            lineup.bench.forEach((player) => {
+                const benchCard = document.createElement('div');
+                benchCard.className = 'glass rounded-xl p-3 text-center border border-white/10';
+                benchCard.innerHTML = `
+                    <div class="text-[#fdd516] text-xs uppercase tracking-[0.2em] mb-2">#${formatNumber(player.number ?? player.shirtNumber, 'N/A')}</div>
+                    <div class="text-white font-semibold text-sm leading-tight">${player.name}</div>
+                    <div class="text-gray-400 text-xs uppercase tracking-wider mt-1">${player.position || 'Substitute'}</div>
+                `;
+                benchContainer.appendChild(benchCard);
+            });
+        }
+    }
+}
+
+function renderFixtures(fixtures) {
+    if (!fixturesContainer) return;
+
+    fixturesContainer.innerHTML = '';
+
+    if (!fixtures.length) {
+        fixturesContainer.innerHTML = `
+            <div class="col-span-full text-center text-gray-400 py-12">
+                No upcoming fixtures found right now.
+            </div>
+        `;
+        return;
+    }
+
+    fixtures.forEach((fixture) => {
+        const date = new Date(fixture.utcDate);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+        });
+        const formattedTime = date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+
+        const card = document.createElement('div');
+        card.className = 'news-card fade-in';
+        card.innerHTML = `
+            <div class="news-image-container">
+                <div class="news-date-badge">${formattedDate}</div>
+                <div class="news-source-tag">${fixture.venue}</div>
+                <img src="https://placehold.co/600x400/002855/ffffff?text=Matchday+${fixture.matchday || 'N/A'}"
+                     alt="${fixture.opponent}"
+                     onerror="this.onerror=null;this.src='https://placehold.co/600x400/002855/ffffff?text=Fixture';">
+                <div class="news-image-overlay"></div>
+            </div>
+            <div class="news-content">
+                <h3 class="news-title line-clamp-2">${fixture.opponent}</h3>
+                <p class="news-description line-clamp-3">
+                    ${fixture.competition}
+                </p>
+                <div class="space-y-2 text-sm text-gray-300 mb-4">
+                    <div class="flex justify-between gap-4">
+                        <span>Date</span>
+                        <span class="text-white font-semibold">${formattedDate}</span>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <span>Kickoff</span>
+                        <span class="text-white font-semibold">${formattedTime}</span>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <span>Home/Away</span>
+                        <span class="text-white font-semibold">${fixture.venue}</span>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <span>Matchday</span>
+                        <span class="text-white font-semibold">${fixture.matchday ?? 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="news-footer">
+                    <span class="read-more-btn cursor-default">
+                        ${fixture.competitionCode || 'Fixture'} <i class="fas fa-calendar-alt"></i>
+                    </span>
+                </div>
+            </div>
+        `;
+        fixturesContainer.appendChild(card);
     });
 }
 
-// Open player modal with individual player stats
 function openPlayerModal(playerId) {
-    const player = players.find(p => p.id == playerId);
+    const player = state.players.find((entry) => entry.id == playerId);
     if (!player) return;
 
-    // Populate modal
     document.getElementById('modal-player-img').src = player.photo;
     document.getElementById('modal-player-name').textContent = player.name;
     document.getElementById('modal-player-position').textContent = player.position;
-    document.getElementById('modal-player-number').textContent = player.number;
+    document.getElementById('modal-player-number').textContent = formatNumber(player.shirtNumber, 'N/A');
     document.getElementById('modal-player-nationality').textContent = player.nationality;
-    document.getElementById('modal-player-age').textContent = player.age;
-    document.getElementById('modal-player-height').textContent = player.height;
-    document.getElementById('modal-player-weight').textContent = player.weight;
-    document.getElementById('modal-player-foot').textContent = player.foot;
-    document.getElementById('modal-player-apps').textContent = player.apps;
-    document.getElementById('modal-player-goals').textContent = player.goals;
-    document.getElementById('modal-player-assists').textContent = player.assists;
+    document.getElementById('modal-player-age').textContent = formatNumber(player.age, 'N/A');
+    document.getElementById('modal-player-height').textContent = 'N/A';
+    document.getElementById('modal-player-weight').textContent = 'N/A';
+    document.getElementById('modal-player-foot').textContent = 'N/A';
+    document.getElementById('modal-player-apps').textContent = formatNumber(player.appearances, 0);
+    document.getElementById('modal-player-goals').textContent = formatNumber(player.goals, 0);
+    document.getElementById('modal-player-assists').textContent = formatNumber(player.assists, 0);
+    document.getElementById('modal-player-apps-display').textContent = formatNumber(player.appearances, 0);
+    document.getElementById('modal-player-contribution').textContent = `${formatNumber(player.goals, 0)} goals + ${formatNumber(player.assists, 0)} assists`;
+    document.getElementById('modal-player-gpm').textContent = player.appearances ? (player.goals / player.appearances).toFixed(2) : '0.00';
+    document.getElementById('modal-player-apm').textContent = player.appearances ? (player.assists / player.appearances).toFixed(2) : '0.00';
+    document.getElementById('modal-player-shirt').textContent = formatNumber(player.shirtNumber, 'N/A');
+    document.getElementById('modal-player-minutes').textContent = formatNumber(player.minutesPlayed, 0);
+    document.getElementById('modal-player-yellow').textContent = formatNumber(player.yellowCards, 0);
+    document.getElementById('modal-player-red').textContent = formatNumber(player.redCards, 0);
+    document.getElementById('modal-player-rating').textContent = formatRating(player.rating);
 
-    // Display status badge in modal
     const statusBadgeContainer = document.getElementById('modal-status-badge');
     if (player.status && player.status !== 'active') {
         const statusConfig = {
-            'injured': { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
-            'new': { class: 'status-new', icon: 'fa-star', text: 'New Signing' },
-            'captain': { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
-            'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'On Loan' }
+            injured: { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
+            new: { class: 'status-new', icon: 'fa-star', text: 'New Signing' },
+            captain: { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
+            'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'On Loan' },
         };
+
         const config = statusConfig[player.status];
         if (config) {
             statusBadgeContainer.innerHTML = `
@@ -434,97 +458,109 @@ function openPlayerModal(playerId) {
         statusBadgeContainer.innerHTML = '';
     }
 
-    // Set bar widths (adjust max values as needed for realistic progress bars)
-    document.getElementById('modal-player-apps-bar').style.width = `${Math.min(100, (player.apps / 50) * 100)}%`; // Max 50 apps for 100%
-    document.getElementById('modal-player-goals-bar').style.width = `${Math.min(100, (player.goals / 30) * 100)}%`; // Max 30 goals for 100%
-    document.getElementById('modal-player-assists-bar').style.width = `${Math.min(100, (player.assists / 20) * 100)}%`; // Max 20 assists for 100%
+    document.getElementById('modal-player-apps-bar').style.width = `${Math.min(100, (player.appearances / 50) * 100)}%`;
+    document.getElementById('modal-player-goals-bar').style.width = `${Math.min(100, (player.goals / 30) * 100)}%`;
+    document.getElementById('modal-player-assists-bar').style.width = `${Math.min(100, (player.assists / 20) * 100)}%`;
+    document.getElementById('modal-player-gpm-bar').style.width = `${Math.min(100, ((player.goals / Math.max(1, player.appearances)) / 1.5) * 100)}%`;
+    document.getElementById('modal-player-apm-bar').style.width = `${Math.min(100, ((player.assists / Math.max(1, player.appearances)) / 1.5) * 100)}%`;
 
-    // Show modal
     playerModal.classList.add('active');
 }
 
-// Filter players by position
-function filterPlayers(position) {
-    if (position === 'all') {
-        renderPlayers(players);
-    } else {
-        const filteredPlayers = players.filter(player => player.position === position);
-        renderPlayers(filteredPlayers);
+async function fetchPlayers() {
+    showLoadingState(playersContainer, 'Loading player profiles...');
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/players`);
+        if (!response.ok) {
+            throw new Error('Player API request failed');
+        }
+
+        const data = await response.json();
+        state.players = Array.isArray(data.players) ? data.players : [];
+        applyPlayerFilter();
+    } catch (error) {
+        playersContainer.innerHTML = `
+            <div class="col-span-full text-center text-red-400 py-12">
+                Failed to load player data: ${error.message}
+            </div>
+        `;
+    }
+}
+
+async function fetchLineup() {
+    if (formationContainer) {
+        formationContainer.innerHTML = `
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="spinner"></div>
+            </div>
+        `;
     }
 
-    // Update active filter button
-    // Update active filter button
-    playerFilters.forEach(btn => {
-        if (btn.dataset.position === position) {
-            btn.classList.remove('hover:bg-white/10', 'text-gray-300', 'hover:text-white');
-            btn.classList.add('bg-[#db0030]', 'text-white', 'shadow-lg', 'shadow-red-900/20');
-        } else {
-            btn.classList.add('hover:bg-white/10', 'text-gray-300', 'hover:text-white');
-            btn.classList.remove('bg-[#db0030]', 'text-white', 'shadow-lg', 'shadow-red-900/20');
+    if (benchContainer) {
+        benchContainer.innerHTML = `
+            <div class="col-span-full text-center text-gray-400 py-6">
+                Loading bench...
+            </div>
+        `;
+    }
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/lineup`);
+        if (!response.ok) {
+            throw new Error('Lineup API request failed');
         }
-    });
-}
 
-// Setup event listeners
-function setupEventListeners() {
-    // Player card click
-    playersContainer.addEventListener('click', (e) => {
-        const playerCard = e.target.closest('.player-card');
-        if (playerCard) {
-            openPlayerModal(playerCard.dataset.id);
+        const data = await response.json();
+        state.lineup = data;
+        renderLineup(data);
+    } catch (error) {
+        if (formationContainer) {
+            formationContainer.innerHTML = `
+                <div class="absolute inset-0 flex items-center justify-center text-center px-6">
+                    <div>
+                        <p class="text-white font-semibold text-lg mb-2">Unable to load lineup</p>
+                        <p class="text-gray-300 text-sm">${error.message}</p>
+                    </div>
+                </div>
+            `;
         }
-    });
-
-    // Close modal
-    document.querySelector('.close-modal').addEventListener('click', () => {
-        playerModal.classList.remove('active');
-    });
-
-    // Mobile menu toggle
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileNav.classList.toggle('hidden');
-    });
-
-    // Close mobile menu when clicking a link
-    document.querySelectorAll('#mobile-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileNav.classList.add('hidden');
-        });
-    });
-
-    // Player filters
-    playerFilters.forEach(filter => {
-        filter.addEventListener('click', () => {
-            filterPlayers(filter.dataset.position);
-        });
-    });
+        if (benchContainer) {
+            benchContainer.innerHTML = `
+                <div class="col-span-full text-center text-red-400 py-6">
+                    Failed to load bench data.
+                </div>
+            `;
+        }
+    }
 }
 
-// Setup intersection observer for animations
-function setupIntersectionObserver() {
-    const fadeElements = document.querySelectorAll('.fade-in');
+async function fetchFixtures() {
+    showLoadingState(fixturesContainer, 'Loading fixtures...');
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animationPlayState = 'running';
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/fixtures`);
+        if (!response.ok) {
+            throw new Error('Fixtures API request failed');
+        }
 
-    fadeElements.forEach(el => {
-        el.style.animationPlayState = 'paused';
-        observer.observe(el);
-    });
+        const data = await response.json();
+        state.fixtures = Array.isArray(data.fixtures) ? data.fixtures : [];
+        renderFixtures(state.fixtures);
+    } catch (error) {
+        if (fixturesContainer) {
+            fixturesContainer.innerHTML = `
+                <div class="col-span-full text-center text-red-400 py-12">
+                    Failed to load fixtures: ${error.message}
+                </div>
+            `;
+        }
+    }
 }
+
 async function fetchNews() {
     const container = document.getElementById('news-container');
-    container.innerHTML = `
-        <div class="col-span-full flex items-center justify-center py-12">
-            <div class="spinner"></div>
-        </div>
-    `;
+    showLoadingState(container, 'Loading Barça news...');
 
     try {
         const response = await fetch(`${BACKEND_URL}/news?t=${Date.now()}`);
@@ -538,17 +574,28 @@ async function fetchNews() {
             return;
         }
 
-        // Improved filtering and randomization logic
-        const barcaNews = newsData.articles.filter(article => {
+        const barcaNews = newsData.articles.filter((article) => {
             const title = (article.title || '').toLowerCase();
             const description = (article.description || '').toLowerCase();
             const content = (article.content || '').toLowerCase();
 
-            const keywords = ['barcelona', 'barca', 'barça', 'fcb', 'blaugrana', 'camp nou', 'hansi flick', 'lamine yamal', 'lewandowski', 'pedri', 'gavi'];
-            return keywords.some(kw => title.includes(kw) || description.includes(kw) || content.includes(kw));
+            const keywords = [
+                'barcelona',
+                'barca',
+                'barça',
+                'fcb',
+                'blaugrana',
+                'camp nou',
+                'hansi flick',
+                'lamine yamal',
+                'lewandowski',
+                'pedri',
+                'gavi',
+            ];
+
+            return keywords.some((kw) => title.includes(kw) || description.includes(kw) || content.includes(kw));
         });
 
-        // Shuffle and pick 6 to ensure variety on refresh
         const shuffledNews = barcaNews.sort(() => 0.5 - Math.random()).slice(0, 6);
 
         if (shuffledNews.length === 0) {
@@ -556,8 +603,7 @@ async function fetchNews() {
             return;
         }
 
-        shuffledNews.forEach(article => {
-            // Format date
+        shuffledNews.forEach((article) => {
             const date = new Date(article.publishedAt);
             const formattedDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
 
@@ -566,7 +612,7 @@ async function fetchNews() {
             card.innerHTML = `
                 <div class="news-image-container">
                     <div class="news-date-badge">${formattedDate}</div>
-                    <div class="news-source-tag">${article.source.name}</div>
+                    <div class="news-source-tag">${article.source?.name || 'Source'}</div>
                     <img src="${article.urlToImage || 'https://placehold.co/600x400/002855/ffffff?text=Barça+News'}"
                          alt="${article.title}"
                          onerror="this.onerror=null;this.src='https://placehold.co/600x400/002855/ffffff?text=Barça+News';">
@@ -584,11 +630,93 @@ async function fetchNews() {
             `;
             container.appendChild(card);
         });
-    } catch (err) {
-        container.innerHTML = `<p class="text-center text-red-500">Failed to pulse news: ${err.message}</p>`;
-        console.error('Error loading news:', err);
+    } catch (error) {
+        container.innerHTML = `<p class="text-center text-red-500">Failed to pulse news: ${error.message}</p>`;
+        console.error('Error loading news:', error);
     }
 }
 
-// Initialize the app when DOM is loaded
+function setupIntersectionObserver() {
+    const fadeElements = document.querySelectorAll('.fade-in');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    fadeElements.forEach((el) => {
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
+    });
+}
+
+function setupEventListeners() {
+    if (playersContainer) {
+        playersContainer.addEventListener('click', (event) => {
+            const playerCard = event.target.closest('.player-card');
+            if (playerCard) {
+                openPlayerModal(playerCard.dataset.id);
+            }
+        });
+    }
+
+    const closeModalBtn = document.querySelector('.close-modal');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+            playerModal.classList.remove('active');
+        });
+    }
+
+    if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('hidden');
+        });
+    }
+
+    document.querySelectorAll('#mobile-nav a').forEach((link) => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.add('hidden');
+        });
+    });
+
+    playerFilters.forEach((filter) => {
+        filter.addEventListener('click', () => {
+            state.activeFilter = filter.dataset.position;
+            applyPlayerFilter();
+        });
+    });
+
+    const refreshNewsBtn = document.getElementById('refreshNews');
+    if (refreshNewsBtn) {
+        refreshNewsBtn.addEventListener('click', fetchNews);
+    }
+
+    const refreshFixturesBtn = document.getElementById('refreshFixtures');
+    if (refreshFixturesBtn) {
+        refreshFixturesBtn.addEventListener('click', fetchFixtures);
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            playerModal.classList.remove('active');
+        }
+    });
+}
+
+async function initApp() {
+    setupEventListeners();
+    setupIntersectionObserver();
+
+    await Promise.allSettled([
+        fetchNews(),
+        fetchPlayers(),
+        fetchLineup(),
+        fetchFixtures(),
+    ]);
+}
+
 document.addEventListener('DOMContentLoaded', initApp);

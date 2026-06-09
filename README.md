@@ -14,14 +14,20 @@ It combines a live news feed, an interactive 2025/26 squad viewer, a tactical 4�
   - Filters articles to only show FC Barcelona–related content and presents them in animated, responsive news cards.
   - “Refresh News” button to pull a new, randomized selection of recent stories.
 
-- **Interactive 2025/26 squad viewer**
+- **Live squad viewer**
+  - Pulls real player profiles and season statistics from API-Football.
   - Dynamic player grid with filters by position (GK/DEF/MID/ATT).
   - Status badges (injured, captain, new signing, on loan) rendered directly on player cards.
-  - Clicking a player opens a rich modal with photo, bio details, and season statistics (apps, goals, assists, ratios, etc.).
+  - Clicking a player opens a rich modal with photo, profile details, and live statistics.
 
-- **4‑3‑3 tactical board**
-  - Custom football pitch layout with shirt icons and name labels.
-  - Visualizes an 11‑man starting lineup based on the in‑code squad data.
+- **Dynamic lineup board**
+  - Uses API-Football’s latest lineup data.
+  - Keeps the custom football pitch layout, shirt icons, and name labels.
+  - Shows the formation, starting XI, bench, and coach.
+
+- **Upcoming fixtures**
+  - Uses Football-Data.org to show scheduled Barcelona fixtures.
+  - Displays opponent, competition, match date/time, venue, and matchday.
 
 - **Club legacy & trophies**
   - Trophy wall showing La Liga, UCL, Copa del Rey, and Supercopa counts with animated trophy frames.
@@ -87,13 +93,17 @@ Create a `.env` file in the project root (alongside `server.js`) with:
 
 ```bash
 NEWS_API_KEY=your_newsapi_key_here
+FOOTBALL_DATA_API_KEY=your_football_data_key_here
+API_FOOTBALL_KEY=your_api_football_key_here
 
 # optional
 PORT=3000
 ```
 
-- `NEWS_API_KEY` is required for the `/news` endpoint to work.
-- `PORT` is optional; by default the server uses `3000`.
+  - `NEWS_API_KEY` is required for the `/news` endpoint to work.
+  - `FOOTBALL_DATA_API_KEY` powers the fixtures endpoint.
+  - `API_FOOTBALL_KEY` powers the player profile and lineup endpoints.
+  - `PORT` is optional; by default the server uses `3000`.
 
 
 ### 4. Running the Backend
@@ -110,7 +120,10 @@ The server will start on:
 
 It exposes:
 
-- `GET /news` – returns filtered FC Barcelona news articles from NewsAPI.
+- `GET /news` – returns cached filtered FC Barcelona news articles from NewsAPI.
+- `GET /api/players` – returns normalized FC Barcelona player profiles and season stats from API-Football.
+- `GET /api/lineup` – returns the latest FC Barcelona lineup from API-Football.
+- `GET /api/fixtures` – returns upcoming FC Barcelona fixtures from Football-Data.org.
 
 
 ### 5. Running the Frontend
@@ -137,12 +150,10 @@ If you host the frontend on a different origin/port, ensure `BACKEND_URL` in `cl
 ## Customization
 
 - **Player data & stats**  
-  Update the `players` array in `client/script.js` to:
-  - Add/remove players
-  - Change positions, shirt numbers, stats, or status badges
+  Player data is now fetched from the backend. If you need to change the source team or season, update the API constants in `server.js`.
 
 - **Starting XI / formation**  
-  Adjust the `startingXI` mapping in `client/script.js` to update which players appear in each tactical position.
+  The lineup board is driven by `/api/lineup` in `server.js`, so the pitch stays the same while the data source changes.
 
 - **Styling & animations**  
   Modify or extend `client/style.css` to tweak:
@@ -155,7 +166,7 @@ If you host the frontend on a different origin/port, ensure `BACKEND_URL` in `cl
 
 - **Backend**
   - Deploy `server.js` as a standard Node/Express service (e.g. Render, Railway, Fly.io, Heroku‑style PaaS, or a VPS).
-  - Configure `NEWS_API_KEY` and `PORT` using your hosting provider’s environment variable settings.
+  - Configure `NEWS_API_KEY`, `FOOTBALL_DATA_API_KEY`, `API_FOOTBALL_KEY`, and `PORT` using your hosting provider’s environment variable settings.
 
 - **Frontend**
   - Host the `client` folder on any static hosting (e.g. Netlify, Vercel, GitHub Pages, S3/CloudFront).
@@ -167,4 +178,3 @@ If you host the frontend on a different origin/port, ensure `BACKEND_URL` in `cl
 - **NewsAPI** – for providing the news data.  
 - **FC Barcelona, its players, and supporters** – the inspiration behind this fan project.  
 - Logos, names, and images may be trademarks or copyrights of their respective owners.
-

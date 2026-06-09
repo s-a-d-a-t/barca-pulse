@@ -29,6 +29,12 @@
                     <li><a href="#hero"
                             class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">Home</a>
                     </li>
+                    <li><a href="#news"
+                            class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">News</a>
+                    </li>
+                    <li><a href="#fixtures"
+                            class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">Fixtures</a>
+                    </li>
                     <li><a href="#players"
                             class="hover:text-[#fdd516] transition font-semibold text-sm uppercase tracking-wider">Players</a>
                     </li>
@@ -51,6 +57,8 @@
             class="md:hidden bg-[#002855] absolute top-full left-0 w-full py-4 px-6 shadow-lg hidden border-t border-white/10">
             <ul class="space-y-4">
                 <li><a href="#hero" class="block py-2 hover:text-[#fdd516] transition">Home</a></li>
+                <li><a href="#news" class="block py-2 hover:text-[#fdd516] transition">News</a></li>
+                <li><a href="#fixtures" class="block py-2 hover:text-[#fdd516] transition">Fixtures</a></li>
                 <li><a href="#players" class="block py-2 hover:text-[#fdd516] transition">Players</a></li>
                 <li><a href="#coaching" class="block py-2 hover:text-[#fdd516] transition">Coaching</a></li>
                 <li><a href="#history" class="block py-2 hover:text-[#fdd516] transition">History</a></li>
@@ -166,6 +174,32 @@
         </div>
     </section>
 
+    <!-- Fixtures Section -->
+    <section id="fixtures" class="py-20 bg-[#0a1018]">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 section-title text-white tracking-tight">
+                Upcoming Fixtures
+            </h2>
+
+            <p class="text-center text-gray-400 mb-8 max-w-3xl mx-auto">
+                Upcoming FC Barcelona fixtures powered by football-data.org.
+            </p>
+
+            <div class="text-center mb-12">
+                <button id="refreshFixtures"
+                    class="bg-[#002855] hover:bg-[#004d98] text-white font-bold px-8 py-3 rounded-full transition-all shadow-lg shadow-blue-950/20 transform hover:scale-105 flex items-center justify-center mx-auto gap-2">
+                    <i class="fas fa-sync-alt"></i> Refresh Fixtures
+                </button>
+            </div>
+
+            <div id="fixtures-container" class="news-grid"></div>
+
+            <p class="text-center text-xs uppercase tracking-[0.2em] text-gray-500 mt-8">
+                Data provided by football-data.org
+            </p>
+        </div>
+    </section>
+
 
 
     <!-- Players Section -->
@@ -175,7 +209,7 @@
         </div>
         <div class="container mx-auto px-4 relative z-10">
             <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 section-title text-white tracking-tight">Meet
-                The Squad 2025/26</h2>
+                The Squad</h2>
 
             <div class="mb-12 flex justify-center">
                 <div class="flex flex-wrap gap-3 justify-center p-2 rounded-full glass inline-flex">
@@ -215,12 +249,12 @@
                         class="coaching-staff-card glass p-8 text-center group hover:bg-white/5 transition-all duration-500">
                         <div
                             class="w-32 h-32 mx-auto rounded-full border-4 border-[#db0030] overflow-hidden mb-6 shadow-xl shadow-red-900/20 group-hover:scale-110 transition-transform duration-500">
-                            <img src="https://placehold.co/250x250/002855/ffffff?text=H.Flick" alt="Hansi Flick"
+                            <img id="head-coach-photo" src="https://placehold.co/250x250/002855/ffffff?text=H.Flick" alt="Hansi Flick"
                                 class="w-full h-full object-cover">
                         </div>
-                        <h3 class="text-2xl font-bold text-white mb-2">Hansi Flick</h3>
-                        <p class="text-[#fdd516] font-semibold uppercase tracking-wider text-sm mb-4">Head Coach</p>
-                        <p class="text-gray-400 leading-relaxed text-sm">
+                        <h3 id="head-coach-name" class="text-2xl font-bold text-white mb-2">Hansi Flick</h3>
+                        <p id="head-coach-role" class="text-[#fdd516] font-semibold uppercase tracking-wider text-sm mb-4">Head Coach</p>
+                        <p id="head-coach-description" class="text-gray-400 leading-relaxed text-sm">
                             Bringing high-intensity football and tactical discipline to restore Barcelona's European
                             glory.
                         </p>
@@ -257,8 +291,12 @@
                     </div>
                 </div>
 
-                <h3 class="text-3xl font-bold mb-8 text-center text-white">Preferred Formation: <span
-                        class="text-[#fdd516]">4-3-3</span></h3>
+                <div class="flex flex-col items-center gap-3 mb-8 text-center">
+                    <h3 class="text-3xl font-bold text-white">Preferred Formation: <span id="lineup-formation"
+                            class="text-[#fdd516]">4-3-3</span></h3>
+                    <p id="lineup-coach" class="text-gray-400 text-sm uppercase tracking-wider">Coach: Hansi Flick</p>
+                    <p id="lineup-opponent" class="text-gray-500 text-xs uppercase tracking-[0.25em]">Latest lineup</p>
+                </div>
 
                 <!-- Football Field with Formation -->
                 <div class="football-field">
@@ -274,6 +312,11 @@
                     <div class="formation-433" id="formation-container">
                         <!-- Players will be dynamically inserted here on page load -->
                     </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-center text-white mb-4">Bench</h4>
+                    <div id="bench-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3"></div>
                 </div>
             </div>
         </div>
@@ -352,7 +395,6 @@
     </section>
 
     <!-- Player Modal -->
-    <!-- Player Modal -->
     <div class="player-modal backdrop-blur-md bg-black/70">
         <div
             class="modal-content glass-card text-white border-2 border-[#fdd516]/30 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 relative overflow-hidden max-w-4xl">
@@ -427,7 +469,7 @@
                 <!-- Stats Section -->
                 <div class="mb-8">
                     <h3 class="text-2xl font-bold mb-6 text-[#fdd516] flex items-center gap-2">
-                        <i class="fas fa-chart-line"></i> Season Statistics 2024/25
+                        <i class="fas fa-chart-line"></i> Season Statistics
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -492,6 +534,35 @@
                                     class="bg-gradient-to-r from-[#fdd516] to-[#f59e0b] h-full rounded-full transition-all duration-1000"
                                     style="width: 0%"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-[#fdd516] flex items-center gap-2">
+                        <i class="fas fa-id-badge"></i> Player Profile
+                    </h3>
+
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="glass p-4 rounded-xl text-center">
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Shirt Number</div>
+                            <div id="modal-player-shirt" class="text-2xl font-bold text-white"></div>
+                        </div>
+                        <div class="glass p-4 rounded-xl text-center">
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Minutes Played</div>
+                            <div id="modal-player-minutes" class="text-2xl font-bold text-white"></div>
+                        </div>
+                        <div class="glass p-4 rounded-xl text-center">
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Yellow Cards</div>
+                            <div id="modal-player-yellow" class="text-2xl font-bold text-white"></div>
+                        </div>
+                        <div class="glass p-4 rounded-xl text-center">
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Red Cards</div>
+                            <div id="modal-player-red" class="text-2xl font-bold text-white"></div>
+                        </div>
+                        <div class="glass p-4 rounded-xl text-center">
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Rating</div>
+                            <div id="modal-player-rating" class="text-2xl font-bold text-white"></div>
                         </div>
                     </div>
                 </div>
