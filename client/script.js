@@ -29,6 +29,7 @@ const formationContainer = document.getElementById('formation-container');
 const benchContainer = document.getElementById('bench-container');
 const fixturesContainer = document.getElementById('fixtures-container');
 const lineupFormationLabel = document.getElementById('lineup-formation');
+const lineupSourceBadge = document.getElementById('lineup-source-badge');
 const lineupCoachLabel = document.getElementById('lineup-coach');
 const lineupOpponentLabel = document.getElementById('lineup-opponent');
 const headCoachPhoto = document.getElementById('head-coach-photo');
@@ -372,6 +373,13 @@ function renderLineup(lineup) {
     if (lineupFormationLabel) {
         lineupFormationLabel.textContent = lineup.formation || '4-3-3';
     }
+    if (lineupSourceBadge) {
+        const isUpcoming = lineup.lineupType === 'upcoming';
+        lineupSourceBadge.textContent = isUpcoming ? 'Upcoming' : 'Last match';
+        lineupSourceBadge.className = isUpcoming
+            ? 'inline-flex items-center rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300'
+            : 'inline-flex items-center rounded-full border border-[#fdd516]/40 bg-[#fdd516]/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-[#fdd516]';
+    }
     if (lineupCoachLabel) {
         lineupCoachLabel.textContent = `Coach: ${lineup.coach || 'Unavailable'}`;
     }
@@ -538,7 +546,7 @@ async function fetchLineup() {
     }
 
     try {
-        const response = await fetch(`${BACKEND_URL}/api/lineup`);
+        const response = await fetch(`${BACKEND_URL}/api/lineup?t=${Date.now()}`);
         if (!response.ok) {
             throw new Error('Lineup API request failed');
         }

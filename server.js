@@ -21,10 +21,12 @@ const CACHE_TTL = {
   news: 30 * 60 * 1000,
   players: 60 * 60 * 1000,
   lineup: 30 * 60 * 1000,
+  lineupFixture: 12 * 60 * 60 * 1000,
   fixtures: 45 * 60 * 1000,
 };
 
 const cache = new Map();
+const LINEUP_CACHE_KEY = 'lineup';
 
 app.use(express.static(path.join(__dirname, 'client')));
 
@@ -112,6 +114,30 @@ async function cachedJson(key, ttlMs, fetcher) {
     }
     throw error;
   }
+}
+
+function setCache(key, data, ttlMs) {
+  cache.set(key, {
+    data,
+    expiresAt: Date.now() + ttlMs,
+  });
+}
+
+function getCacheEntry(key) {
+  return cache.get(key) || null;
+}
+
+function getCacheData(key) {
+  const entry = cache.get(key);
+  return entry ? entry.data : null;
+}
+
+function formatUtcDateOnly(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function getSeasonStartIso() {
+  return `${getCurrentSeasonStartYear()}-07-01`;
 }
 
 async function getNewsData() {
@@ -287,12 +313,36 @@ function normalizeLineupPlayer(entry) {
   };
 }
 
+function getFixtureKickoffDate(fixture) {
+  const rawDate = fixture?.fixture?.date || fixture?.fixture?.utcDate || null;
+  if (!rawDate) {
+    return null;
+  }
+
+  const kickoffDate = new Date(rawDate);
+  return Number.isNaN(kickoffDate.getTime()) ? null : kickoffDate;
+}
+
+function getFixtureStatusShort(fixture) {
+  return String(fixture?.fixture?.status?.short || fixture?.status?.short || fixture?.status || '').toUpperCase();
+}
+
+function getFixtureKickoffTimestamp(fixture) {
+  const kickoffDate = getFixtureKickoffDate(fixture);
+  return kickoffDate ? kickoffDate.getTime() : null;
+}
+
+function isBarcaApiFootballTeam(teamId) {
+  return Number(teamId) === BARCA_API_FOOTBALL_TEAM_ID;
+}
+
 function normalizeLineupResponse(fixture, lineupEntry) {
   return {
     fixtureId: fixture?.fixture?.id || null,
     fixtureDate: fixture?.fixture?.date || fixture?.fixture?.utcDate || null,
+    fixtureStatus: getFixtureStatusShort(fixture) || null,
     opponent:
-      fixture?.teams?.home?.id === BARCA_API_FOOTBALL_TEAM_ID
+      isBarcaApiFootballTeam(fixture?.teams?.home?.id)
         ? fixture?.teams?.away?.name
         : fixture?.teams?.home?.name,
     formation: lineupEntry?.formation || '4-3-3',
@@ -307,50 +357,243 @@ function normalizeLineupResponse(fixture, lineupEntry) {
   };
 }
 
-async function getLatestLineup() {
-  return cachedJson('lineup', CACHE_TTL.lineup, async () => {
-    const season = getCurrentSeasonStartYear();
-    const fixturesPayload = await getApiFootball('/fixtures', {
-      team: BARCA_API_FOOTBALL_TEAM_ID,
-      season,
-      last: 5,
+function getEmptyLineup() {
+  return {
+    fixtureId: null,
+    fixtureDate: null,
+    fixtureStatus: null,
+    opponent: null,
+    formation: '4-3-3',
+    coach: 'Unavailable',
+    team: 'FC Barcelona',
+    startXI: [],
+    bench: [],
+  };
+}
+
+function isRateLimitError(error) {
+  return Boolean(error?.response && error.response.status === 429);
+}
+
+function dedupeFixtures(fixtures) {
+  const seen = new Set();
+  const unique = [];
+
+  for (const fixture of fixtures) {
+    const fixtureId = fixture?.fixture?.id;
+    if (!fixtureId || seen.has(fixtureId)) {
+      continue;
+    }
+
+    seen.add(fixtureId);
+    unique.push(fixture);
+  }
+
+  return unique;
+}
+
+function normalizeFootballDataMatch(match) {
+  return {
+    id: match?.id ?? null,
+    opponent:
+      match?.homeTeam?.id === BARCA_FOOTBALL_DATA_TEAM_ID
+        ? match?.awayTeam?.name
+        : match?.homeTeam?.name,
+    competition: match?.competition?.name || 'Competition',
+    competitionCode: match?.competition?.code || '',
+    utcDate: match?.utcDate || null,
+    matchday: match?.matchday ?? null,
+    venue: match?.homeTeam?.id === BARCA_FOOTBALL_DATA_TEAM_ID ? 'Home' : 'Away',
+    homeTeam: match?.homeTeam?.name || '',
+    awayTeam: match?.awayTeam?.name || '',
+    status: match?.status || '',
+  };
+}
+
+async function getFootballDataMatches(cacheKey, params) {
+  return cachedJson(cacheKey, 15 * 60 * 1000, async () => {
+    const response = await getFootballData(`/teams/${BARCA_FOOTBALL_DATA_TEAM_ID}/matches`, params);
+    return Array.isArray(response.matches) ? response.matches : [];
+  });
+}
+
+async function getLatestCompletedMatch() {
+  const matches = await getFootballDataMatches('fd-recent-finished-matches', {
+    dateFrom: getSeasonStartIso(),
+    dateTo: formatUtcDateOnly(new Date()),
+    status: 'FINISHED',
+    limit: 5,
+  });
+
+  const finished = matches
+    .filter((match) => match.status === 'FINISHED')
+    .sort((a, b) => new Date(b.utcDate) - new Date(a.utcDate));
+
+  return finished.length > 0 ? normalizeFootballDataMatch(finished[0]) : null;
+}
+
+async function getNextUpcomingMatch() {
+  const matches = await getFootballDataMatches('fd-upcoming-matches', {
+    dateFrom: formatUtcDateOnly(new Date()),
+    dateTo: `${getCurrentSeasonStartYear() + 1}-06-30`,
+  });
+
+  const upcoming = matches
+    .filter((match) => match.status === 'SCHEDULED' || match.status === 'TIMED')
+    .sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
+
+  return upcoming.length > 0 ? normalizeFootballDataMatch(upcoming[0]) : null;
+}
+
+async function findApiFootballFixtureForMatch(match) {
+  if (!match?.utcDate) {
+    return null;
+  }
+
+  const targetDate = formatUtcDateOnly(new Date(match.utcDate));
+  const fixturePayload = await getApiFootball('/fixtures', {
+    team: BARCA_API_FOOTBALL_TEAM_ID,
+    date: targetDate,
+    season: getCurrentSeasonStartYear(),
+  });
+
+  const fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
+  if (!fixtures.length) {
+    return null;
+  }
+
+  const targetTimestamp = new Date(match.utcDate).getTime();
+  return fixtures
+    .filter((fixture) => fixture?.fixture?.id)
+    .sort((a, b) => {
+      const aDiff = Math.abs((getFixtureKickoffDate(a)?.getTime() || 0) - targetTimestamp);
+      const bDiff = Math.abs((getFixtureKickoffDate(b)?.getTime() || 0) - targetTimestamp);
+      return aDiff - bDiff;
+    })[0] || null;
+}
+
+async function fetchLineupForFixture(fixture) {
+  const fixtureId = fixture?.fixture?.id;
+  if (!fixtureId) {
+    return null;
+  }
+
+  const cacheKey = `lineup:${fixtureId}`;
+  const cached = getCacheEntry(cacheKey);
+  const now = Date.now();
+
+  if (cached && cached.expiresAt > now) {
+    return cached.data;
+  }
+
+  try {
+    const lineupPayload = await getApiFootball('/fixtures/lineups', {
+      fixture: fixtureId,
     });
 
-    const fixtures = Array.isArray(fixturesPayload.response) ? fixturesPayload.response : [];
+    const lineups = Array.isArray(lineupPayload.response) ? lineupPayload.response : [];
+    const barcaLineup = lineups.find((entry) => isBarcaApiFootballTeam(entry?.team?.id));
 
-    for (const fixture of fixtures) {
-      const fixtureId = fixture?.fixture?.id;
-      if (!fixtureId) {
-        continue;
-      }
+    if (!barcaLineup) {
+      return cached?.data || null;
+    }
 
-      try {
-        const lineupPayload = await getApiFootball('/fixtures/lineups', {
-          fixture: fixtureId,
-        });
+    const normalized = normalizeLineupResponse(fixture, barcaLineup);
+    setCache(cacheKey, normalized, CACHE_TTL.lineupFixture);
+    return normalized;
+  } catch (error) {
+    if (isRateLimitError(error) && cached?.data) {
+      return cached.data;
+    }
 
-        const lineups = Array.isArray(lineupPayload.response) ? lineupPayload.response : [];
-        const barcaLineup = lineups.find((entry) => entry?.team?.id === BARCA_API_FOOTBALL_TEAM_ID);
+    return cached?.data || null;
+  }
+}
 
-        if (barcaLineup) {
-          return normalizeLineupResponse(fixture, barcaLineup);
+async function fetchLineupForMatch(match) {
+  const apiFootballFixture = await findApiFootballFixtureForMatch(match);
+  if (!apiFootballFixture) {
+    return null;
+  }
+
+  const lineup = await fetchLineupForFixture(apiFootballFixture);
+  if (!lineup) {
+    return null;
+  }
+
+  return {
+    ...lineup,
+    fixtureDate: match.utcDate || lineup.fixtureDate,
+    opponent: match.opponent || lineup.opponent,
+  };
+}
+
+async function getLatestLineup() {
+  const cached = getCacheEntry(LINEUP_CACHE_KEY);
+  const now = Date.now();
+
+  if (cached && cached.expiresAt > now) {
+    return cached.data;
+  }
+
+  let data;
+
+  try {
+    const [recentMatch, upcomingMatch] = await Promise.all([
+      getLatestCompletedMatch(),
+      getNextUpcomingMatch(),
+    ]);
+
+    if (upcomingMatch) {
+      const kickoffDate = new Date(upcomingMatch.utcDate);
+      const minutesUntilKickoff = (kickoffDate.getTime() - now) / (60 * 1000);
+
+      if (minutesUntilKickoff <= 30 && minutesUntilKickoff >= -30) {
+        const upcomingLineup = await fetchLineupForMatch(upcomingMatch);
+        if (upcomingLineup) {
+          data = {
+            ...upcomingLineup,
+            lineupType: 'upcoming',
+          };
         }
-      } catch (error) {
-        continue;
       }
     }
 
+    if (!data && recentMatch) {
+      const recentLineup = await fetchLineupForMatch(recentMatch);
+      if (recentLineup) {
+        data = {
+          ...recentLineup,
+          lineupType: 'recent',
+        };
+      }
+    }
+
+    if (!data) {
+      data = {
+        ...getEmptyLineup(),
+        lineupType: 'fallback',
+      };
+    }
+  } catch (error) {
+    if (cached?.data && cached.data.startXI?.length > 0) {
+      return cached.data;
+    }
+
     return {
-      fixtureId: null,
-      fixtureDate: null,
-      opponent: null,
-      formation: '4-3-3',
-      coach: 'Unavailable',
-      team: 'FC Barcelona',
-      startXI: [],
-      bench: [],
+      ...getEmptyLineup(),
+      lineupType: 'fallback',
+      error: isRateLimitError(error) ? 'rate_limited' : 'unavailable',
     };
-  });
+  }
+
+  if (data.startXI.length > 0) {
+    setCache(LINEUP_CACHE_KEY, data, CACHE_TTL.lineup);
+  } else if (cached?.data && cached.data.startXI?.length > 0) {
+    return cached.data;
+  }
+
+  return data;
 }
 
 async function getUpcomingFixtures() {
@@ -436,6 +679,7 @@ app.get('/api/players/:id', async (req, res) => {
 });
 
 app.get('/api/lineup', async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   try {
     const data = await getLatestLineup();
     res.json(data);
