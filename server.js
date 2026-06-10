@@ -53,6 +53,44 @@ function calculateAge(dateOfBirth) {
   return age;
 }
 
+function normalizeApiFootballPlayer(squadPlayer, playerEntry = null, season = null) {
+  const stats = Array.isArray(playerEntry?.statistics) && playerEntry.statistics.length > 0
+    ? playerEntry.statistics[0]
+    : {};
+  const games = stats.games || {};
+  const goals = stats.goals || {};
+  const cards = stats.cards || {};
+  const passes = stats.passes || {};
+
+  return {
+    id: squadPlayer.id,
+    name: squadPlayer.name || playerEntry?.player?.name || 'Unknown Player',
+    photo:
+      squadPlayer.photo ||
+      playerEntry?.player?.photo ||
+      `https://media.api-sports.io/football/players/${squadPlayer.id}.png`,
+    age:
+      squadPlayer.age ??
+      calculateAge(squadPlayer.birth?.date || squadPlayer.birthdate || squadPlayer.dateOfBirth || playerEntry?.player?.birth?.date),
+    nationality: squadPlayer.nationality || playerEntry?.player?.nationality || 'Unknown',
+    position: squadPlayer.position || playerEntry?.player?.position || 'Unknown',
+    shirtNumber: squadPlayer.number ?? squadPlayer.shirtNumber ?? playerEntry?.player?.number ?? null,
+    appearances: games.appearences ?? games.appearances ?? 0,
+    goals: goals.total ?? 0,
+    assists: passes.assists ?? 0,
+    minutesPlayed: games.minutes ?? 0,
+    yellowCards: cards.yellow ?? 0,
+    redCards: cards.red ?? 0,
+    rating: games.rating ? Number.parseFloat(games.rating) : null,
+    season,
+    stats: {
+      starts: games.lineups ?? 0,
+      substitutes: games.substitutes ?? 0,
+      rating: games.rating ? Number.parseFloat(games.rating) : null,
+    },
+  };
+}
+
 async function cachedJson(key, ttlMs, fetcher) {
   const cached = cache.get(key);
   const now = Date.now();
@@ -124,48 +162,45 @@ async function getApiFootballPlayers() {
     const normalizedPlayers = [];
 
     for (const squadPlayer of squadPlayers) {
-      let stats = {};
+      let playerEntry = null;
+      let usedSeason = season;
 
       try {
-        const playerPayload = await getApiFootball('/players', {
-          id: squadPlayer.id,
-          season,
-        });
+        const playerPayload = await getApiFootball('/players', { id: squadPlayer.id, season });
+        const currentSeasonEntry = Array.isArray(playerPayload.response) ? playerPayload.response[0] : null;
+        const currentGames = currentSeasonEntry?.statistics?.[0]?.games || {};
+        const hasUsefulStats = Boolean(
+          (currentGames.appearences ?? currentGames.appearances ?? 0) > 0 ||
+          (currentSeasonEntry?.statistics?.[0]?.goals?.total ?? 0) > 0 ||
+          (currentSeasonEntry?.statistics?.[0]?.cards?.yellow ?? 0) > 0 ||
+          (currentSeasonEntry?.statistics?.[0]?.cards?.red ?? 0) > 0
+        );
 
-        const playerEntry = Array.isArray(playerPayload.response) ? playerPayload.response[0] : null;
-        stats = Array.isArray(playerEntry?.statistics) && playerEntry.statistics.length > 0
-          ? playerEntry.statistics[0]
-          : {};
+        if (hasUsefulStats) {
+          playerEntry = currentSeasonEntry;
+        } else {
+          const fallbackPayload = await getApiFootball('/players', { id: squadPlayer.id, season: season - 1 });
+          const fallbackEntry = Array.isArray(fallbackPayload.response) ? fallbackPayload.response[0] : null;
+          const fallbackGames = fallbackEntry?.statistics?.[0]?.games || {};
+          const fallbackHasStats = Boolean(
+            (fallbackGames.appearences ?? fallbackGames.appearances ?? 0) > 0 ||
+            (fallbackEntry?.statistics?.[0]?.goals?.total ?? 0) > 0 ||
+            (fallbackEntry?.statistics?.[0]?.cards?.yellow ?? 0) > 0 ||
+            (fallbackEntry?.statistics?.[0]?.cards?.red ?? 0) > 0
+          );
+
+          if (fallbackHasStats) {
+            playerEntry = fallbackEntry;
+            usedSeason = season - 1;
+          } else {
+            playerEntry = currentSeasonEntry;
+          }
+        }
       } catch (error) {
-        stats = {};
+        playerEntry = null;
       }
 
-      const games = stats.games || {};
-      const goals = stats.goals || {};
-      const cards = stats.cards || {};
-      const passes = stats.passes || {};
-
-      normalizedPlayers.push({
-        id: squadPlayer.id,
-        name: squadPlayer.name || 'Unknown Player',
-        photo: squadPlayer.photo || `https://media.api-sports.io/football/players/${squadPlayer.id}.png`,
-        age: squadPlayer.age ?? calculateAge(squadPlayer.birth?.date || squadPlayer.birthdate || squadPlayer.dateOfBirth),
-        nationality: squadPlayer.nationality || 'Unknown',
-        position: squadPlayer.position || 'Unknown',
-        shirtNumber: squadPlayer.number ?? squadPlayer.shirtNumber ?? null,
-        appearances: games.appearences ?? games.appearances ?? 0,
-        goals: goals.total ?? 0,
-        assists: passes.assists ?? 0,
-        minutesPlayed: games.minutes ?? 0,
-        yellowCards: cards.yellow ?? 0,
-        redCards: cards.red ?? 0,
-        rating: games.rating ? Number.parseFloat(games.rating) : null,
-        stats: {
-          starts: games.lineups ?? 0,
-          substitutes: games.substitutes ?? 0,
-          rating: games.rating ? Number.parseFloat(games.rating) : null,
-        },
-      });
+      normalizedPlayers.push(normalizeApiFootballPlayer(squadPlayer, playerEntry, usedSeason));
     }
 
     normalizedPlayers.sort((a, b) => {
@@ -183,6 +218,49 @@ async function getApiFootballPlayers() {
       players: normalizedPlayers,
     };
   });
+}
+
+async function getPlayerDetails(playerId) {
+  const season = getCurrentSeasonStartYear();
+  const seasonsToTry = [season, season - 1];
+
+  for (const year of seasonsToTry) {
+    try {
+      const payload = await getApiFootball('/players', {
+        id: playerId,
+        season: year,
+      });
+
+      const entry = Array.isArray(payload.response) ? payload.response[0] : null;
+      if (!entry) {
+        continue;
+      }
+
+      const stats = entry.statistics?.[0] || {};
+      const games = stats.games || {};
+      const goals = stats.goals || {};
+      const cards = stats.cards || {};
+      const passes = stats.passes || {};
+
+      const hasUsefulStats = Boolean(
+        (games.appearences ?? games.appearances ?? 0) > 0 ||
+        (goals.total ?? 0) > 0 ||
+        (cards.yellow ?? 0) > 0 ||
+        (cards.red ?? 0) > 0 ||
+        (passes.assists ?? 0) > 0
+      );
+
+      if (!hasUsefulStats && year !== seasonsToTry[seasonsToTry.length - 1]) {
+        continue;
+      }
+
+      return normalizeApiFootballPlayer(entry.player || { id: playerId }, entry, year);
+    } catch (error) {
+      continue;
+    }
+  }
+
+  return null;
 }
 
 function parseGrid(grid) {
@@ -336,6 +414,22 @@ app.get('/api/players', async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: 'Error fetching player data',
+      error: err.message,
+    });
+  }
+});
+
+app.get('/api/players/:id', async (req, res) => {
+  try {
+    const player = await getPlayerDetails(req.params.id);
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    res.json({ player });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Error fetching player details',
       error: err.message,
     });
   }

@@ -82,6 +82,73 @@ function formatRating(value) {
     return Number.isFinite(numeric) ? numeric.toFixed(2) : 'N/A';
 }
 
+function setModalLoadingState() {
+    document.getElementById('modal-player-apps').textContent = '...';
+    document.getElementById('modal-player-goals').textContent = '...';
+    document.getElementById('modal-player-assists').textContent = '...';
+    document.getElementById('modal-player-apps-display').textContent = '...';
+    document.getElementById('modal-player-contribution').textContent = 'Loading stats...';
+    document.getElementById('modal-player-gpm').textContent = '...';
+    document.getElementById('modal-player-apm').textContent = '...';
+    document.getElementById('modal-player-shirt').textContent = '...';
+    document.getElementById('modal-player-minutes').textContent = '...';
+    document.getElementById('modal-player-yellow').textContent = '...';
+    document.getElementById('modal-player-red').textContent = '...';
+    document.getElementById('modal-player-rating').textContent = '...';
+}
+
+function applyPlayerToModal(player) {
+    document.getElementById('modal-player-img').src = player.photo;
+    document.getElementById('modal-player-name').textContent = player.name;
+    document.getElementById('modal-player-position').textContent = player.position;
+    document.getElementById('modal-player-number').textContent = formatNumber(player.shirtNumber, 'N/A');
+    document.getElementById('modal-player-nationality').textContent = player.nationality;
+    document.getElementById('modal-player-age').textContent = formatNumber(player.age, 'N/A');
+    document.getElementById('modal-player-height').textContent = 'N/A';
+    document.getElementById('modal-player-weight').textContent = 'N/A';
+    document.getElementById('modal-player-foot').textContent = 'N/A';
+    document.getElementById('modal-player-apps').textContent = formatNumber(player.appearances, 0);
+    document.getElementById('modal-player-goals').textContent = formatNumber(player.goals, 0);
+    document.getElementById('modal-player-assists').textContent = formatNumber(player.assists, 0);
+    document.getElementById('modal-player-apps-display').textContent = formatNumber(player.appearances, 0);
+    document.getElementById('modal-player-contribution').textContent = `${formatNumber(player.goals, 0)} goals + ${formatNumber(player.assists, 0)} assists`;
+    document.getElementById('modal-player-gpm').textContent = player.appearances ? (player.goals / player.appearances).toFixed(2) : '0.00';
+    document.getElementById('modal-player-apm').textContent = player.appearances ? (player.assists / player.appearances).toFixed(2) : '0.00';
+    document.getElementById('modal-player-shirt').textContent = formatNumber(player.shirtNumber, 'N/A');
+    document.getElementById('modal-player-minutes').textContent = formatNumber(player.minutesPlayed, 0);
+    document.getElementById('modal-player-yellow').textContent = formatNumber(player.yellowCards, 0);
+    document.getElementById('modal-player-red').textContent = formatNumber(player.redCards, 0);
+    document.getElementById('modal-player-rating').textContent = formatRating(player.rating);
+
+    const statusBadgeContainer = document.getElementById('modal-status-badge');
+    if (player.status && player.status !== 'active') {
+        const statusConfig = {
+            injured: { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
+            new: { class: 'status-new', icon: 'fa-star', text: 'New Signing' },
+            captain: { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
+            'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'On Loan' },
+        };
+
+        const config = statusConfig[player.status];
+        if (config) {
+            statusBadgeContainer.innerHTML = `
+                <div class="status-badge ${config.class}">
+                    <i class="fas ${config.icon}"></i>
+                    <span>${config.text}</span>
+                </div>
+            `;
+        }
+    } else {
+        statusBadgeContainer.innerHTML = '';
+    }
+
+    document.getElementById('modal-player-apps-bar').style.width = `${Math.min(100, (player.appearances / 50) * 100)}%`;
+    document.getElementById('modal-player-goals-bar').style.width = `${Math.min(100, (player.goals / 30) * 100)}%`;
+    document.getElementById('modal-player-assists-bar').style.width = `${Math.min(100, (player.assists / 20) * 100)}%`;
+    document.getElementById('modal-player-gpm-bar').style.width = `${Math.min(100, ((player.goals / Math.max(1, player.appearances)) / 1.5) * 100)}%`;
+    document.getElementById('modal-player-apm-bar').style.width = `${Math.min(100, ((player.assists / Math.max(1, player.appearances)) / 1.5) * 100)}%`;
+}
+
 function getShirtDisplay(player) {
     const number = formatNumber(player.shirtNumber, 'N/A');
     return number;
@@ -410,61 +477,26 @@ function renderFixtures(fixtures) {
     });
 }
 
-function openPlayerModal(playerId) {
+async function openPlayerModal(playerId) {
     const player = state.players.find((entry) => entry.id == playerId);
     if (!player) return;
 
-    document.getElementById('modal-player-img').src = player.photo;
-    document.getElementById('modal-player-name').textContent = player.name;
-    document.getElementById('modal-player-position').textContent = player.position;
-    document.getElementById('modal-player-number').textContent = formatNumber(player.shirtNumber, 'N/A');
-    document.getElementById('modal-player-nationality').textContent = player.nationality;
-    document.getElementById('modal-player-age').textContent = formatNumber(player.age, 'N/A');
-    document.getElementById('modal-player-height').textContent = 'N/A';
-    document.getElementById('modal-player-weight').textContent = 'N/A';
-    document.getElementById('modal-player-foot').textContent = 'N/A';
-    document.getElementById('modal-player-apps').textContent = formatNumber(player.appearances, 0);
-    document.getElementById('modal-player-goals').textContent = formatNumber(player.goals, 0);
-    document.getElementById('modal-player-assists').textContent = formatNumber(player.assists, 0);
-    document.getElementById('modal-player-apps-display').textContent = formatNumber(player.appearances, 0);
-    document.getElementById('modal-player-contribution').textContent = `${formatNumber(player.goals, 0)} goals + ${formatNumber(player.assists, 0)} assists`;
-    document.getElementById('modal-player-gpm').textContent = player.appearances ? (player.goals / player.appearances).toFixed(2) : '0.00';
-    document.getElementById('modal-player-apm').textContent = player.appearances ? (player.assists / player.appearances).toFixed(2) : '0.00';
-    document.getElementById('modal-player-shirt').textContent = formatNumber(player.shirtNumber, 'N/A');
-    document.getElementById('modal-player-minutes').textContent = formatNumber(player.minutesPlayed, 0);
-    document.getElementById('modal-player-yellow').textContent = formatNumber(player.yellowCards, 0);
-    document.getElementById('modal-player-red').textContent = formatNumber(player.redCards, 0);
-    document.getElementById('modal-player-rating').textContent = formatRating(player.rating);
-
-    const statusBadgeContainer = document.getElementById('modal-status-badge');
-    if (player.status && player.status !== 'active') {
-        const statusConfig = {
-            injured: { class: 'status-injured', icon: 'fa-plus-circle', text: 'Injured' },
-            new: { class: 'status-new', icon: 'fa-star', text: 'New Signing' },
-            captain: { class: 'status-captain', icon: 'fa-crown', text: 'Captain' },
-            'on-loan': { class: 'status-on-loan', icon: 'fa-exchange-alt', text: 'On Loan' },
-        };
-
-        const config = statusConfig[player.status];
-        if (config) {
-            statusBadgeContainer.innerHTML = `
-                <div class="status-badge ${config.class}">
-                    <i class="fas ${config.icon}"></i>
-                    <span>${config.text}</span>
-                </div>
-            `;
-        }
-    } else {
-        statusBadgeContainer.innerHTML = '';
-    }
-
-    document.getElementById('modal-player-apps-bar').style.width = `${Math.min(100, (player.appearances / 50) * 100)}%`;
-    document.getElementById('modal-player-goals-bar').style.width = `${Math.min(100, (player.goals / 30) * 100)}%`;
-    document.getElementById('modal-player-assists-bar').style.width = `${Math.min(100, (player.assists / 20) * 100)}%`;
-    document.getElementById('modal-player-gpm-bar').style.width = `${Math.min(100, ((player.goals / Math.max(1, player.appearances)) / 1.5) * 100)}%`;
-    document.getElementById('modal-player-apm-bar').style.width = `${Math.min(100, ((player.assists / Math.max(1, player.appearances)) / 1.5) * 100)}%`;
-
+    applyPlayerToModal(player);
     playerModal.classList.add('active');
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/players/${playerId}`);
+        if (!response.ok) return;
+
+        const data = await response.json();
+        if (data.player) {
+            const mergedPlayer = { ...player, ...data.player };
+            state.players = state.players.map((entry) => (entry.id == playerId ? mergedPlayer : entry));
+            applyPlayerToModal(mergedPlayer);
+        }
+    } catch (error) {
+        console.error('Error loading player details:', error);
+    }
 }
 
 async function fetchPlayers() {
