@@ -377,7 +377,7 @@ function renderLineup(lineup) {
     }
     if (lineupOpponentLabel) {
         lineupOpponentLabel.textContent = lineup.opponent
-            ? `Latest lineup vs ${lineup.opponent}`
+            ? `${lineup.lineupType === 'upcoming' ? 'Upcoming lineup' : 'Latest lineup'} vs ${lineup.opponent}`
             : 'Latest lineup';
     }
 
