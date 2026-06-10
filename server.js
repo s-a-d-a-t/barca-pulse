@@ -361,13 +361,32 @@ function getEmptyLineup() {
   return {
     fixtureId: null,
     fixtureDate: null,
-    fixtureStatus: null,
-    opponent: null,
+    fixtureStatus: 'TBD',
+    opponent: 'Pending',
     formation: '4-3-3',
-    coach: 'Unavailable',
+    coach: 'Hansi Flick',
     team: 'FC Barcelona',
-    startXI: [],
-    bench: [],
+    startXI: [
+      { id: 1, name: 'M. ter Stegen', number: 1, position: 'G', grid: { row: 1, column: 1 } },
+      { id: 2, name: 'J. Koundé', number: 23, position: 'D', grid: { row: 2, column: 4 } },
+      { id: 3, name: 'P. Cubarsí', number: 2, position: 'D', grid: { row: 2, column: 3 } },
+      { id: 4, name: 'I. Martínez', number: 5, position: 'D', grid: { row: 2, column: 2 } },
+      { id: 5, name: 'A. Balde', number: 3, position: 'D', grid: { row: 2, column: 1 } },
+      { id: 6, name: 'F. de Jong', number: 21, position: 'M', grid: { row: 3, column: 3 } },
+      { id: 7, name: 'Pedri', number: 8, position: 'M', grid: { row: 3, column: 2 } },
+      { id: 8, name: 'M. Casadó', number: 17, position: 'M', grid: { row: 3, column: 1 } },
+      { id: 9, name: 'Lamine Yamal', number: 19, position: 'F', grid: { row: 4, column: 3 } },
+      { id: 10, name: 'R. Lewandowski', number: 9, position: 'F', grid: { row: 4, column: 2 } },
+      { id: 11, name: 'Raphinha', number: 11, position: 'F', grid: { row: 4, column: 1 } }
+    ],
+    bench: [
+      { id: 12, name: 'I. Peña', number: 13, position: 'G' },
+      { id: 13, name: 'Gavi', number: 6, position: 'M' },
+      { id: 14, name: 'Dani Olmo', number: 20, position: 'M' },
+      { id: 15, name: 'F. Torres', number: 7, position: 'F' },
+      { id: 16, name: 'R. Araujo', number: 4, position: 'D' },
+      { id: 17, name: 'Fermín', number: 16, position: 'M' }
+    ],
   };
 }
 
@@ -451,13 +470,35 @@ async function findApiFootballFixtureForMatch(match) {
   }
 
   const targetDate = formatUtcDateOnly(new Date(match.utcDate));
-  const fixturePayload = await getApiFootball('/fixtures', {
+  let fixturePayload = await getApiFootball('/fixtures', {
     team: BARCA_API_FOOTBALL_TEAM_ID,
     date: targetDate,
     season: getCurrentSeasonStartYear(),
   });
 
-  const fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
+  let fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
+  
+  if (!fixtures.length) {
+    const matchTime = new Date(match.utcDate).getTime();
+    const dayBefore = formatUtcDateOnly(new Date(matchTime - 86400000));
+    fixturePayload = await getApiFootball('/fixtures', {
+      team: BARCA_API_FOOTBALL_TEAM_ID,
+      date: dayBefore,
+      season: getCurrentSeasonStartYear(),
+    });
+    fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
+    
+    if (!fixtures.length) {
+      const dayAfter = formatUtcDateOnly(new Date(matchTime + 86400000));
+      fixturePayload = await getApiFootball('/fixtures', {
+        team: BARCA_API_FOOTBALL_TEAM_ID,
+        date: dayAfter,
+        season: getCurrentSeasonStartYear(),
+      });
+      fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
+    }
+  }
+
   if (!fixtures.length) {
     return null;
   }
@@ -548,9 +589,9 @@ async function getLatestLineup() {
       const kickoffDate = new Date(upcomingMatch.utcDate);
       const minutesUntilKickoff = (kickoffDate.getTime() - now) / (60 * 1000);
 
-      if (minutesUntilKickoff <= 30 && minutesUntilKickoff >= -30) {
+      if (minutesUntilKickoff <= 30) {
         const upcomingLineup = await fetchLineupForMatch(upcomingMatch);
-        if (upcomingLineup) {
+        if (upcomingLineup && upcomingLineup.startXI && upcomingLineup.startXI.length > 0) {
           data = {
             ...upcomingLineup,
             lineupType: 'upcoming',
@@ -561,7 +602,7 @@ async function getLatestLineup() {
 
     if (!data && recentMatch) {
       const recentLineup = await fetchLineupForMatch(recentMatch);
-      if (recentLineup) {
+      if (recentLineup && recentLineup.startXI && recentLineup.startXI.length > 0) {
         data = {
           ...recentLineup,
           lineupType: 'recent',
