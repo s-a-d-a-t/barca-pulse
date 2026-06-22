@@ -1048,9 +1048,33 @@ h6 {
 }
 
 /* Player Modal Specific Styles */
+.player-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.player-modal.active {
+    display: flex;
+}
+
 .player-modal .modal-content {
+    width: min(100%, 64rem);
     max-height: 85vh;
     overflow-y: auto;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.player-modal.active .modal-content {
+    opacity: 1;
+    transform: scale(1);
 }
 
 /* Custom scrollbar for modal */
