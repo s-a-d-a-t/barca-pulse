@@ -62,12 +62,14 @@ export function renderPlayers(playersList) {
         playerCard.innerHTML = `
             ${statusBadgeHTML}
             <div class="p-6 relative z-10">
-                <div class="relative mx-auto w-32 h-32 rounded-full overflow-hidden border-4 border-white/20 mb-4 shadow-lg group-hover:scale-110 transition-transform duration-500">
-                    <img src="${player.photo}"
-                         alt="${player.name}"
-                         class="w-full h-full object-cover"
-                         onerror="this.onerror=null;this.src='https://placehold.co/250x250/002855/ffffff?text=Player';">
-                    <div class="absolute bottom-0 left-0 right-0 player-number-badge text-white text-sm py-1.5 font-bold">#${getShirtDisplay(player)}</div>
+                <div class="relative mx-auto w-32 h-32 mb-4 group-hover:scale-110 transition-transform duration-500">
+                    <div class="w-full h-full rounded-full overflow-hidden border-4 border-white/20 shadow-lg">
+                        <img src="${player.photo}"
+                             alt="${player.name}"
+                             class="w-full h-full object-cover"
+                             onerror="this.onerror=null;this.src='https://placehold.co/250x250/002855/ffffff?text=Player';">
+                    </div>
+                    <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 player-number-badge text-white text-xs px-2.5 py-1 rounded-full font-bold border border-white/10 shadow-md">#${getShirtDisplay(player)}</div>
                 </div>
                 <h3 class="font-bold text-lg text-white mb-1">${getLastName(player.name)}</h3>
                 <p class="text-gray-400 text-sm uppercase tracking-wider">${player.position}</p>
