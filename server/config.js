@@ -5,6 +5,12 @@ module.exports = {
   NEWS_API_KEY: process.env.NEWS_API_KEY,
   FOOTBALL_DATA_API_KEY: process.env.FOOTBALL_DATA_API_KEY,
   API_FOOTBALL_KEY: process.env.API_FOOTBALL_KEY,
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+
+  GEMINI_MODELS: {
+    embedding: 'text-embedding-004',
+    chat: 'gemini-2.5-flash'
+  },
 
   API_FOOTBALL_BASE_URL: 'https://v3.football.api-sports.io',
   FOOTBALL_DATA_BASE_URL: 'https://api.football-data.org/v4',

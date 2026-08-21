@@ -1657,3 +1657,150 @@ button:hover::before,
         height: 48px;
     }
 }
+
+/* ==========================================================================
+   BarcaBot AI Chatbot Styles
+   ========================================================================== */
+
+#chatbot-container.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Chat bubble structures */
+.chat-message {
+    animation: messageReveal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+}
+
+@keyframes messageReveal {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.chat-message.user {
+    flex-direction: row-reverse;
+}
+
+.chat-message.user .message-bubble {
+    background: linear-gradient(135deg, #a50044 0%, #db0030 100%);
+    border-radius: 20px 20px 0 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    margin-right: 12px;
+}
+
+.chat-message.bot .message-bubble {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 20px 20px 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-left: 12px;
+}
+
+/* Source citations */
+.source-citation-container {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-t: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.75rem;
+}
+
+.source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(253, 213, 22, 0.15);
+    color: #fdd516;
+    border: 1px solid rgba(253, 213, 22, 0.3);
+    padding: 2px 8px;
+    border-radius: 99px;
+    margin-right: 6px;
+    margin-top: 4px;
+    transition: all 0.2s ease;
+}
+
+.source-badge:hover {
+    background: rgba(253, 213, 22, 0.3);
+    transform: scale(1.03);
+}
+
+/* Typing Indicator Animation */
+.typing-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Slow Spin Animation */
+.animate-spin-slow {
+    animation: spinSlow 15s linear infinite;
+}
+
+@keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Markdown layouts in bubbles */
+.message-bubble strong {
+    font-weight: 700;
+    color: #fdd516;
+}
+
+.message-bubble ul, .message-bubble ol {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-left: 20px;
+}
+
+.message-bubble ul {
+    list-style-type: disc;
+}
+
+.message-bubble ol {
+    list-style-type: decimal;
+}
+
+.message-bubble li {
+    margin-bottom: 3px;
+}
+

@@ -696,10 +696,62 @@
         </div>
     </footer>
 
-    <!-- Floating Ball Animation -->
-    <div class="fixed bottom-6 right-6 floating">
-        <div class="w-16 h-16 rounded-full bg-[#a50044] flex items-center justify-center shadow-lg cursor-pointer">
-            <i class="fas fa-futbol text-white text-2xl"></i>
+    <!-- Chatbot Widget -->
+    <div id="chatbot-container" class="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] h-[520px] max-h-[70vh] glass-card text-white border border-white/20 rounded-2xl shadow-2xl flex flex-col z-50 transform translate-y-4 opacity-0 pointer-events-none transition-all duration-300">
+        <!-- Chat Header -->
+        <div class="p-4 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-[#002855] to-[#a50044] rounded-t-2xl">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                    <i class="fas fa-robot text-[#fdd516]"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm tracking-wide">BarcaBot AI</h3>
+                    <p class="text-[10px] text-gray-300">FC Barcelona Fan Assistant</p>
+                </div>
+            </div>
+            <button id="close-chat" class="text-gray-300 hover:text-white transition">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 scroll-smooth">
+            <!-- Welcome Message -->
+            <div class="chat-message bot flex items-start space-x-3">
+                <div class="w-8 h-8 rounded-full bg-[#002855] border border-white/10 flex items-center justify-center text-xs text-white shrink-0 font-bold">BB</div>
+                <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-sm leading-relaxed border border-white/5">
+                    <p class="mb-2">¡Hola! I am **BarcaBot**, your BarçaPulse assistant. Visca el Barça! 🔴🔵</p>
+                    <p class="mb-2">Ask me anything about our squad, fixtures, latest news, history, or trophies!</p>
+                    <div class="text-[11px] text-yellow-300/80 italic font-semibold">Tip: I can also search Google in real-time to answer recent questions!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Quick Suggestions -->
+        <div class="px-4 py-2 border-t border-white/5 bg-white/5 flex gap-2 overflow-x-auto scrollbar-none whitespace-nowrap">
+            <button class="quick-suggestion bg-white/5 hover:bg-white/15 text-xs px-3 py-1.5 rounded-full transition border border-white/10 text-gray-200">Who is Barca's coach?</button>
+            <button class="quick-suggestion bg-white/5 hover:bg-white/15 text-xs px-3 py-1.5 rounded-full transition border border-white/10 text-gray-200">Next match?</button>
+            <button class="quick-suggestion bg-white/5 hover:bg-white/15 text-xs px-3 py-1.5 rounded-full transition border border-white/10 text-gray-200">Who is number 9?</button>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form id="chat-form" class="p-3 border-t border-white/10 bg-[#0a1018]/90 rounded-b-2xl flex items-center space-x-2">
+            <input type="text" id="chat-input" placeholder="Ask about Barça..." autocomplete="off" class="flex-1 bg-white/10 focus:bg-white/15 border border-white/10 focus:border-[#fdd516]/50 rounded-full px-4 py-2 text-sm text-white focus:outline-none placeholder-gray-400 transition">
+            <button type="submit" class="bg-[#db0030] hover:bg-[#b00020] text-white w-9 h-9 rounded-full flex items-center justify-center shadow-lg transition-all transform hover:scale-105 active:scale-95 shrink-0">
+                <i class="fas fa-paper-plane text-sm"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Floating Ball Trigger -->
+    <div id="chat-trigger" class="fixed bottom-6 right-6 z-50 cursor-pointer transition-transform duration-300 hover:scale-110 active:scale-95">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-[#002855] via-[#a50044] to-[#db0030] flex items-center justify-center shadow-2xl relative border border-white/20 group">
+            <i class="fas fa-futbol text-white text-3xl animate-spin-slow"></i>
+            <span class="absolute -top-1 -right-1 bg-[#fdd516] text-[#002855] font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-full border border-[#002855] shadow-md animate-pulse">AI</span>
+            <!-- Tooltip -->
+            <div class="absolute right-20 bg-[#002855] text-white text-xs py-2 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap shadow-lg border border-white/10">
+                Ask BarcaBot AI!
+            </div>
         </div>
     </div>
 

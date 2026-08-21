@@ -5,6 +5,7 @@ import { renderNews } from './ui/news.js';
 import { renderPlayers, applyPlayerFilter, openPlayerModal } from './ui/players.js';
 import { renderLineup } from './ui/lineup.js';
 import { renderFixtures, updateFixtureDeckEffect, smoothScrollTo } from './ui/fixtures.js';
+import { initChat } from './ui/chat.js';
 
 function setupIntersectionObserver() {
     const fadeElements = document.querySelectorAll('.fade-in');
@@ -159,6 +160,7 @@ async function triggerFixturesFetch() {
 async function initApp() {
     setupEventListeners();
     setupIntersectionObserver();
+    initChat();
 
     await Promise.allSettled([
         triggerNewsFetch(),
