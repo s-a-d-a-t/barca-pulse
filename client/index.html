@@ -192,7 +192,17 @@
                 </button>
             </div>
 
-            <div id="fixtures-container" class="news-grid"></div>
+            <div class="fixtures-slider-wrapper relative">
+                <button id="fixtures-prev" class="fixture-nav-btn prev-btn" aria-label="Previous Matches">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div id="fixtures-container" class="fixtures-scroll-container"></div>
+                
+                <button id="fixtures-next" class="fixture-nav-btn next-btn" aria-label="Next Matches">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
 
             <p class="text-center text-xs uppercase tracking-[0.2em] text-gray-500 mt-8">
                 Data provided by football-data.org

@@ -414,6 +414,56 @@ function renderLineup(lineup) {
     }
 }
 
+function updateFixtureDeckEffect() {
+    const prevBtn = document.getElementById('fixtures-prev');
+    const nextBtn = document.getElementById('fixtures-next');
+    if (!fixturesContainer) return;
+
+    const scrollLeft = fixturesContainer.scrollLeft;
+    const containerWidth = fixturesContainer.clientWidth || 320;
+    const maxScroll = fixturesContainer.scrollWidth - containerWidth;
+
+    // Update Navigation buttons
+    if (prevBtn && nextBtn) {
+        if (scrollLeft <= 5) {
+            prevBtn.classList.add('nav-disabled');
+        } else {
+            prevBtn.classList.remove('nav-disabled');
+        }
+
+        if (scrollLeft >= maxScroll - 5) {
+            nextBtn.classList.add('nav-disabled');
+        } else {
+            nextBtn.classList.remove('nav-disabled');
+        }
+    }
+
+    // Update Card Stacking / Deck Reveal Effect
+    const cards = fixturesContainer.querySelectorAll('.fixture-card');
+    cards.forEach((card, index) => {
+        const cardScrollPos = index * containerWidth;
+        const diff = scrollLeft - cardScrollPos;
+        const ratio = diff / containerWidth; // 0 when active, 1 when scrolled away, -1 when upcoming
+
+        if (ratio > 0 && ratio <= 1.05) {
+            // Scrolled away (to the left) - scale down, fade, slide slightly down
+            card.style.transform = `scale(${1 - ratio * 0.15}) translateY(${ratio * 12}px) translateZ(0)`;
+            card.style.opacity = `${1 - ratio * 0.8}`;
+            card.style.pointerEvents = 'none';
+        } else if (ratio < 0) {
+            // Upcoming card (to the right) - reset to default (will slide in using CSS position: sticky)
+            card.style.transform = 'scale(1) translateY(0) translateZ(0)';
+            card.style.opacity = '1';
+            card.style.pointerEvents = 'auto';
+        } else {
+            // Fully active card
+            card.style.transform = 'scale(1) translateY(0) translateZ(0)';
+            card.style.opacity = '1';
+            card.style.pointerEvents = 'auto';
+        }
+    });
+}
+
 function renderFixtures(fixtures) {
     if (!fixturesContainer) return;
 
@@ -428,7 +478,10 @@ function renderFixtures(fixtures) {
         return;
     }
 
-    fixtures.forEach((fixture) => {
+    // Sort by date ascending (nearest upcoming first)
+    const sortedFixtures = [...fixtures].sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
+
+    sortedFixtures.forEach((fixture) => {
         const date = new Date(fixture.utcDate);
         const formattedDate = date.toLocaleDateString('en-US', {
             weekday: 'short',
@@ -440,49 +493,115 @@ function renderFixtures(fixtures) {
             minute: '2-digit',
         });
 
-        const card = document.createElement('div');
-        card.className = 'news-card fade-in';
-        card.innerHTML = `
-            <div class="news-image-container">
-                <div class="news-date-badge">${formattedDate}</div>
-                <div class="news-source-tag">${fixture.venue}</div>
-                <img src="https://placehold.co/600x400/002855/ffffff?text=Matchday+${fixture.matchday || 'N/A'}"
-                     alt="${fixture.opponent}"
-                     onerror="this.onerror=null;this.src='https://placehold.co/600x400/002855/ffffff?text=Fixture';">
-                <div class="news-image-overlay"></div>
-            </div>
-            <div class="news-content">
-                <h3 class="news-title line-clamp-2">${fixture.opponent}</h3>
-                <p class="news-description line-clamp-3">
-                    ${fixture.competition}
-                </p>
-                <div class="space-y-2 text-sm text-gray-300 mb-4">
-                    <div class="flex justify-between gap-4">
-                        <span>Date</span>
-                        <span class="text-white font-semibold">${formattedDate}</span>
-                    </div>
-                    <div class="flex justify-between gap-4">
-                        <span>Kickoff</span>
-                        <span class="text-white font-semibold">${formattedTime}</span>
-                    </div>
-                    <div class="flex justify-between gap-4">
-                        <span>Home/Away</span>
-                        <span class="text-white font-semibold">${fixture.venue}</span>
-                    </div>
-                    <div class="flex justify-between gap-4">
-                        <span>Matchday</span>
-                        <span class="text-white font-semibold">${fixture.matchday ?? 'N/A'}</span>
-                    </div>
+        // Generate initials for the opponent
+        const oppInitials = (fixture.opponent || 'OPP')
+            .split(/\s+/)
+            .map((p) => p[0])
+            .join('')
+            .slice(0, 3)
+            .toUpperCase();
+
+        const oppCrest = fixture.opponentCrest
+            ? `<img src="${fixture.opponentCrest}" alt="${fixture.opponent}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+            : '';
+
+        const barcaCrest = fixture.barcaCrest
+            ? `<img src="${fixture.barcaCrest}" alt="FC Barcelona" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+            : `<img src="https://ssl.gstatic.com/onebox/media/sports/logos/paYnEE8hcrP96neHRNofhQ_64x64.png" alt="FC Barcelona">`;
+
+        // Home / Away ordering
+        let homeTeamName, homeLogoHTML, awayTeamName, awayLogoHTML;
+
+        if (fixture.venue === 'Home') {
+            homeTeamName = 'FC Barcelona';
+            homeLogoHTML = `
+                ${barcaCrest}
+                <div class="w-full h-full rounded-full bg-gradient-to-br from-[#002855] to-[#db0030] flex items-center justify-center text-xs font-bold text-white" style="display: none;">
+                    FCB
                 </div>
-                <div class="news-footer">
-                    <span class="read-more-btn cursor-default">
-                        ${fixture.competitionCode || 'Fixture'} <i class="fas fa-calendar-alt"></i>
-                    </span>
+            `;
+            awayTeamName = fixture.opponent;
+            awayLogoHTML = `
+                ${oppCrest}
+                <div class="w-full h-full rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-xs font-bold text-[#fdd516]" style="${fixture.opponentCrest ? 'display: none;' : 'display: flex;'}">
+                    ${oppInitials}
+                </div>
+            `;
+        } else {
+            homeTeamName = fixture.opponent;
+            homeLogoHTML = `
+                ${oppCrest}
+                <div class="w-full h-full rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-xs font-bold text-[#fdd516]" style="${fixture.opponentCrest ? 'display: none;' : 'display: flex;'}">
+                    ${oppInitials}
+                </div>
+            `;
+            awayTeamName = 'FC Barcelona';
+            awayLogoHTML = `
+                ${barcaCrest}
+                <div class="w-full h-full rounded-full bg-gradient-to-br from-[#002855] to-[#db0030] flex items-center justify-center text-xs font-bold text-white" style="display: none;">
+                    FCB
+                </div>
+            `;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'fixture-card fade-in';
+        card.innerHTML = `
+            <div class="fixture-header">
+                <span class="fixture-badge-league">${fixture.competitionCode || 'Fixture'}</span>
+                <span class="fixture-badge-matchday">Matchday ${fixture.matchday || 'N/A'}</span>
+            </div>
+            
+            <div class="fixture-matchup">
+                <div class="fixture-team">
+                    <div class="fixture-logo">
+                        ${homeLogoHTML}
+                    </div>
+                    <span class="fixture-team-name">${homeTeamName}</span>
+                </div>
+                
+                <div class="fixture-vs-divider">
+                    <div class="fixture-vs-circle">VS</div>
+                </div>
+                
+                <div class="fixture-team">
+                    <div class="fixture-logo">
+                        ${awayLogoHTML}
+                    </div>
+                    <span class="fixture-team-name">${awayTeamName}</span>
+                </div>
+            </div>
+            
+            <div class="fixture-details">
+                <div class="fixture-info-row">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Date</span>
+                    <span class="fixture-info-value">${formattedDate}</span>
+                </div>
+                <div class="fixture-info-row">
+                    <i class="fas fa-clock"></i>
+                    <span>Kickoff</span>
+                    <span class="fixture-info-value">${formattedTime}</span>
+                </div>
+                <div class="fixture-info-row">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Venue</span>
+                    <span class="fixture-info-value">${fixture.venue === 'Home' ? 'Spotify Camp Nou' : 'Away'}</span>
+                </div>
+            </div>
+            
+            <div class="fixture-card-footer">
+                <div class="fixture-comp-pill">
+                    <i class="fas fa-trophy"></i>
+                    <span>${fixture.competition}</span>
                 </div>
             </div>
         `;
         fixturesContainer.appendChild(card);
     });
+
+    // Update navigation arrows and stack deck state after cards are rendered
+    setTimeout(updateFixtureDeckEffect, 100);
 }
 
 async function openPlayerModal(playerId) {
@@ -730,14 +849,26 @@ function setupEventListeners() {
         });
     });
 
-    const refreshNewsBtn = document.getElementById('refreshNews');
-    if (refreshNewsBtn) {
-        refreshNewsBtn.addEventListener('click', fetchNews);
-    }
-
     const refreshFixturesBtn = document.getElementById('refreshFixtures');
     if (refreshFixturesBtn) {
         refreshFixturesBtn.addEventListener('click', fetchFixtures);
+    }
+
+    const prevBtn = document.getElementById('fixtures-prev');
+    const nextBtn = document.getElementById('fixtures-next');
+    if (prevBtn && nextBtn && fixturesContainer) {
+        prevBtn.addEventListener('click', () => {
+            const cardWidth = fixturesContainer.clientWidth || 500;
+            fixturesContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const cardWidth = fixturesContainer.clientWidth || 500;
+            fixturesContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
+        });
+
+        fixturesContainer.addEventListener('scroll', updateFixtureDeckEffect);
+        window.addEventListener('resize', updateFixtureDeckEffect);
     }
 
     document.addEventListener('keydown', (event) => {

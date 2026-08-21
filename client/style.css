@@ -1367,3 +1367,293 @@ button:hover::before,
         transform: rotate(360deg);
     }
 }
+
+/* ==========================================================================
+   Upcoming Fixtures Slider & Card Styles
+   ========================================================================== */
+
+.fixtures-slider-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 2rem auto;
+}
+
+.fixtures-scroll-container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    padding: 20px 0 30px 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    width: 100%;
+}
+
+.fixtures-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Fixture Slide Navigation Buttons */
+.fixture-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0, 40, 85, 0.85);
+    border: 2px solid rgba(253, 213, 22, 0.4);
+    color: white;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 40;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+}
+
+.fixture-nav-btn:hover {
+    background: var(--barca-red);
+    border-color: var(--barca-yellow);
+    box-shadow: 0 0 15px rgba(219, 0, 48, 0.6);
+    color: white;
+}
+
+.fixture-nav-btn.prev-btn {
+    left: -70px;
+}
+
+.fixture-nav-btn.next-btn {
+    right: -70px;
+}
+
+.fixture-nav-btn.prev-btn:hover {
+    transform: translateY(-50%) scale(1.1) translateX(-3px);
+}
+
+.fixture-nav-btn.next-btn:hover {
+    transform: translateY(-50%) scale(1.1) translateX(3px);
+}
+
+.fixture-nav-btn.nav-disabled {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Reshaped Fixture Card */
+.fixture-card {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: center;
+    position: sticky;
+    left: 0;
+    background: linear-gradient(135deg, rgba(0, 40, 85, 0.8) 0%, rgba(10, 16, 24, 0.9) 100%);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(253, 213, 22, 0.25);
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 24px;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.fixture-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, var(--barca-blue), transparent, var(--barca-red));
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.fixture-card:hover {
+    border-color: rgba(253, 213, 22, 0.55);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(253, 213, 22, 0.2);
+}
+
+.fixture-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.fixture-badge-league {
+    background: rgba(0, 40, 85, 0.8);
+    color: var(--barca-yellow);
+    border: 1px solid rgba(253, 213, 22, 0.3);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.fixture-badge-matchday {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.fixture-matchup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.fixture-team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 42%;
+    text-align: center;
+}
+
+.fixture-logo {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 6px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.fixture-card:hover .fixture-logo {
+    transform: scale(1.08);
+}
+
+.fixture-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.fixture-team-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    height: 2.4em;
+}
+
+.fixture-vs-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16%;
+}
+
+.fixture-vs-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--barca-red) 0%, #991b1b 100%);
+    border: 2px solid var(--barca-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--barca-yellow);
+    box-shadow: 0 0 10px rgba(253, 213, 22, 0.3);
+}
+
+.fixture-details {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fixture-info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.fixture-info-row i {
+    width: 14px;
+    color: var(--barca-yellow);
+    font-size: 0.85rem;
+}
+
+.fixture-info-value {
+    color: white;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.fixture-card-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.fixture-comp-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+@media (max-width: 768px) {
+    .fixture-nav-btn {
+        display: none; /* Hide arrows on touch screens, swipe scroll is native and works best */
+    }
+    .fixtures-scroll-container {
+        gap: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .fixture-card {
+        flex: 0 0 290px;
+        width: 290px;
+        padding: 16px;
+    }
+    .fixture-logo {
+        width: 48px;
+        height: 48px;
+    }
+}

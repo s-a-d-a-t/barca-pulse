@@ -661,6 +661,14 @@ async function getUpcomingFixtures() {
           match.homeTeam?.id === BARCA_FOOTBALL_DATA_TEAM_ID
             ? match.awayTeam?.name
             : match.homeTeam?.name,
+        opponentCrest:
+          match.homeTeam?.id === BARCA_FOOTBALL_DATA_TEAM_ID
+            ? match.awayTeam?.crest
+            : match.homeTeam?.crest,
+        barcaCrest:
+          match.homeTeam?.id === BARCA_FOOTBALL_DATA_TEAM_ID
+            ? match.homeTeam?.crest
+            : match.awayTeam?.crest,
         competition: match.competition?.name || 'Competition',
         competitionCode: match.competition?.code || '',
         utcDate: match.utcDate,
@@ -668,6 +676,8 @@ async function getUpcomingFixtures() {
         venue: match.homeTeam?.id === BARCA_FOOTBALL_DATA_TEAM_ID ? 'Home' : 'Away',
         homeTeam: match.homeTeam?.name || '',
         awayTeam: match.awayTeam?.name || '',
+        homeCrest: match.homeTeam?.crest || '',
+        awayCrest: match.awayTeam?.crest || '',
       }));
 
     return {
