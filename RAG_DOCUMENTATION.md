@@ -21,7 +21,7 @@ graph TD
     Fetch --> Chunks[Create Text Chunks: Players, Fixtures, News, History]
     Chunks --> CacheCheck{Text in vector_store.json?}
     CacheCheck -->|Yes| Reuse[Reuse Cached Embedding Vector]
-    CacheCheck -->|No| Embed[Call Gemini text-embedding-004 REST API]
+    CacheCheck -->|No| Embed[Call Gemini gemini-embedding-001 REST API]
     Reuse --> Store[Save to server/data/vector_store.json]
     Embed --> Store
 ```
@@ -30,11 +30,11 @@ graph TD
 ```mermaid
 graph TD
     User[User enters question in Chat Widget] --> Route[Express POST /api/rag/query]
-    Route --> EmbedQuery[Call Gemini text-embedding-004 for Query Embedding]
+    Route --> EmbedQuery[Call Gemini gemini-embedding-001 for Query Embedding]
     EmbedQuery --> VectorSearch[Perform Cosine Similarity against vector_store.json]
     VectorSearch --> Retrieve[Retrieve Top K contexts above similarity threshold]
     Retrieve --> PromptBuilder[Inject Local Context into System Prompt]
-    PromptBuilder --> GeminiChat[Call Gemini gemini-2.5-flash with Grounding Enabled]
+    PromptBuilder --> GeminiChat[Call Gemini gemini-3.5-flash with Grounding]
     GeminiChat -->|Grounding Search| GoogleSearch[Google Search Grounding]
     GoogleSearch --> Generate[Generate final answer + Citation Links]
     Generate --> Client[Render Message Bubble with Markdown & Citations]
@@ -46,8 +46,8 @@ graph TD
 
 No external complex database or heavy machine learning libraries (Python/FastAPI) are required. The entire pipeline is built in vanilla Node.js:
 
-* **Large Language Model**: Google Gemini API (`gemini-2.5-flash` for completions, `text-embedding-004` for vectors).
-* **Search Grounding**: Google Search Tool enabled on the Gemini chat API.
+* **Large Language Model**: Google Gemini API (`gemini-3.5-flash` for completions, `gemini-embedding-001` for vectors).
+* **Search Grounding**: Google Search Tool enabled on the Gemini chat API (optional, configurable via `ENABLE_SEARCH_GROUNDING` option).
 * **Vector Store**: A lightweight, file-based JSON database (`server/data/vector_store.json`).
 * **Vector Math**: Cosine similarity computed in plain JavaScript using vector dot-products.
 * **HTTP Client**: `axios` (used for direct REST requests to Gemini endpoints, avoiding heavy SDK downloads).
@@ -86,7 +86,11 @@ NEWS_API_KEY=your_news_key
 FOOTBALL_DATA_API_KEY=your_football_data_key
 API_FOOTBALL_KEY=your_api_football_key
 GEMINI_API_KEY=your_gemini_api_key
+ENABLE_SEARCH_GROUNDING=false
 ```
+
+> [!NOTE]
+> Keep `ENABLE_SEARCH_GROUNDING=false` if you are using the Free Tier key to prevent 429 quota block errors. If you upgrade to a paid account and want real-time Google web search support, flip it to `true`.
 
 ### Step 3: Run the Indexer
 To build your vector database for the first time, start the server and run the indexer using curl:
