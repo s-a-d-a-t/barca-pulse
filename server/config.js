@@ -8,9 +8,11 @@ module.exports = {
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 
   GEMINI_MODELS: {
-    embedding: 'text-embedding-004',
-    chat: 'gemini-2.5-flash'
+    embedding: 'gemini-embedding-001',
+    chat: 'gemini-3.5-flash'
   },
+  
+  ENABLE_SEARCH_GROUNDING: process.env.ENABLE_SEARCH_GROUNDING === 'true',
 
   API_FOOTBALL_BASE_URL: 'https://v3.football.api-sports.io',
   FOOTBALL_DATA_BASE_URL: 'https://api.football-data.org/v4',

@@ -175,16 +175,19 @@ async function queryRAG(userMessage, messageHistory = []) {
       systemInstruction: {
         parts: [{ text: systemInstruction }]
       },
-      tools: [
-        {
-          googleSearch: {}
-        }
-      ],
       generationConfig: {
         temperature: 0.3,
         maxOutputTokens: 800
       }
     };
+
+    if (config.ENABLE_SEARCH_GROUNDING) {
+      requestData.tools = [
+        {
+          googleSearch: {}
+        }
+      ];
+    }
 
     const response = await axios.post(url, requestData, { timeout: 25000 });
     
