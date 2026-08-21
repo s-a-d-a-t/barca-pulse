@@ -414,6 +414,24 @@ function renderLineup(lineup) {
     }
 }
 
+function smoothScrollTo(targetLeft) {
+    if (!fixturesContainer) return;
+    
+    // Temporarily disable scroll snapping to prevent snap cancellation during smooth programmatic scroll
+    fixturesContainer.style.scrollSnapType = 'none';
+    
+    fixturesContainer.scrollTo({
+        left: targetLeft,
+        behavior: 'smooth'
+    });
+    
+    // Restore scroll snap after the smooth scroll completes (typically 500ms)
+    setTimeout(() => {
+        fixturesContainer.style.scrollSnapType = 'x mandatory';
+        updateFixtureDeckEffect();
+    }, 500);
+}
+
 function updateFixtureDeckEffect() {
     const prevBtn = document.getElementById('fixtures-prev');
     const nextBtn = document.getElementById('fixtures-next');
@@ -859,12 +877,17 @@ function setupEventListeners() {
     if (prevBtn && nextBtn && fixturesContainer) {
         prevBtn.addEventListener('click', () => {
             const cardWidth = fixturesContainer.clientWidth || 500;
-            fixturesContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+            const currentIndex = Math.round(fixturesContainer.scrollLeft / cardWidth);
+            const targetIndex = Math.max(0, currentIndex - 1);
+            smoothScrollTo(targetIndex * cardWidth);
         });
 
         nextBtn.addEventListener('click', () => {
             const cardWidth = fixturesContainer.clientWidth || 500;
-            fixturesContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
+            const currentIndex = Math.round(fixturesContainer.scrollLeft / cardWidth);
+            const maxIndex = fixturesContainer.querySelectorAll('.fixture-card').length - 1;
+            const targetIndex = Math.min(maxIndex, currentIndex + 1);
+            smoothScrollTo(targetIndex * cardWidth);
         });
 
         fixturesContainer.addEventListener('scroll', updateFixtureDeckEffect);
