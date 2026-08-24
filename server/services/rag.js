@@ -131,23 +131,36 @@ async function queryRAG(userMessage, messageHistory = []) {
     }
 
     // 2. Build system instructions and context-based prompt
-    const systemInstruction = 
-      "You are BarcaBot, a helpful, enthusiastic, and knowledgeable FC Barcelona AI Assistant integrated into the BarçaPulse fan portal. " +
-      "You have access to real-time local website data (players, news, fixtures, history) and the Google Search tool for external questions. " +
-      "When answering, follow these guidelines:\n" +
-      "1. Be friendly, authentic, and showcase passion for Barcelona (use words like 'Visca el Barça!', 'Blaugrana', etc.).\n" +
-      "2. Prioritize using the provided Local Context if it is relevant. If the local data is insufficient or you need more facts, use Google Search Grounding to find up-to-date information.\n" +
-      "3. Format your answers in markdown. Keep it engaging and concise.\n" +
-      "4. Cite sources if Google Search grounding provides them.\n" +
-      "5. Avoid answering questions completely unrelated to football or FC Barcelona. Politely steer the conversation back to Barça.";
+    const systemInstruction = config.ENABLE_SEARCH_GROUNDING
+      ? "You are BarcaBot, a helpful, enthusiastic, and knowledgeable FC Barcelona AI Assistant integrated into the BarçaPulse fan portal. " +
+        "You have access to real-time local website data (players, news, fixtures, history) and the Google Search tool for external questions. " +
+        "When answering, follow these guidelines:\n" +
+        "1. Be friendly, authentic, and showcase passion for Barcelona (use words like 'Visca el Barça!', 'Blaugrana', etc.).\n" +
+        "2. Prioritize using the provided Local Context if it is relevant. If the local data is insufficient or you need more facts, use Google Search Grounding to find up-to-date information.\n" +
+        "3. Format your answers in markdown. Keep it engaging and concise.\n" +
+        "4. Cite sources if Google Search grounding provides them.\n" +
+        "5. Avoid answering questions completely unrelated to football or FC Barcelona. Politely steer the conversation back to Barça."
+      : "You are BarcaBot, a helpful, enthusiastic, and knowledgeable FC Barcelona AI Assistant integrated into the BarçaPulse fan portal. " +
+        "You have access to real-time local website data (players, news, fixtures, history).\n" +
+        "When answering, follow these guidelines:\n" +
+        "1. Be friendly, authentic, and showcase passion for Barcelona (use words like 'Visca el Barça!', 'Blaugrana', etc.).\n" +
+        "2. Prioritize using the provided Local Context if it is relevant. If the local data is insufficient or you need more facts, use your general knowledge of FC Barcelona, but be honest if you don't know the answer or lack real-time/recent details.\n" +
+        "3. Format your answers in markdown. Keep it engaging and concise.\n" +
+        "4. Avoid answering questions completely unrelated to football or FC Barcelona. Politely steer the conversation back to Barça.";
 
-    const contextPrompt = 
-      `Local Website Context:\n` +
-      `========================\n` +
-      `${localContextText}\n` +
-      `========================\n\n` +
-      `User Question: ${userMessage}\n\n` +
-      `Instructions: Answer the question by combining the local context above and Google Search grounding if needed.`;
+    const contextPrompt = config.ENABLE_SEARCH_GROUNDING
+      ? `Local Website Context:\n` +
+        `========================\n` +
+        `${localContextText}\n` +
+        `========================\n\n` +
+        `User Question: ${userMessage}\n\n` +
+        `Instructions: Answer the question by combining the local context above and Google Search grounding if needed.`
+      : `Local Website Context:\n` +
+        `========================\n` +
+        `${localContextText}\n` +
+        `========================\n\n` +
+        `User Question: ${userMessage}\n\n` +
+        `Instructions: Answer the question using the local context above or your general knowledge.`;
 
     // 3. Format message contents for Gemini REST API
     // Convert history to Gemini format (role: user/model, parts: [{text: ...}])
@@ -177,7 +190,7 @@ async function queryRAG(userMessage, messageHistory = []) {
       },
       generationConfig: {
         temperature: 0.3,
-        maxOutputTokens: 800
+        maxOutputTokens: 2048
       }
     };
 
