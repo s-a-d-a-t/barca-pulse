@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const axios = require('axios');
 const config = require('../config');
 const cache = require('../cache');
@@ -87,6 +89,35 @@ async function getApiFootball(pathname, params = {}) {
   });
 
   return response.data;
+}
+
+let cachedAccessibleSeason = null;
+
+async function getLatestAccessibleSeason() {
+  if (cachedAccessibleSeason) return cachedAccessibleSeason;
+
+  const startYear = getCurrentSeasonStartYear();
+
+  // Try to probe with a known player ID (e.g. 1496 Raphinha)
+  for (let year = startYear; year >= startYear - 5; year--) {
+    try {
+      const payload = await getApiFootball('/players', { id: 1496, season: year });
+      const hasErrors = payload.errors && Object.keys(payload.errors).length > 0;
+      
+      if (hasErrors) {
+        if (payload.errors.plan || JSON.stringify(payload.errors).includes("plan") || JSON.stringify(payload.errors).includes("Free plans")) {
+          continue;
+        }
+      }
+      cachedAccessibleSeason = year;
+      return year;
+    } catch (err) {
+      continue;
+    }
+  }
+
+  cachedAccessibleSeason = startYear;
+  return startYear;
 }
 
 async function getFootballData(pathname, params = {}) {
@@ -259,11 +290,12 @@ async function findApiFootballFixtureForMatch(match) {
     return null;
   }
 
+  const season = await getLatestAccessibleSeason();
   const targetDate = formatUtcDateOnly(new Date(match.utcDate));
   let fixturePayload = await getApiFootball('/fixtures', {
     team: config.BARCA_API_FOOTBALL_TEAM_ID,
     date: targetDate,
-    season: getCurrentSeasonStartYear(),
+    season: season,
   });
 
   let fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
@@ -274,7 +306,7 @@ async function findApiFootballFixtureForMatch(match) {
     fixturePayload = await getApiFootball('/fixtures', {
       team: config.BARCA_API_FOOTBALL_TEAM_ID,
       date: dayBefore,
-      season: getCurrentSeasonStartYear(),
+      season: season,
     });
     fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
     
@@ -283,7 +315,7 @@ async function findApiFootballFixtureForMatch(match) {
       fixturePayload = await getApiFootball('/fixtures', {
         team: config.BARCA_API_FOOTBALL_TEAM_ID,
         date: dayAfter,
-        season: getCurrentSeasonStartYear(),
+        season: season,
       });
       fixtures = Array.isArray(fixturePayload.response) ? fixturePayload.response : [];
     }
@@ -359,119 +391,101 @@ async function fetchLineupForMatch(match) {
   };
 }
 
-// Public API Functions
-async function getApiFootballPlayers() {
-  return cache.cachedJson('players', config.CACHE_TTL.players, async () => {
-    const season = getCurrentSeasonStartYear();
-    const squadPayload = await getApiFootball('/players/squads', {
-      team: config.BARCA_API_FOOTBALL_TEAM_ID,
-    });
+// Helper function to aggregate player stats across different competitions
+function aggregatePlayerStats(statistics) {
+  let appearances = 0;
+  let goals = 0;
+  let assists = 0;
+  let minutesPlayed = 0;
+  let yellowCards = 0;
+  let redCards = 0;
+  let ratingSum = 0;
+  let ratingCount = 0;
+  let starts = 0;
+  let substitutes = 0;
 
-    const squadPlayers = Array.isArray(squadPayload.response?.[0]?.players)
-      ? squadPayload.response[0].players
-      : [];
+  for (const stats of statistics) {
+    const games = stats.games || {};
+    const gls = stats.goals || {};
+    const cards = stats.cards || {};
+    const passes = stats.passes || {};
 
-    const normalizedPlayers = [];
+    appearances += games.appearences ?? games.appearances ?? 0;
+    goals += gls.total ?? 0;
+    assists += passes.assists ?? 0;
+    minutesPlayed += games.minutes ?? 0;
+    yellowCards += cards.yellow ?? 0;
+    redCards += cards.red ?? 0;
+    starts += games.lineups ?? 0;
+    substitutes += games.substitutes ?? 0;
 
-    for (const squadPlayer of squadPlayers) {
-      let playerEntry = null;
-      let usedSeason = season;
-
-      try {
-        const playerPayload = await getApiFootball('/players', { id: squadPlayer.id, season });
-        const currentSeasonEntry = Array.isArray(playerPayload.response) ? playerPayload.response[0] : null;
-        const currentGames = currentSeasonEntry?.statistics?.[0]?.games || {};
-        const hasUsefulStats = Boolean(
-          (currentGames.appearences ?? currentGames.appearances ?? 0) > 0 ||
-          (currentSeasonEntry?.statistics?.[0]?.goals?.total ?? 0) > 0 ||
-          (currentSeasonEntry?.statistics?.[0]?.cards?.yellow ?? 0) > 0 ||
-          (currentSeasonEntry?.statistics?.[0]?.cards?.red ?? 0) > 0
-        );
-
-        if (hasUsefulStats) {
-          playerEntry = currentSeasonEntry;
-        } else {
-          const fallbackPayload = await getApiFootball('/players', { id: squadPlayer.id, season: season - 1 });
-          const fallbackEntry = Array.isArray(fallbackPayload.response) ? fallbackPayload.response[0] : null;
-          const fallbackGames = fallbackEntry?.statistics?.[0]?.games || {};
-          const fallbackHasStats = Boolean(
-            (fallbackGames.appearences ?? fallbackGames.appearances ?? 0) > 0 ||
-            (fallbackEntry?.statistics?.[0]?.goals?.total ?? 0) > 0 ||
-            (fallbackEntry?.statistics?.[0]?.cards?.yellow ?? 0) > 0 ||
-            (fallbackEntry?.statistics?.[0]?.cards?.red ?? 0) > 0
-          );
-
-          if (fallbackHasStats) {
-            playerEntry = fallbackEntry;
-            usedSeason = season - 1;
-          } else {
-            playerEntry = currentSeasonEntry;
-          }
-        }
-      } catch (error) {
-        playerEntry = null;
+    if (games.rating) {
+      const r = Number.parseFloat(games.rating);
+      if (!Number.isNaN(r)) {
+        ratingSum += r;
+        ratingCount++;
       }
-
-      normalizedPlayers.push(normalizeApiFootballPlayer(squadPlayer, playerEntry, usedSeason));
-    }
-
-    normalizedPlayers.sort((a, b) => {
-      const aNumber = Number.isFinite(a.shirtNumber) ? a.shirtNumber : 999;
-      const bNumber = Number.isFinite(b.shirtNumber) ? b.shirtNumber : 999;
-      return aNumber - bNumber;
-    });
-
-    return {
-      season,
-      team: {
-        id: config.BARCA_API_FOOTBALL_TEAM_ID,
-        name: 'FC Barcelona',
-      },
-      players: normalizedPlayers,
-    };
-  });
-}
-
-async function getPlayerDetails(playerId) {
-  const season = getCurrentSeasonStartYear();
-  const seasonsToTry = [season, season - 1];
-
-  for (const year of seasonsToTry) {
-    try {
-      const payload = await getApiFootball('/players', {
-        id: playerId,
-        season: year,
-      });
-
-      const entry = Array.isArray(payload.response) ? payload.response[0] : null;
-      if (!entry) {
-        continue;
-      }
-
-      const stats = entry.statistics?.[0] || {};
-      const games = stats.games || {};
-      const goals = stats.goals || {};
-      const cards = stats.cards || {};
-      const passes = stats.passes || {};
-
-      const hasUsefulStats = Boolean(
-        (games.appearences ?? games.appearances ?? 0) > 0 ||
-        (goals.total ?? 0) > 0 ||
-        (cards.yellow ?? 0) > 0 ||
-        (cards.red ?? 0) > 0 ||
-        (passes.assists ?? 0) > 0
-      );
-
-      if (!hasUsefulStats && year !== seasonsToTry[seasonsToTry.length - 1]) {
-        continue;
-      }
-
-      return normalizeApiFootballPlayer(entry.player || { id: playerId }, entry, year);
-    } catch (error) {
-      continue;
     }
   }
 
+  const avgRating = ratingCount > 0 ? Number((ratingSum / ratingCount).toFixed(2)) : null;
+
+  return {
+    appearances,
+    goals,
+    assists,
+    minutesPlayed,
+    yellowCards,
+    redCards,
+    rating: avgRating,
+    stats: {
+      starts,
+      substitutes,
+      rating: avgRating
+    }
+  };
+}
+
+// Public API Functions
+async function getApiFootballPlayers() {
+  const filePath = path.join(__dirname, '../data/players_preset.json');
+  try {
+    if (fs.existsSync(filePath)) {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      return {
+        season: 2026,
+        team: {
+          id: config.BARCA_API_FOOTBALL_TEAM_ID,
+          name: 'FC Barcelona',
+        },
+        players: data,
+      };
+    }
+  } catch (err) {
+    console.error('Error reading players preset:', err.message);
+  }
+
+  return {
+    season: 2026,
+    team: {
+      id: config.BARCA_API_FOOTBALL_TEAM_ID,
+      name: 'FC Barcelona',
+    },
+    players: [],
+  };
+}
+
+async function getPlayerDetails(playerId) {
+  const filePath = path.join(__dirname, '../data/players_preset.json');
+  try {
+    if (fs.existsSync(filePath)) {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      const player = data.find(p => p.id == playerId);
+      return player || null;
+    }
+  } catch (err) {
+    console.error('Error reading player details from preset:', err.message);
+  }
   return null;
 }
 

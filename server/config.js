@@ -12,7 +12,7 @@ module.exports = {
     chat: 'gemini-3.5-flash'
   },
   
-  ENABLE_SEARCH_GROUNDING: process.env.ENABLE_SEARCH_GROUNDING === 'true',
+  ENABLE_SEARCH_GROUNDING: process.env.ENABLE_SEARCH_GROUNDING !== 'false',
 
   API_FOOTBALL_BASE_URL: 'https://v3.football.api-sports.io',
   FOOTBALL_DATA_BASE_URL: 'https://api.football-data.org/v4',

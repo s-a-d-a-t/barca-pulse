@@ -202,7 +202,57 @@ async function queryRAG(userMessage, messageHistory = []) {
       ];
     }
 
-    const response = await axios.post(url, requestData, { timeout: 25000 });
+    let response;
+    let usedSearchGrounding = config.ENABLE_SEARCH_GROUNDING;
+
+    try {
+      response = await axios.post(url, requestData, { timeout: 25000 });
+    } catch (error) {
+      if (usedSearchGrounding) {
+        console.warn('Gemini Search Grounding failed, retrying without search grounding. Error:', error.response?.data || error.message);
+        
+        const fallbackSystemInstruction = 
+          "You are BarcaBot, a helpful, enthusiastic, and knowledgeable FC Barcelona AI Assistant integrated into the BarçaPulse fan portal. " +
+          "You have access to real-time local website data (players, news, fixtures, history).\n" +
+          "When answering, follow these guidelines:\n" +
+          "1. Be friendly, authentic, and showcase passion for Barcelona (use words like 'Visca el Barça!', 'Blaugrana', etc.).\n" +
+          "2. Prioritize using the provided Local Context if it is relevant. If the local data is insufficient or you need more facts, use your general knowledge of FC Barcelona, but be honest if you don't know the answer or lack real-time/recent details.\n" +
+          "3. Format your answers in markdown. Keep it engaging and concise.\n" +
+          "4. Avoid answering questions completely unrelated to football or FC Barcelona. Politely steer the conversation back to Barça.";
+
+        const fallbackContextPrompt = 
+          `Local Website Context:\n` +
+          `========================\n` +
+          `${localContextText}\n` +
+          `========================\n\n` +
+          `User Question: ${userMessage}\n\n` +
+          `Instructions: Answer the question using the local context above or your general knowledge.`;
+
+        const fallbackContents = [...contents];
+        if (fallbackContents.length > 0) {
+          fallbackContents[fallbackContents.length - 1] = {
+            role: 'user',
+            parts: [{ text: fallbackContextPrompt }]
+          };
+        }
+
+        const fallbackRequestData = {
+          contents: fallbackContents,
+          systemInstruction: {
+            parts: [{ text: fallbackSystemInstruction }]
+          },
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 2048
+          }
+        };
+
+        response = await axios.post(url, fallbackRequestData, { timeout: 25000 });
+        usedSearchGrounding = false;
+      } else {
+        throw error;
+      }
+    }
     
     const candidate = response.data?.candidates?.[0];
     const textAnswer = candidate?.content?.parts?.[0]?.text || "I'm sorry, I couldn't generate an answer right now.";
