@@ -107,6 +107,56 @@ function clearCache() {
   vectorCache = null;
 }
 
+const footballService = require('./football');
+const newsService = require('./news');
+
+async function getRealTimeSystemContext() {
+  try {
+    const playersPayload = await footballService.getApiFootballPlayers();
+    const players = playersPayload.players || [];
+    const squadSummary = players.length > 0 
+      ? players.map(p => `#${p.shirtNumber || 'N/A'} ${p.name} (${p.position})`).join(', ')
+      : 'Squad list unavailable.';
+
+    let fixturesSummary = 'Fixtures unavailable.';
+    try {
+      const fixturesData = await footballService.getUpcomingFixtures();
+      const fixtures = fixturesData.fixtures || [];
+      if (fixtures.length > 0) {
+        fixturesSummary = fixtures.slice(0, 5).map(f => `${f.homeTeam} vs ${f.awayTeam} (${f.utcDate || 'TBD'})`).join('\n');
+      }
+    } catch(e) {
+      console.warn('Fixtures fetch warning for RAG context:', e.message);
+    }
+
+    let newsSummary = 'News unavailable.';
+    try {
+      const newsData = await newsService.getNewsData();
+      const articles = newsData.articles || [];
+      if (articles.length > 0) {
+        newsSummary = articles.slice(0, 3).map(n => `- ${n.title}: ${n.description || n.content || ''}`).join('\n');
+      }
+    } catch(e) {
+      console.warn('News fetch warning for RAG context:', e.message);
+    }
+
+    return `REAL-TIME LIVE BARÇA PULSE DATA (Source of Truth):
+==================================================
+Active Barcelona Squad (${players.length} Players):
+${squadSummary}
+
+Upcoming Matches:
+${fixturesSummary}
+
+Latest Official Club News:
+${newsSummary}
+==================================================`;
+  } catch (err) {
+    console.error('Error constructing real-time system context:', err.message);
+    return '';
+  }
+}
+
 // Core RAG query function
 async function queryRAG(userMessage, messageHistory = []) {
   if (!config.GEMINI_API_KEY) {
@@ -117,50 +167,37 @@ async function queryRAG(userMessage, messageHistory = []) {
   }
 
   try {
-    // 1. Search local vector database for matching context
+    // 1. Fetch real-time live data and search local vector database
+    const realTimeLiveContext = await getRealTimeSystemContext();
     const localMatches = await searchVectorStore(userMessage, 4);
     
-    // Format retrieved contexts
+    // Format retrieved vector contexts
     let localContextText = "";
     if (localMatches.length > 0) {
       localContextText = localMatches
-        .map((m, idx) => `[Context ${idx + 1} - ${m.type}]: ${m.text}`)
+        .map((m, idx) => `[Vector Context ${idx + 1} - ${m.type}]: ${m.text}`)
         .join("\n\n");
     } else {
-      localContextText = "No direct local database records found matching this query.";
+      localContextText = "No additional vector database records found matching this query.";
     }
 
-    // 2. Build system instructions and context-based prompt
-    const systemInstruction = config.ENABLE_SEARCH_GROUNDING
-      ? "You are BarcaBot, a helpful, enthusiastic, and knowledgeable FC Barcelona AI Assistant integrated into the BarçaPulse fan portal. " +
-        "You have access to real-time local website data (players, news, fixtures, history) and the Google Search tool for external questions. " +
-        "When answering, follow these guidelines:\n" +
-        "1. Be friendly, authentic, and showcase passion for Barcelona (use words like 'Visca el Barça!', 'Blaugrana', etc.).\n" +
-        "2. Prioritize using the provided Local Context if it is relevant. If the local data is insufficient or you need more facts, use Google Search Grounding to find up-to-date information.\n" +
-        "3. Format your answers in markdown. Keep it engaging and concise.\n" +
-        "4. Cite sources if Google Search grounding provides them.\n" +
-        "5. Avoid answering questions completely unrelated to football or FC Barcelona. Politely steer the conversation back to Barça."
-      : "You are BarcaBot, a helpful, enthusiastic, and knowledgeable FC Barcelona AI Assistant integrated into the BarçaPulse fan portal. " +
-        "You have access to real-time local website data (players, news, fixtures, history).\n" +
-        "When answering, follow these guidelines:\n" +
-        "1. Be friendly, authentic, and showcase passion for Barcelona (use words like 'Visca el Barça!', 'Blaugrana', etc.).\n" +
-        "2. Prioritize using the provided Local Context if it is relevant. If the local data is insufficient or you need more facts, use your general knowledge of FC Barcelona, but be honest if you don't know the answer or lack real-time/recent details.\n" +
-        "3. Format your answers in markdown. Keep it engaging and concise.\n" +
-        "4. Avoid answering questions completely unrelated to football or FC Barcelona. Politely steer the conversation back to Barça.";
+    const combinedContext = `${realTimeLiveContext}\n\nLocal Database Context:\n${localContextText}`;
 
-    const contextPrompt = config.ENABLE_SEARCH_GROUNDING
-      ? `Local Website Context:\n` +
-        `========================\n` +
-        `${localContextText}\n` +
-        `========================\n\n` +
-        `User Question: ${userMessage}\n\n` +
-        `Instructions: Answer the question by combining the local context above and Google Search grounding if needed.`
-      : `Local Website Context:\n` +
-        `========================\n` +
-        `${localContextText}\n` +
-        `========================\n\n` +
-        `User Question: ${userMessage}\n\n` +
-        `Instructions: Answer the question using the local context above or your general knowledge.`;
+    // 2. Build system instructions and context-based prompt
+    const systemInstruction = 
+      "You are BarcaBot, a helpful, enthusiastic, and knowledgeable FC Barcelona AI Assistant integrated into the BarçaPulse fan portal.\n" +
+      "STRICT RULE: Always use the REAL-TIME LIVE BARÇA PULSE DATA provided below as your primary, absolute source of truth for current players, squad members, fixtures, and news.\n" +
+      "Do NOT invent former or missing players (e.g. Oriol Romeu is NOT in the current squad). Rely on the live squad list provided.\n" +
+      "Guidelines:\n" +
+      "1. Be friendly, authentic, and showcase passion for Barcelona (use terms like 'Visca el Barça!', 'Blaugrana', etc.).\n" +
+      "2. Prioritize the provided real-time data and local context above all else.\n" +
+      "3. Format your answers in clean markdown. Keep responses concise, clear, and accurate.\n" +
+      "4. Avoid answering questions completely unrelated to football or FC Barcelona.";
+
+    const contextPrompt = 
+      `${combinedContext}\n\n` +
+      `User Question: ${userMessage}\n\n` +
+      `Instructions: Answer the user's question using the REAL-TIME LIVE BARÇA PULSE DATA above.`;
 
     // 3. Format message contents for Gemini REST API
     // Convert history to Gemini format (role: user/model, parts: [{text: ...}])
@@ -180,7 +217,7 @@ async function queryRAG(userMessage, messageHistory = []) {
       parts: [{ text: contextPrompt }]
     });
 
-    // 4. Send request to gemini-2.5-flash with Google Search Grounding enabled
+    // 4. Send request to gemini-2.5-flash with real-time live context
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.GEMINI_MODELS.chat}:generateContent?key=${config.GEMINI_API_KEY}`;
     
     const requestData = {
@@ -189,18 +226,10 @@ async function queryRAG(userMessage, messageHistory = []) {
         parts: [{ text: systemInstruction }]
       },
       generationConfig: {
-        temperature: 0.3,
+        temperature: 0.2,
         maxOutputTokens: 2048
       }
     };
-
-    if (config.ENABLE_SEARCH_GROUNDING) {
-      requestData.tools = [
-        {
-          googleSearch: {}
-        }
-      ];
-    }
 
     let response;
     let usedSearchGrounding = config.ENABLE_SEARCH_GROUNDING;
