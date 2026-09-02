@@ -45,8 +45,22 @@ export function formatRating(value) {
 }
 
 export function getLastName(name) {
-    const parts = String(name || '').trim().split(/\s+/);
-    return parts.length ? parts[parts.length - 1] : 'Player';
+    if (!name) return 'Player';
+    const trimmed = String(name).trim();
+    if (trimmed.includes('ter Stegen')) return 'ter Stegen';
+    if (trimmed.includes('de Jong')) return 'de Jong';
+    if (trimmed.includes('Cubarsí') || trimmed.includes('Cubarsi')) return 'Cubarsí';
+    if (trimmed.includes('Szczęsny') || trimmed.includes('Szczesny')) return 'Szczęsny';
+    if (trimmed.includes('Martínez') || trimmed.includes('Martinez')) return 'Íñigo Martínez';
+    if (trimmed.includes('Yamal')) return 'Lamine Yamal';
+    if (trimmed.includes('Raphinha')) return 'Raphinha';
+    if (trimmed.includes('Lewandowski')) return 'Lewandowski';
+    if (trimmed.includes('Olmo')) return 'Dani Olmo';
+    if (trimmed.includes('Koundé') || trimmed.includes('Kounde')) return 'Jules Koundé';
+
+    const parts = trimmed.split(/\s+/);
+    if (parts.length <= 2) return trimmed;
+    return parts.slice(1).join(' ');
 }
 
 export function getCoachPlaceholder(name) {
