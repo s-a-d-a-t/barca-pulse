@@ -219,7 +219,8 @@ export function initChat() {
             removeTypingIndicator();
 
             if (!response.ok) {
-                throw new Error('Server returned an error');
+                const errData = await response.json().catch(() => null);
+                throw new Error(errData?.error || errData?.message || `Server returned status ${response.status}`);
             }
 
             const data = await response.json();

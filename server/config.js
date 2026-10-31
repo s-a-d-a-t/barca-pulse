@@ -5,14 +5,16 @@ module.exports = {
   NEWS_API_KEY: process.env.NEWS_API_KEY,
   FOOTBALL_DATA_API_KEY: process.env.FOOTBALL_DATA_API_KEY,
   API_FOOTBALL_KEY: process.env.API_FOOTBALL_KEY,
-  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+  NVIDIA_API_KEY: process.env.NVIDIA_API_KEY,
 
-  GEMINI_MODELS: {
-    embedding: 'gemini-embedding-001',
-    chat: 'gemini-3.5-flash'
-  },
-  
-  ENABLE_SEARCH_GROUNDING: process.env.ENABLE_SEARCH_GROUNDING !== 'false',
+  NVIDIA_INVOKE_URL: process.env.NVIDIA_INVOKE_URL || 'https://integrate.api.nvidia.com/v1/chat/completions',
+  NVIDIA_MODEL: process.env.NVIDIA_MODEL || 'nvidia/nemotron-3.5-bolt-e4b',
+  NVIDIA_STREAM: process.env.NVIDIA_STREAM === 'true',
+  NVIDIA_TEMPERATURE: process.env.NVIDIA_TEMPERATURE !== undefined ? parseFloat(process.env.NVIDIA_TEMPERATURE) : 0.3,
+  NVIDIA_TOP_P: process.env.NVIDIA_TOP_P !== undefined ? parseFloat(process.env.NVIDIA_TOP_P) : 0.9,
+  NVIDIA_MAX_TOKENS: process.env.NVIDIA_MAX_TOKENS !== undefined ? parseInt(process.env.NVIDIA_MAX_TOKENS, 10) : 1024,
+  NVIDIA_SEED: process.env.NVIDIA_SEED !== undefined ? parseInt(process.env.NVIDIA_SEED, 10) : 42,
+  NVIDIA_ENABLE_THINKING: process.env.NVIDIA_ENABLE_THINKING !== 'false',
 
   API_FOOTBALL_BASE_URL: 'https://v3.football.api-sports.io',
   FOOTBALL_DATA_BASE_URL: 'https://api.football-data.org/v4',
