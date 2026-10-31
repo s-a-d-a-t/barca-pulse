@@ -46,11 +46,10 @@ graph TD
 
 No external complex database or heavy machine learning libraries (Python/FastAPI) are required. The entire pipeline is built in vanilla Node.js:
 
-* **Large Language Model**: Google Gemini API (`gemini-3.5-flash` for completions, `gemini-embedding-001` for vectors).
-* **Search Grounding**: Google Search Tool enabled on the Gemini chat API (optional, configurable via `ENABLE_SEARCH_GROUNDING` option).
-* **Vector Store**: A lightweight, file-based JSON database (`server/data/vector_store.json`).
+* **Large Language Model**: NVIDIA API (`nvidia/nemotron-3.5-bolt-e4b` via `https://integrate.api.nvidia.com/v1/chat/completions`, with reasoning/thinking enabled).
+* **Vector Store**: A lightweight, file-based JSON database (`server/data/vector_store.json`) with keyword fallback.
 * **Vector Math**: Cosine similarity computed in plain JavaScript using vector dot-products.
-* **HTTP Client**: `axios` (used for direct REST requests to Gemini endpoints, avoiding heavy SDK downloads).
+* **HTTP Client**: `axios` (used for direct REST requests to NVIDIA and embedding endpoints, avoiding heavy SDK downloads).
 * **Aesthetics**: Custom glassmorphic CSS animations, scroll snapping suggestions, and dynamic chat bubble templates using FontAwesome icons.
 
 ---
@@ -74,10 +73,10 @@ To match user queries with the correct information, the system splits data into 
 
 ## 5. Setup & Installation
 
-### Step 1: Get a Gemini API Key
-1. Go to the [Google AI Studio](https://aistudio.google.com/).
-2. Log in with your Google account.
-3. Click **Get API Key** and create a new key.
+### Step 1: Get an NVIDIA API Key
+1. Go to [NVIDIA Build](https://build.nvidia.com/).
+2. Select `nvidia/nemotron-3.5-bolt-e4b` or any supported model.
+3. Generate an API Key.
 
 ### Step 2: Configure Environment Variables
 Open your `.env` file in the root of the project and add your API key:
@@ -85,8 +84,7 @@ Open your `.env` file in the root of the project and add your API key:
 NEWS_API_KEY=your_news_key
 FOOTBALL_DATA_API_KEY=your_football_data_key
 API_FOOTBALL_KEY=your_api_football_key
-GEMINI_API_KEY=your_gemini_api_key
-ENABLE_SEARCH_GROUNDING=false
+NVIDIA_API_KEY=your_nvidia_api_key
 ```
 
 > [!NOTE]
